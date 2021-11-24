@@ -1,4 +1,10 @@
 @import "footer.scss";
+@import "history.scss";
+@import "modalDelete.scss";
+
+// FONT
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap%22");
+
 html,
 body {
   padding: 0;
@@ -14,4 +20,19 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.rubik-400 {
+  font-family: "Rubik", sans-serif;
+  font-weight: 400;
+}
+
+.rubik-600 {
+  font-family: "Rubik", sans-serif;
+  font-weight: 600;
+}
+
+.rubik-700 {
+  font-family: "Rubik", sans-serif;
+  font-weight: 700;
 }

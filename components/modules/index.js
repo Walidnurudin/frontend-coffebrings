@@ -1,3 +1,4 @@
 import FooterComponent from "./FooterComponent";
+import ModalDelete from "./ModalDelete";
 
-export { FooterComponent };
+export { FooterComponent, ModalDelete };
