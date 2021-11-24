@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Head from "next/head";
-import { FooterComponent } from "components/modules";
+import { FooterComponent, HeaderComponent } from "components/modules";
 import {
   Testimoni,
   OurMap,
@@ -8,7 +8,6 @@ import {
   Favorite,
   Teamwork,
   Hero,
-  Header,
 } from "components/molecules";
 
 export default function Home() {
@@ -20,7 +19,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header />
+      <HeaderComponent />
       <Hero />
       <Teamwork />
       <Favorite />

@@ -18,17 +18,17 @@ export default function FooterComponent() {
             <div className="footer__content--wrapper--left--media">
               <figure>
                 <a href="">
-                  <img src="assets/images/icons/icon-fb.svg" alt="t" />
+                  <img src="/assets/images/icons/icon-fb.svg" alt="t" />
                 </a>
               </figure>
               <figure>
                 <a href="">
-                  <img src="assets/images/icons/icon-twitter.svg" alt="t" />
+                  <img src="/assets/images/icons/icon-twitter.svg" alt="t" />
                 </a>
               </figure>
               <figure>
                 <a href="">
-                  <img src="assets/images/icons/icon-instagram.svg" alt="t" />
+                  <img src="/assets/images/icons/icon-instagram.svg" alt="t" />
                 </a>
               </figure>
             </div>
