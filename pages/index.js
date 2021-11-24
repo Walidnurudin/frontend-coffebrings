@@ -1,11 +1,16 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { FooterComponent } from "components/modules";
+import { FooterComponent, InputAuthComponent } from "components/modules";
 
 export default function Home() {
   return (
     <div className={styles.container}>
+      <InputAuthComponent
+        name="aowkawok"
+        placeholder="iawjakliwj"
+        label="49ui23904ui9230"
+      />
       <FooterComponent />
       <Head>
         <title>Create Next App</title>
