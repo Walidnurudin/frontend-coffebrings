@@ -2,8 +2,12 @@
 import { InputAuthComponent, AllButton } from "components/modules";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { getUserById } from "stores/action/dataUser";
+import axios from "utils/axios";
+import { connect } from "react-redux";
+import Cookie from "js-cookie";
 
-export default function FormLoginComponent() {
+const FormLoginComponent = (props) => {
   const router = useRouter();
   const [formLogin, setFormLogin] = useState({
     email: "",
@@ -13,15 +17,30 @@ export default function FormLoginComponent() {
   const toResetPass = () => {
     router.push("/auth/forgotPassword");
   };
-  const handleChangeText = (e) => {
-    setFormLogin({ ...formLogin, [e.target.name]: e.target.value });
-  };
-  const handleSubmit = () => {};
+
   const toSignup = () => {
     router.push("/auth/register");
   };
 
-  console.log(formLogin);
+  const handleChangeText = (e) => {
+    setFormLogin({ ...formLogin, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("/auth/login", formLogin)
+      .then((res) => {
+        // console.log(res.data.data.id, "res logion");
+        Cookie.set("token", res.data.data.token);
+        Cookie.set("id", res.data.data.id);
+        props.getUserById(res.data.data.id);
+        router.push("/main/home");
+      })
+      .catch((err) => {
+        console.log(err, "err login");
+      });
+  };
+
   return (
     <div className="register-content">
       <div
@@ -55,6 +74,7 @@ export default function FormLoginComponent() {
               placeholder="Enter your email address"
               type="email"
               label="Email"
+              value={formLogin.email}
             />
             <InputAuthComponent
               onChange={handleChangeText}
@@ -62,6 +82,7 @@ export default function FormLoginComponent() {
               placeholder="Enter your password"
               type="password"
               label="Password"
+              value={formLogin.password}
             />
             <p className="forgot-password mt-3" onClick={toResetPass}>
               Forgot Password?
@@ -85,4 +106,11 @@ export default function FormLoginComponent() {
       <div className="footer-auth">FOOTER</div>
     </div>
   );
-}
+};
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = {
+  getUserById,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormLoginComponent);
