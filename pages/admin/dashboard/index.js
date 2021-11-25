@@ -58,9 +58,11 @@ function Dashboard() {
             <div>chartjs</div>
           </div>
 
-          <button className="dashboard__button nunito-700">
-            Download Report
-          </button>
+          <div className="text-center">
+            <button className="dashboard__button nunito-700">
+              Download Report
+            </button>
+          </div>
         </div>
       </section>
       <FooterComponent />
