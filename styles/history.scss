@@ -36,7 +36,11 @@
   padding: 15px;
   border-radius: 100%;
   background-color: #6a4029;
-  object-fit: cover;
+  object-fit: contain;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  justify-content: center;
 }
 
 ::-webkit-scrollbar {
