@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import Cookie from "js-cookie";
 
 const FormLoginComponent = (props) => {
+  const [valid, setValid] = useState(false);
   const router = useRouter();
   const [formLogin, setFormLogin] = useState({
     email: "",
@@ -30,14 +31,16 @@ const FormLoginComponent = (props) => {
     axios
       .post("/auth/login", formLogin)
       .then((res) => {
-        // console.log(res.data.data.id, "res logion");
         Cookie.set("token", res.data.data.token);
         Cookie.set("id", res.data.data.id);
         props.getUserById(res.data.data.id);
         router.push("/main/home");
       })
       .catch((err) => {
-        console.log(err, "err login");
+        setValid(err.response.data.msg);
+        setTimeout(() => {
+          setValid(false);
+        }, 2000);
       });
   };
 
@@ -87,6 +90,12 @@ const FormLoginComponent = (props) => {
             <p className="forgot-password mt-3" onClick={toResetPass}>
               Forgot Password?
             </p>
+            {valid ? (
+              <div className="error-msg text-center text-danger d-absolute">
+                {valid}
+              </div>
+            ) : null}
+
             <AllButton
               className="button-auth w-100 mt-3"
               text="Login"

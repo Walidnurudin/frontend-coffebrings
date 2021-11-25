@@ -8,7 +8,7 @@ import { getDataCookie } from "middleware/authorizationPage";
 //   if (dataCookie.isLogin) {
 //     return {
 //       redirect: {
-//         destination: "/auth/login",
+//         destination: "/main/home",
 //         permanent: false,
 //       },
 //     };

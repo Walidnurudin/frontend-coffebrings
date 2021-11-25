@@ -1,9 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 import { InputAuthComponent, AllButton } from "components/modules";
 import { useState } from "react";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
+import axios from "utils/axios";
+import { Modal, Button } from "react-bootstrap";
 
 export default function FormRegisterComponent() {
+  const router = useRouter();
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+    router.push("/auth/login");
+  };
+  const handleShow = () => setShow(true);
+
   const [formRegister, setFormRegister] = useState({
     email: "",
     password: "",
@@ -13,12 +23,22 @@ export default function FormRegisterComponent() {
   const toLogin = () => {
     router.push("/auth/login");
   };
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("/auth/register", formRegister)
+      .then((res) => {
+        // console.log(res.data.data, "register");
+        setShow(true);
+      })
+      .catch((err) => {
+        console.log(err.response.data.msg);
+      });
+  };
   const handleChangeText = (e) => {
     setFormRegister({ ...formRegister, [e.target.name]: e.target.value });
   };
 
-  console.log(formRegister);
   return (
     <div className="register-content">
       <div
@@ -84,6 +104,22 @@ export default function FormRegisterComponent() {
         </div>
       </div>
       <div className="footer-auth">FOOTER</div>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Success Register</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Please check your email for account activation</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleClose}>
+            Ok
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
