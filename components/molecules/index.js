@@ -1,6 +1,8 @@
 import FormRegisterComponent from "./FormRegisterComponent";
 import FormLoginComponent from "./FormLoginComponent";
 import FormForgotPassComponent from "./FormForgotPassComponent";
+import PromoHomeComponent from "./PromoHomeComponent";
+import MenuHomeComponent from "./MenuHomeComponent";
 
 import Testimoni from "./testimoni";
 import Partner from "./partner";
@@ -19,4 +21,6 @@ export {
   FormRegisterComponent,
   FormLoginComponent,
   FormForgotPassComponent,
+  PromoHomeComponent,
+  MenuHomeComponent,
 };
