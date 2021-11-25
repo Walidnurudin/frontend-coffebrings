@@ -1,6 +1,16 @@
 import React from "react";
+import { useRouter } from "next/router";
 
 function HeaderComponent() {
+  const router = useRouter();
+  const toLogin = () => {
+    router.push("/auth/login");
+  };
+
+  const toRegister = () => {
+    router.push("/auth/register");
+  };
+
   return (
     <header className="header">
       <nav className="navbar navbar-expand-lg">
@@ -35,10 +45,10 @@ function HeaderComponent() {
               </li>
             </ul>
             <div className="header__navbar--button d-none d-md-block">
-              <a href="" className="btn__link--signin">
+              <a className="btn__link--signin" onClick={toLogin}>
                 Signin
               </a>
-              <a href="" className="btn__link--signup">
+              <a className="btn__link--signup" onClick={toRegister}>
                 Signup
               </a>
             </div>

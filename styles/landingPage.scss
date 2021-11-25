@@ -42,7 +42,10 @@ a {
   color: #0b132a;
   padding-right: 2.5rem;
 }
-
+.btn__link--signin:hover,
+.btn__link--signup:hover {
+  cursor: pointer;
+}
 .header__navbar--button > .btn__link--signup {
   font-size: 1.125rem;
   color: #6a4029;
