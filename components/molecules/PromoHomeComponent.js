@@ -1,5 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
+import { useSelector } from "react-redux";
+import router, { useRouter } from "next/router";
+
 export default function PromoHomeComponent() {
+  const { user } = useSelector((state) => state.dataUserById);
+  const router = useRouter();
+
+  const applyCoupon = () => {
+    alert("kupon");
+  };
+
+  const toAddPromo = () => {
+    router.push("/admin/newPromo");
+  };
+
   return (
     <>
       <div className="promo-header px-5">
@@ -65,9 +79,11 @@ export default function PromoHomeComponent() {
         </div>
       </div>
       <div className="promo-btn-select px-3">
-        <button className="btn-apply-coupon w-100 mt-3 border-0 py-3">
-          Apply coupon
-          {/* <!-- admin = Add new promo --> */}
+        <button
+          className="btn-apply-coupon w-100 mt-3 border-0 py-3"
+          onClick={user.role === "admin" ? toAddPromo : applyCoupon}
+        >
+          {user.role === "admin" ? "Add new promo" : "Apply coupon"}
         </button>
       </div>
     </>

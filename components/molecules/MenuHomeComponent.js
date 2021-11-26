@@ -4,6 +4,23 @@ import { useEffect, useState } from "react";
 import { deleteProduct, getAllProduct } from "stores/action/allProduct";
 import { Modal, Button } from "react-bootstrap";
 import { useRouter } from "next/router";
+// import { getDataCookie } from "middleware/authorizationPage";
+
+// export async function getServerSideProps(context) {
+//   const dataCookie = await getDataCookie(context);
+
+//   if (!dataCookie.isLogin) {
+//     return {
+//       redirect: {
+//         destination: "/auth/login",
+//         permanent: false,
+//       },
+//     };
+//   }
+//   return {
+//     props: {},
+//   };
+// }
 
 const initalState = {
   page: 1,
@@ -49,12 +66,16 @@ export default function MenuHomeComponent() {
       ...dataProduct,
       category: category,
     });
+    dispatch(getAllProduct(page, limit, category, search, sort, order));
   };
 
   return (
     <>
       <div className="menu-header d-flex justify-content-between p-4">
-        <div className="food-category-list selected-category">
+        <div
+          className="food-category-list selected-category"
+          onClick={() => handleCategory("")}
+        >
           Favorite Product
         </div>
         <div
@@ -63,9 +84,24 @@ export default function MenuHomeComponent() {
         >
           Coffee
         </div>
-        <div className="food-category-list">Non Coffee</div>
-        <div className="food-category-list">Foods</div>
-        <div className="food-category-list">Add-on</div>
+        <div
+          className="food-category-list"
+          onClick={() => handleCategory("Non coffee")}
+        >
+          Non Coffee
+        </div>
+        <div
+          className="food-category-list"
+          onClick={() => handleCategory("Foods")}
+        >
+          Foods
+        </div>
+        <div
+          className="food-category-list"
+          onClick={() => handleCategory("Add-on")}
+        >
+          Add-on
+        </div>
       </div>
       <div
         className="
