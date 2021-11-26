@@ -1,10 +1,55 @@
 /* eslint-disable @next/next/no-img-element */
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { deleteProduct, getAllProduct } from "stores/action/allProduct";
+import { Modal, Button } from "react-bootstrap";
+import { useRouter } from "next/router";
 
-const MenuHomeComponent = (props) => {
-  const user = props.user;
-  // console.log(user.user.role, "data user");
+const initalState = {
+  page: 1,
+  limit: 100,
+  category: "",
+  search: "",
+  sort: "",
+  order: "ASC",
+};
+
+export default function MenuHomeComponent() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.dataUserById);
+  const product = useSelector((state) => state.product);
+  const [dataProduct, setDataProduct] = useState(initalState);
+
+  console.log(product.allProduct, "data redux");
   const userRole = user.user.role;
+
+  const { page, limit, category, search, sort, order } = dataProduct;
+
+  useEffect(() => {
+    dispatch(getAllProduct(page, limit, category, search, sort, order));
+  }, [dispatch]);
+
+  const handleDelete = (id) => {
+    const confirm = window.confirm("apus? ");
+    if (confirm) {
+      dispatch(deleteProduct(id)).then((res) => {
+        alert("apus");
+        dispatch(getAllProduct(page, limit, category, search, sort, order));
+      });
+    }
+  };
+
+  const toEditPage = (item) => {
+    router.push({ pathname: "/admin/newProduct", query: item });
+  };
+
+  const handleCategory = (category) => {
+    setDataProduct({
+      ...dataProduct,
+      category: category,
+    });
+  };
 
   return (
     <>
@@ -12,7 +57,12 @@ const MenuHomeComponent = (props) => {
         <div className="food-category-list selected-category">
           Favorite Product
         </div>
-        <div className="food-category-list">Coffee</div>
+        <div
+          className="food-category-list"
+          onClick={() => handleCategory("coffee")}
+        >
+          Coffee
+        </div>
         <div className="food-category-list">Non Coffee</div>
         <div className="food-category-list">Foods</div>
         <div className="food-category-list">Add-on</div>
@@ -27,331 +77,58 @@ const MenuHomeComponent = (props) => {
               "
       >
         {/* <!-- map menu-item-list dari sini --> */}
-        <div className="card-list-menu-item p-4 mt-3">
-          {/* <!-- kondisional isAdmin --> */}
-          {userRole === "admin" ? (
-            <>
-              <div
-                className="
+        {product.allProduct.map((item) => (
+          <div className="card-list-menu-item p-4 mt-3" key={item.id}>
+            {/* <!-- kondisional isAdmin --> */}
+            {userRole === "admin" ? (
+              <>
+                <div
+                  onClick={() => toEditPage(item)}
+                  className="
                     edit-menu
                     d-flex
                     align-items-center
                     justify-content-center
                   "
-              >
-                <img src="/assets/images/pencil.png" alt="edit" />
-              </div>
-              <div
-                className="
+                >
+                  <img src="/assets/images/pencil.png" alt="edit" />
+                </div>
+                <div
+                  onClick={() => handleDelete(item.id)}
+                  className="
                     delete-menu
                     d-flex
                     align-items-center
                     justify-content-center
                   "
-              >
-                <img src="/assets/images/trash 1.png" alt="delete" />
-              </div>{" "}
-            </>
-          ) : null}
+                >
+                  <img src="/assets/images/trash 1.png" alt="delete" />
+                </div>{" "}
+              </>
+            ) : null}
 
-          {/* <!--  ==================== --> */}
-          <img
-            src="/assets/food-img/food-2.png"
-            className="menu-item-img"
-            alt="pecel"
-          />
-          <div className="menu-item-name mt-2">summer fride rice</div>
-          <div className="menu-item-price">IDR 35.000</div>
-        </div>
+            {/* <!--  ==================== --> */}
+            <img
+              src={
+                item.image
+                  ? `${process.env.URL_BACKEND}/uploads/product/${item.image}`
+                  : `/assets/images/default.png`
+              }
+              className="menu-item-img"
+              alt="pecel"
+            />
+            <div className="menu-item-name mt-2">{item.name}</div>
+            <div className="menu-item-price">{item.price}</div>
+          </div>
+        ))}
+
         {/* <!-- map menu-item-list sampe sini --> */}
-        <div className="card-list-menu-item p-4 mt-3">
-          {/* <!-- kondisional isAdmin --> */}
-          <div
-            className="
-                    edit-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/pencil.png" alt="edit" />
-          </div>
-          <div
-            className="
-                    delete-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/trash 1.png" alt="delete" />
-          </div>
-          {/* <!--  ==================== --> */}
-          <img
-            src="/assets/food-img/food-2.png"
-            className="menu-item-img"
-            alt="pecel"
-          />
-          <div className="menu-item-name mt-2">summer fride rice</div>
-          <div className="menu-item-price">IDR 35.000</div>
-        </div>
-        <div className="card-list-menu-item p-4 mt-3">
-          {/* <!-- kondisional isAdmin --> */}
-          <div
-            className="
-                    edit-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/pencil.png" alt="edit" />
-          </div>
-          <div
-            className="
-                    delete-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/trash 1.png" alt="delete" />
-          </div>
-          {/* <!--  ==================== --> */}
-          <img
-            src="/assets/food-img/food-2.png"
-            className="menu-item-img"
-            alt="pecel"
-          />
-          <div className="menu-item-name mt-2">summer fride rice</div>
-          <div className="menu-item-price">IDR 35.000</div>
-        </div>
-        <div className="card-list-menu-item p-4 mt-3">
-          {/* <!-- kondisional isAdmin --> */}
-          <div
-            className="
-                    edit-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/pencil.png" alt="edit" />
-          </div>
-          <div
-            className="
-                    delete-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/trash 1.png" alt="delete" />
-          </div>
-          {/* <!--  ==================== --> */}
-          <img
-            src="/assets/food-img/food-2.png"
-            className="menu-item-img"
-            alt="pecel"
-          />
-          <div className="menu-item-name mt-2">summer fride rice</div>
-          <div className="menu-item-price">IDR 35.000</div>
-        </div>
-        <div className="card-list-menu-item p-4 mt-3">
-          {/* <!-- kondisional isAdmin --> */}
-          <div
-            className="
-                    edit-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/pencil.png" alt="edit" />
-          </div>
-          <div
-            className="
-                    delete-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/trash 1.png" alt="delete" />
-          </div>
-          {/* <!--  ==================== --> */}
-          <img
-            src="/assets/food-img/food-2.png"
-            className="menu-item-img"
-            alt="pecel"
-          />
-          <div className="menu-item-name mt-2">summer fride rice</div>
-          <div className="menu-item-price">IDR 35.000</div>
-        </div>
-        <div className="card-list-menu-item p-4 mt-3">
-          {/* <!-- kondisional isAdmin --> */}
-          <div
-            className="
-                    edit-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/pencil.png" alt="edit" />
-          </div>
-          <div
-            className="
-                    delete-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/trash 1.png" alt="delete" />
-          </div>
-          {/* <!--  ==================== --> */}
-          <img
-            src="/assets/food-img/food-2.png"
-            className="menu-item-img"
-            alt="pecel"
-          />
-          <div className="menu-item-name mt-2">summer fride rice</div>
-          <div className="menu-item-price">IDR 35.000</div>
-        </div>
-        <div className="card-list-menu-item p-4 mt-3">
-          {/* <!-- kondisional isAdmin --> */}
-          <div
-            className="
-                    edit-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/pencil.png" alt="edit" />
-          </div>
-          <div
-            className="
-                    delete-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/trash 1.png" alt="delete" />
-          </div>
-          {/* <!--  ==================== --> */}
-          <img
-            src="/assets/food-img/food-2.png"
-            className="menu-item-img"
-            alt="pecel"
-          />
-          <div className="menu-item-name mt-2">summer fride rice</div>
-          <div className="menu-item-price">IDR 35.000</div>
-        </div>
-        <div className="card-list-menu-item p-4 mt-3">
-          {/* <!-- kondisional isAdmin --> */}
-          <div
-            className="
-                    edit-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/pencil.png" alt="edit" />
-          </div>
-          <div
-            className="
-                    delete-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/trash 1.png" alt="delete" />
-          </div>
-          {/* <!--  ==================== --> */}
-          <img
-            src="/assets/food-img/food-2.png"
-            className="menu-item-img"
-            alt="pecel"
-          />
-          <div className="menu-item-name mt-2">summer fride rice</div>
-          <div className="menu-item-price">IDR 35.000</div>
-        </div>
-        <div className="card-list-menu-item p-4 mt-3">
-          {/* <!-- kondisional isAdmin --> */}
-          <div
-            className="
-                    edit-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/pencil.png" alt="edit" />
-          </div>
-          <div
-            className="
-                    delete-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/trash 1.png" alt="delete" />
-          </div>
-          {/* <!--  ==================== --> */}
-          <img
-            src="/assets/food-img/food-2.png"
-            className="menu-item-img"
-            alt="pecel"
-          />
-          <div className="menu-item-name mt-2">summer fride rice</div>
-          <div className="menu-item-price">IDR 35.000</div>
-        </div>
-        <div className="card-list-menu-item p-4 mt-3">
-          {/* <!-- kondisional isAdmin --> */}
-          <div
-            className="
-                    edit-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/pencil.png" alt="edit" />
-          </div>
-          <div
-            className="
-                    delete-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/trash 1.png" alt="delete" />
-          </div>
-          {/* <!--  ==================== --> */}
-          <img
-            src="/assets/food-img/food-2.png"
-            className="menu-item-img"
-            alt="pecel"
-          />
-          <div className="menu-item-name mt-2">summer fride rice</div>
-          <div className="menu-item-price">IDR 35.000</div>
-        </div>
       </div>
-      <button className="button-add-product w-100 mt-4 border-0">
-        Add new product
-      </button>
+      {userRole === "admin" && (
+        <button className="button-add-product w-100 mt-4 border-0">
+          Add new product
+        </button>
+      )}
     </>
   );
-};
-const mapStateToProps = (state) => ({
-  user: state.dataUserById,
-});
-
-export default connect(mapStateToProps)(MenuHomeComponent);
+}

@@ -1,8 +1,29 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+import React, { useState } from "react";
 import { HeaderComponent, FooterComponent } from "components/modules";
+import { useRouter } from "next/router";
+import { getDataCookie } from "middleware/authorizationPage";
+
+export async function getServerSideProps(context) {
+  const dataCookie = await getDataCookie(context);
+
+  if (!dataCookie.isLogin) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+}
 
 function NewProduct() {
+  const router = useRouter();
+  const [dataProduct, setDataProduct] = useState(router.query);
+  console.log(dataProduct, "edit ");
   return (
     <>
       <HeaderComponent />
