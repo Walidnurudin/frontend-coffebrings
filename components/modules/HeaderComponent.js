@@ -1,7 +1,8 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { getDataCookie } from "middleware/authorizationPage";
-import { connect } from "react-redux";
+import cookies from "js-cookie";
+import UserLogin from "components/molecules/UserLogin";
 
 // export async function getServerSideProps(context) {
 //   const dataCookie = await getDataCookie(context);
@@ -20,9 +21,14 @@ import { connect } from "react-redux";
 // }
 
 function HeaderComponent(props) {
-  const user = props.user;
-  console.log(user.user.role, "data user");
+  const token = cookies.get("token");
+
   const router = useRouter();
+
+  const activeClass = (path) => {
+    return router.pathname === path ? " active" : "";
+  };
+
   const toLogin = () => {
     router.push("/auth/login");
   };
@@ -50,38 +56,49 @@ function HeaderComponent(props) {
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav mx-md-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" onClick={toHome}>
+                <a className={`nav-link${activeClass("/")}`} onClick={toHome}>
                   Home
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" onClick={toHomeProduct}>
+                <a
+                  className={`nav-link${activeClass("/main/home")}`}
+                  onClick={toHomeProduct}
+                >
                   Product
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link">Your Cart</a>
+                <a className={`nav-link${activeClass("/cart")}`}>Your Cart</a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link">History</a>
+              <li className="nav-item pe-0">
+                <a
+                  className={`nav-link${activeClass("/main/profile/history")}`}
+                >
+                  History
+                </a>
               </li>
             </ul>
-            <div className="header__navbar--button d-none d-md-block">
-              <a className="btn__link--signin" onClick={toLogin}>
-                Signin
-              </a>
-              <a className="btn__link--signup" onClick={toRegister}>
-                Signup
-              </a>
-            </div>
+
+            {token ? (
+              <UserLogin />
+            ) : (
+              <>
+                <div className="header__navbar--button d-none d-md-block">
+                  <a className="btn__link--signin" onClick={toLogin}>
+                    Signin
+                  </a>
+                  <a className="btn__link--signup" onClick={toRegister}>
+                    Signup
+                  </a>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </nav>
     </header>
   );
 }
-const mapStateToProps = (state) => ({
-  user: state.dataUserById,
-});
 
-export default connect(mapStateToProps)(HeaderComponent);
+export default HeaderComponent;
