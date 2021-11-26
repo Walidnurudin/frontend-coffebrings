@@ -27,13 +27,13 @@
     background-color: #f8f8f8;
     border-radius: 20px;
     width: 1133px;
-    height: 1091px;
+    height: 951px;
     margin: auto;
     margin-top: 31px;
   }
 
   /* isi sisi kiri */
-  img {
+  .image__profile img {
     margin-top: 46px;
   }
   .font {
@@ -156,7 +156,7 @@
     background-color: #ffffff;
     box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.22);
     border-radius: 10px;
-    height: 991px;
+    height: 841px;
     width: 705px;
     margin-top: 54px;
   }
@@ -205,7 +205,7 @@
     font-weight: 500;
     color: #9f9f9f;
   }
-  form {
+  .form__contacts form {
     padding-left: 30px;
   }
   .form-row {
@@ -217,7 +217,17 @@
     margin-bottom: 29px;
   }
   /* radio */
-  form .form-check > label.form-check-label {
+
+  .radio__button {
+    margin-left: 197px;
+    margin-top: 66px;
+  }
+
+  .form-check {
+    margin-right: 120px;
+  }
+
+  .form-check > label.form-check-label {
     display: flex;
     align-items: center;
   }

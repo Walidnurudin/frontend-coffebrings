@@ -10,7 +10,7 @@ function Profile() {
         <h1 className="profile__title">User Profile</h1>
         <div className="border_box">
           <div className="row">
-            <div className="col-sm-4 text-center">
+            <div className="col-sm-4 text-center image__profile">
               <img
                 src="/assets/images/image_39.png"
                 alt="zulecha"
@@ -60,7 +60,7 @@ function Profile() {
                   </div>
                   <div className="row">
                     <div className="container">
-                      <form>
+                      <form className="form__contacts">
                         <div className="form row">
                           <div className="col-sm-7">
                             <div className="textbox">
@@ -107,7 +107,7 @@ function Profile() {
                   </div>
                   <div className="row">
                     <div className="container">
-                      <form>
+                      <form className="form__detail">
                         <div className="form row">
                           <div className="col-sm-7">
                             <div className="textbox">
@@ -170,7 +170,7 @@ function Profile() {
                             />
                           </div>
                         </div>
-                        <div className="row">
+                        <div className=" radio__button">
                           <div className="form-check form-check-inline">
                             <input
                               className="form-check-input"
