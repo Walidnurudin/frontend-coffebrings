@@ -1,5 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-export default function MenuHomeComponent() {
+import { connect } from "react-redux";
+
+const MenuHomeComponent = (props) => {
+  const user = props.user;
+  // console.log(user.user.role, "data user");
+  const userRole = user.user.role;
+
   return (
     <>
       <div className="menu-header d-flex justify-content-between p-4">
@@ -23,26 +29,31 @@ export default function MenuHomeComponent() {
         {/* <!-- map menu-item-list dari sini --> */}
         <div className="card-list-menu-item p-4 mt-3">
           {/* <!-- kondisional isAdmin --> */}
-          <div
-            className="
+          {userRole === "admin" ? (
+            <>
+              <div
+                className="
                     edit-menu
                     d-flex
                     align-items-center
                     justify-content-center
                   "
-          >
-            <img src="/assets/images/pencil.png" alt="edit" />
-          </div>
-          <div
-            className="
+              >
+                <img src="/assets/images/pencil.png" alt="edit" />
+              </div>
+              <div
+                className="
                     delete-menu
                     d-flex
                     align-items-center
                     justify-content-center
                   "
-          >
-            <img src="/assets/images/trash 1.png" alt="delete" />
-          </div>
+              >
+                <img src="/assets/images/trash 1.png" alt="delete" />
+              </div>{" "}
+            </>
+          ) : null}
+
           {/* <!--  ==================== --> */}
           <img
             src="/assets/food-img/food-2.png"
@@ -332,41 +343,15 @@ export default function MenuHomeComponent() {
           <div className="menu-item-name mt-2">summer fride rice</div>
           <div className="menu-item-price">IDR 35.000</div>
         </div>
-        <div className="card-list-menu-item p-4 mt-3">
-          {/* <!-- kondisional isAdmin --> */}
-          <div
-            className="
-                    edit-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/pencil.png" alt="edit" />
-          </div>
-          <div
-            className="
-                    delete-menu
-                    d-flex
-                    align-items-center
-                    justify-content-center
-                  "
-          >
-            <img src="/assets/images/trash 1.png" alt="delete" />
-          </div>
-          {/* <!--  ==================== --> */}
-          <img
-            src="/assets/food-img/food-2.png"
-            className="menu-item-img"
-            alt="pecel"
-          />
-          <div className="menu-item-name mt-2">summer fride rice</div>
-          <div className="menu-item-price">IDR 35.000</div>
-        </div>
       </div>
       <button className="button-add-product w-100 mt-4 border-0">
         Add new product
       </button>
     </>
   );
-}
+};
+const mapStateToProps = (state) => ({
+  user: state.dataUserById,
+});
+
+export default connect(mapStateToProps)(MenuHomeComponent);

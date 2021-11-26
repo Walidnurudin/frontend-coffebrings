@@ -1,11 +1,29 @@
 /* eslint-disable @next/next/no-img-element */
 import { FooterComponent, HeaderComponent } from "components/modules";
 import { PromoHomeComponent, MenuHomeComponent } from "components/molecules";
+import { getDataCookie } from "middleware/authorizationPage";
 
-export default function Home() {
+export async function getServerSideProps(context) {
+  const dataCookie = await getDataCookie(context);
+
+  if (!dataCookie.isLogin) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: { data: dataCookie },
+  };
+}
+
+export default function Home(props) {
+  console.log(props.data, "data cookie home");
   return (
     <body>
-      <div className="header"></div>
+      <HeaderComponent />
       <main>
         <div className="container">
           <div className="row">
@@ -18,7 +36,7 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <footer className="footer-home"></footer>
+      <FooterComponent />
     </body>
   );
 }

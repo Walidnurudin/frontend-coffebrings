@@ -12,7 +12,6 @@ export default function FormRegisterComponent() {
     setShow(false);
     router.push("/auth/login");
   };
-  const handleShow = () => setShow(true);
 
   const [formRegister, setFormRegister] = useState({
     email: "",
@@ -28,7 +27,6 @@ export default function FormRegisterComponent() {
     axios
       .post("/auth/register", formRegister)
       .then((res) => {
-        // console.log(res.data.data, "register");
         setShow(true);
       })
       .catch((err) => {
