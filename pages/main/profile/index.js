@@ -14,7 +14,7 @@ function Profile() {
               <img
                 src="/assets/images/image_39.png"
                 alt="zulecha"
-                className="rounded-circle"
+                className="user rounded-circle"
               />
               <div className="font">
                 <h2>Zulecha</h2>

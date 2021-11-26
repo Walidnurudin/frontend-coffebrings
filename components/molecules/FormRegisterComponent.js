@@ -1,5 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import { InputAuthComponent, AllButton } from "components/modules";
+import {
+  InputAuthComponent,
+  AllButton,
+  FooterComponent,
+} from "components/modules";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "utils/axios";
@@ -101,7 +105,7 @@ export default function FormRegisterComponent() {
           />
         </div>
       </div>
-      <div className="footer-auth">FOOTER</div>
+      <FooterComponent />
       <Modal
         show={show}
         onHide={handleClose}

@@ -38,7 +38,6 @@ export default function MenuHomeComponent() {
   const product = useSelector((state) => state.product);
   const [dataProduct, setDataProduct] = useState(initalState);
 
-  console.log(product.allProduct, "data redux");
   const userRole = user.user.role;
 
   const { page, limit, category, search, sort, order } = dataProduct;
@@ -116,7 +115,7 @@ export default function MenuHomeComponent() {
         {product.allProduct.map((item) => (
           <div className="card-list-menu-item p-4 mt-3" key={item.id}>
             {/* <!-- kondisional isAdmin --> */}
-            {userRole === "admin" ? (
+            {userRole === "admin" && (
               <>
                 <div
                   onClick={() => toEditPage(item)}
@@ -139,9 +138,9 @@ export default function MenuHomeComponent() {
                   "
                 >
                   <img src="/assets/images/trash 1.png" alt="delete" />
-                </div>{" "}
+                </div>
               </>
-            ) : null}
+            )}
 
             {/* <!--  ==================== --> */}
             <img

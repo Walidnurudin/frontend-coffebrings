@@ -112,6 +112,7 @@
   border-left: none;
   border-bottom: 1px solid #4f5665;
   height: 45px;
+  border-radius: 0;
 }
 
 .form__input--add:focus {
@@ -145,11 +146,11 @@
 }
 
 .size__wrapper--info--content.gram {
-  font-size: 0.875rem;
   background-color: rgba(186, 186, 186, 0.35);
 }
 
-.size__wrapper--info--content > span {
+.size__wrapper--info--content > span.span-size {
+  font-size: 0.875rem;
   font-weight: 700;
 }
 
@@ -191,5 +192,6 @@
   .size__wrapper--info {
     display: flex;
     align-items: center;
+    column-gap: 0;
   }
 }
