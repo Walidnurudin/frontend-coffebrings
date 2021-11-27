@@ -1,8 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FooterComponent, HeaderComponent } from "components/modules";
+import { useRouter } from "next/router";
+import axios from "utils/axios";
 
 function DetailProduct() {
+  const router = useRouter();
+  const idProduct = router.query.id;
+
+  const [dataProduct, setDataProduct] = useState({});
+
+  const sizeOption = dataProduct.size;
+  console.log(sizeOption, "ukuran");
+  useEffect(() => {
+    axios
+      .get(`/product/${idProduct}`)
+      .then((res) => {
+        // console.log(res.data.data[0]);
+        setDataProduct(res.data.data[0]);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  }, []);
+
+  console.log(typeof sizeOption, "DETAIL ");
+
   return (
     <>
       <HeaderComponent />
@@ -16,21 +39,25 @@ function DetailProduct() {
                   <li className="breadcrumb-item">
                     <a href="#">Favorite & Promo</a>
                   </li>
-                  <li className="breadcrumb-item active">Cold Brew</li>
+                  <li className="breadcrumb-item active">{dataProduct.name}</li>
                 </ol>
               </nav>
               <div className="detail__product--left">
                 <div className="detail__product--left--content">
                   <figure className="rounded-circle">
                     <img
-                      src="/assets/images/Hazelnutt.png"
+                      src={
+                        dataProduct.image
+                          ? `${process.env.URL_BACKEND}/uploads/product/${dataProduct.image}`
+                          : `/assets/images/default.png`
+                      }
                       alt="c"
                       className="rounded-circle"
                     />
                   </figure>
 
-                  <h1>COLD BREW</h1>
-                  <p>IDR. 30.000</p>
+                  <h1>{dataProduct.name}</h1>
+                  <p>{`IDR. ${dataProduct.price}`}</p>
 
                   <button className="btn__add">Add to Cart</button>
                 </div>
@@ -40,17 +67,13 @@ function DetailProduct() {
             <div className="col-12 col-lg-8">
               <div className="detail__product--right">
                 <div className="detail__product--right--desc mx-md-auto">
-                  <p>
-                    Cold brewing is a method of brewing that combines ground
-                    coffee and cool water and uses time instead of heat to
-                    extract the flavor. It is brewed in small batches and
-                    steeped for as long as 48 hours.
-                  </p>
+                  <p>{dataProduct.description}</p>
 
                   <div className="choose__size">
                     <h5>Choose a size</h5>
 
                     <div className="size__wrapper--info">
+                      {/* {sizeOption.map((item) => {})} */}
                       <div className="size__wrapper--info--content rounded-circle">
                         <span>R</span>
                       </div>
@@ -69,14 +92,18 @@ function DetailProduct() {
                     <div className="detail__product--right--product--wrapper--content">
                       <figure>
                         <img
-                          src="/assets/images/Hazelnutt.png"
+                          src={
+                            dataProduct.image
+                              ? `${process.env.URL_BACKEND}/uploads/product/${dataProduct.image}`
+                              : `/assets/images/default.png`
+                          }
                           alt="b"
                           className="rounded-circle"
                         />
                       </figure>
 
                       <div className="qty__wrapper">
-                        <h2>COLD BREW</h2>
+                        <h2>{dataProduct.name}</h2>
 
                         <button className="btn__qty min rounded-circle">
                           -

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { deleteProduct, getAllProduct } from "stores/action/allProduct";
 import { Modal, Button } from "react-bootstrap";
 import { useRouter } from "next/router";
+import { ModalDelete } from "components/modules";
 // import { getDataCookie } from "middleware/authorizationPage";
 
 // export async function getServerSideProps(context) {
@@ -37,6 +38,8 @@ export default function MenuHomeComponent() {
   const user = useSelector((state) => state.dataUserById);
   const product = useSelector((state) => state.product);
   const [dataProduct, setDataProduct] = useState(initalState);
+  const [show, setShow] = useState(false);
+  const [idProduct, setIdProduct] = useState("");
 
   const userRole = user.user.role;
 
@@ -46,18 +49,20 @@ export default function MenuHomeComponent() {
     dispatch(getAllProduct(page, limit, category, search, sort, order));
   }, [dispatch]);
 
-  const handleDelete = (id) => {
-    const confirm = window.confirm("apus? ");
-    if (confirm) {
-      dispatch(deleteProduct(id)).then((res) => {
-        alert("apus");
-        dispatch(getAllProduct(page, limit, category, search, sort, order));
-      });
-    }
+  const handleDelete = () => {
+    dispatch(deleteProduct(idProduct)).then((res) => {
+      setShow(false);
+      dispatch(getAllProduct(page, limit, category, search, sort, order));
+    });
   };
 
-  const toEditPage = (item) => {
-    router.push({ pathname: "/admin/newProduct", query: item });
+  const showDelete = (id) => {
+    setShow(true);
+    setIdProduct(id);
+  };
+
+  const toEditPage = (id) => {
+    router.push({ pathname: `/admin/newProduct`, query: { id } });
   };
 
   const handleCategory = (category) => {
@@ -66,6 +71,10 @@ export default function MenuHomeComponent() {
       category: category,
     });
     dispatch(getAllProduct(page, limit, category, search, sort, order));
+  };
+
+  const toProductPage = (id) => {
+    router.push({ pathname: `/main/product/${id}` });
   };
 
   return (
@@ -118,7 +127,7 @@ export default function MenuHomeComponent() {
             {userRole === "admin" && (
               <>
                 <div
-                  onClick={() => toEditPage(item)}
+                  onClick={() => toEditPage(item.id)}
                   className="
                     edit-menu
                     d-flex
@@ -129,7 +138,7 @@ export default function MenuHomeComponent() {
                   <img src="/assets/images/pencil.png" alt="edit" />
                 </div>
                 <div
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => showDelete(item.id)}
                   className="
                     delete-menu
                     d-flex
@@ -143,17 +152,19 @@ export default function MenuHomeComponent() {
             )}
 
             {/* <!--  ==================== --> */}
-            <img
-              src={
-                item.image
-                  ? `${process.env.URL_BACKEND}/uploads/product/${item.image}`
-                  : `/assets/images/default.png`
-              }
-              className="menu-item-img"
-              alt="pecel"
-            />
-            <div className="menu-item-name mt-2">{item.name}</div>
-            <div className="menu-item-price">{item.price}</div>
+            <div onClick={() => toProductPage(item.id)}>
+              <img
+                src={
+                  item.image
+                    ? `${process.env.URL_BACKEND}/uploads/product/${item.image}`
+                    : `/assets/images/default.png`
+                }
+                className="menu-item-img"
+                alt="pecel"
+              />
+              <div className="menu-item-name mt-2">{item.name}</div>
+              <div className="menu-item-price">{item.price}</div>
+            </div>
           </div>
         ))}
 
@@ -164,6 +175,13 @@ export default function MenuHomeComponent() {
           Add new product
         </button>
       )}
+
+      <ModalDelete
+        show={show}
+        msg="Are you sure want to delete this product ?"
+        handleClose={() => setShow(false)}
+        handleSubmit={handleDelete}
+      />
     </>
   );
 }

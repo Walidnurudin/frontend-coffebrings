@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { HeaderComponent, FooterComponent } from "components/modules";
 import { useRouter } from "next/router";
 import { getDataCookie } from "middleware/authorizationPage";
+import axios from "utils/axios";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -22,7 +23,22 @@ export async function getServerSideProps(context) {
 
 function NewProduct() {
   const router = useRouter();
-  const [dataProduct, setDataProduct] = useState(router.query);
+  const [idProduct, setIdProduct] = useState(router.query.id);
+  const [dataProduct, setDataProdcut] = useState({});
+
+  useEffect(() => {
+    axios
+      .get(`/product/${idProduct}`)
+      .then((res) => {
+        console.log(res);
+        setDataProdcut(res.data.data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  console.log(dataProduct, "data");
 
   return (
     <>
