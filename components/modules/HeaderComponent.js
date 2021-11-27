@@ -79,17 +79,18 @@ function HeaderComponent(props) {
 
                   {user.role === "admin" ? (
                     <>
-                      <li className="nav-item">
+                      {/* <li className="nav-item">
                         <a className={`nav-link${activeClass("/cart")}`}>
                           Orders
                         </a>
-                      </li>
+                      </li> */}
                       <li className="nav-item pe-0">
                         <a
                           style={{ cursor: "pointer" }}
                           className={`nav-link${activeClass(
                             "/main/profile/history"
                           )}`}
+                          onClick={() => router.push("/admin/dashboard")}
                         >
                           Dashboard
                         </a>
@@ -100,7 +101,8 @@ function HeaderComponent(props) {
                       <li className="nav-item">
                         <a
                           style={{ cursor: "pointer" }}
-                          className={`nav-link${activeClass("/cart")}`}
+                          className={`nav-link${activeClass("/main/payment")}`}
+                          onClick={() => router.push("/main/payment")}
                         >
                           Your Cart
                         </a>
@@ -111,6 +113,7 @@ function HeaderComponent(props) {
                           className={`nav-link${activeClass(
                             "/main/profile/history"
                           )}`}
+                          onClick={() => router.push("/main/profile/history")}
                         >
                           History
                         </a>

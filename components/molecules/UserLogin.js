@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import cookie from "js-cookie";
 
 import axios from "utils/axios";
+import router from "next/router";
 
 export default function UserLogin(props) {
   const { user } = useSelector((state) => state.dataUserById);
@@ -31,7 +32,11 @@ export default function UserLogin(props) {
         />
       </div>
 
-      <figure className="user ms-4 me-2">
+      <figure
+        className="user ms-4 me-2"
+        onClick={() => router.push("/main/profile")}
+        style={{cursor: "pointer"}}
+      >
         <img
           src={
             user.image

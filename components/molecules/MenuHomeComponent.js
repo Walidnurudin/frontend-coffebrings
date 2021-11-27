@@ -64,12 +64,12 @@ export default function MenuHomeComponent() {
     router.push({ pathname: `/admin/newProduct`, query: { id } });
   };
 
-  const handleCategory = (category) => {
+  const handleCategory = (c) => {
     setDataProduct({
       ...dataProduct,
-      category: category,
+      category: c,
     });
-    dispatch(getAllProduct(page, limit, category, search, sort, order));
+    dispatch(getAllProduct(page, limit, c, search, sort, order));
   };
 
   // const toProductPage = (id) => {
@@ -86,6 +86,7 @@ export default function MenuHomeComponent() {
   };
 
   console.log(user.role, "roleee");
+  console.log(product);
   return (
     <>
       <div className="menu-header d-flex justify-content-between p-4">
@@ -130,7 +131,7 @@ export default function MenuHomeComponent() {
               "
       >
         {/* <!-- map menu-item-list dari sini --> */}
-        {product.allProduct.map((item) => (
+        {product.allProduct?.map((item) => (
           <div className="card-list-menu-item p-4 mt-3" key={item.id}>
             {/* <!-- kondisional isAdmin --> */}
             {userRole === "admin" && (

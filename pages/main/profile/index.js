@@ -54,16 +54,16 @@ function Profile() {
     msg: "",
   });
 
-  const getDataUserById = () => {
-    axios
-      .patch(`/user/update-image/${user.user.id}`, formData)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const getDataUserById = () => {
+  //   axios
+  //     .patch(`/user/update-image/${user.user.id}`)
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   const onButtonClick = () => {
     inputFile.current.click();
@@ -159,7 +159,7 @@ function Profile() {
   };
 
   useEffect(() => {
-    getDataUserById();
+    // getDataUserById();
   }, []);
 
   useEffect(() => {
