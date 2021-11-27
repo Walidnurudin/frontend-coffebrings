@@ -19,6 +19,8 @@ export default function DetailProduct() {
     });
   }, [dispatch, router.query.id]);
 
+  console.log(dataProduct.size.length);
+
   return (
     <>
       <HeaderComponent />
@@ -66,13 +68,15 @@ export default function DetailProduct() {
                     <h5>Choose a size</h5>
 
                     <div className="size__wrapper--info">
-                      {dataProduct?.size.split(",").map((item, index) => {
-                        <div
-                          className="size__wrapper--info--content rounded-circle"
-                          key={index}
-                        >
-                          {item}
-                        </div>;
+                      {dataProduct?.size.map((item, index) => {
+                        return (
+                          <div
+                            className="size__wrapper--info--content rounded-circle"
+                            key={index}
+                          >
+                            {item}
+                          </div>
+                        );
                       })}
                     </div>
                   </div>
