@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { getDataCookie } from "middleware/authorizationPage";
 import axios from "utils/axios";
 import { getUserById } from "stores/action/dataUser";
+import { Modal, Button } from "react-bootstrap";
+import { InputAuthComponent } from "components/modules";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -209,6 +211,58 @@ function Profile() {
     handleUpdateImage();
   }, [image]);
 
+  // MODAL PASSWORD
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [password, setPassword] = useState({
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  const changePassword = (e) => {
+    setPassword({
+      ...password,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const updatePassword = () => {
+    axios
+      .patch(`/user/update-password/${user.user.id}`, password)
+      .then((res) => {
+        console.log(res);
+        handleClose();
+        setIsSuccess({
+          status: true,
+          msg: res.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsSuccess({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsError({
+          status: true,
+          msg: err.response.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsError({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
+      });
+  };
+
   return (
     <>
       <HeaderComponent />
@@ -259,7 +313,11 @@ function Profile() {
                 >
                   <h6>Remove Photo</h6>
                 </button>
-                <button type="button" className="btn btn__edit-password">
+                <button
+                  type="button"
+                  className="btn btn__edit-password"
+                  onClick={handleShow}
+                >
                   <h6>Edit Password</h6>
                 </button>
                 <div className="font__edit">
@@ -476,6 +534,43 @@ function Profile() {
         </div>
       </div>
       <FooterComponent />
+
+      <Modal show={show} onHide={handleClose} centered>
+        <Modal.Header>
+          <Modal.Title>Update Password</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <InputAuthComponent
+            label="New password"
+            placeholder="Input new password ..."
+            name="newPassword"
+            type="password"
+            onChange={changePassword}
+          />
+
+          <InputAuthComponent
+            label="Confirm password"
+            placeholder="Input confirm password ..."
+            name="confirmPassword"
+            type="password"
+            onChange={changePassword}
+          />
+
+          {isError.status && <ErrorHandling msg={isError.msg} top="30px" />}
+          {isSuccess.status && (
+            <ErrorHandling msg={isSuccess.msg} top="30px" isSuccess={true} />
+          )}
+
+          <div className="d-flex justify-content-around mt-5">
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={updatePassword}>
+              Save Changes
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }
