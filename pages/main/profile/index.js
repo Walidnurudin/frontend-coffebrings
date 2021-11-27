@@ -259,7 +259,7 @@ function Profile() {
                   </div>
                   <div className="row">
                     <div className="container">
-                      <form>
+                      <form className="form__contacts">
                         <div className="form row">
                           <div className="col-sm-7">
                             <div className="textbox">
@@ -306,7 +306,7 @@ function Profile() {
                   </div>
                   <div className="row">
                     <div className="container">
-                      <form>
+                      <form className="form__detail">
                         <div className="form row">
                           <div className="col-sm-7">
                             <div className="textbox">
@@ -358,7 +358,7 @@ function Profile() {
                           </div>
                         </div>
 
-                        <div className="row">
+                        <div className="radio__button">
                           <div className="form-check form-check-inline">
                             <input
                               className="form-check-input"

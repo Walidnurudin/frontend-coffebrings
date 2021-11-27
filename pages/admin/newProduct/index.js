@@ -23,7 +23,7 @@ export async function getServerSideProps(context) {
 function NewProduct() {
   const router = useRouter();
   const [dataProduct, setDataProduct] = useState(router.query);
-  console.log(dataProduct, "edit ");
+
   return (
     <>
       <HeaderComponent />
@@ -118,26 +118,26 @@ function NewProduct() {
 
                     <div className="size__wrapper--info">
                       <div className="size__wrapper--info--content rounded-circle">
-                        <span>R</span>
+                        <span className="span-size">R</span>
                       </div>
                       <div className="size__wrapper--info--content rounded-circle">
-                        <span>L</span>
+                        <span className="span-size">L</span>
                       </div>
                       <div className="size__wrapper--info--content rounded-circle">
-                        <span>XL</span>
+                        <span className="span-size">XL</span>
                       </div>
                       <div className="size__wrapper--info--content gram rounded-circle">
-                        <span>
+                        <span className="span-size">
                           250 <span className="text-center d-block">gr</span>
                         </span>
                       </div>
                       <div className="size__wrapper--info--content gram rounded-circle">
-                        <span>
+                        <span className="span-size">
                           300 <span className="text-center d-block">gr</span>
                         </span>
                       </div>
                       <div className="size__wrapper--info--content gram rounded-circle">
-                        <span>
+                        <span className="span-size">
                           500 <span className="text-center d-block">gr</span>
                         </span>
                       </div>

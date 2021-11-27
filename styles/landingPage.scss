@@ -471,6 +471,12 @@ a {
   margin-bottom: 1.25rem;
 }
 
+li.list-group-item {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+}
 @media (min-width: 992px) {
   .hero {
     height: 645px;

@@ -1,5 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import { InputAuthComponent, AllButton } from "components/modules";
+import {
+  InputAuthComponent,
+  AllButton,
+  FooterComponent,
+} from "components/modules";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
@@ -70,7 +74,7 @@ export default function FormForgotPassComponent() {
           />
         </div>
       </div>
-      <div className="footer-auth">FOOTER</div>
+      <FooterComponent />
     </div>
   );
 }

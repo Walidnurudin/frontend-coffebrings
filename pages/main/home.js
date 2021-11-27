@@ -20,7 +20,6 @@ export async function getServerSideProps(context) {
 }
 
 export default function Home(props) {
-  console.log(props.data, "data cookie home");
   return (
     <body>
       <HeaderComponent />

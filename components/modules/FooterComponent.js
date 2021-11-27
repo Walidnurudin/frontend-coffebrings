@@ -41,14 +41,14 @@ export default function FooterComponent() {
           <div className="footer__content--wrapper--right">
             <div className="d-flex justify-content-center">
               <div className="sitelink__list--wrapper">
-                <h5>Explore</h5>
+                <h5>Product</h5>
                 <div className="list-group">
                   <li
                     className="list-group-item"
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
                     <a href="/cinema" style={{ color: "#4f5665" }}>
-                      Cinemas
+                      Download
                     </a>
                   </li>
                   <li
@@ -56,7 +56,7 @@ export default function FooterComponent() {
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
                     <a href="/all-movies" style={{ color: "#4f5665" }}>
-                      Movies List
+                      Pricing
                     </a>
                   </li>
                   <li
@@ -64,7 +64,7 @@ export default function FooterComponent() {
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
                     <a href="/ticket" style={{ color: "#4f5665" }}>
-                      My Ticket
+                      Locations
                     </a>
                   </li>
                   <li
@@ -72,20 +72,28 @@ export default function FooterComponent() {
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
                     <a href="/notif" style={{ color: "#4f5665" }}>
-                      Notification
+                      Countries
+                    </a>
+                  </li>
+                  <li
+                    className="list-group-item"
+                    style={{ listStyle: "none", marginBottom: 0 }}
+                  >
+                    <a href="/notif" style={{ color: "#4f5665" }}>
+                      Blog
                     </a>
                   </li>
                 </div>
               </div>
               <div className="sitelink__list--wrapper me-0">
-                <h5>Explore</h5>
+                <h5>Engage</h5>
                 <div className="list-group">
                   <li
                     className="list-group-item"
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
                     <a href="/cinema" style={{ color: "#4f5665" }}>
-                      Cinemas
+                      Coffe Shop ?
                     </a>
                   </li>
                   <li
@@ -93,7 +101,7 @@ export default function FooterComponent() {
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
                     <a href="/all-movies" style={{ color: "#4f5665" }}>
-                      Movies List
+                      FAQ
                     </a>
                   </li>
                   <li
@@ -101,7 +109,7 @@ export default function FooterComponent() {
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
                     <a href="/ticket" style={{ color: "#4f5665" }}>
-                      My Ticket
+                      Abous Us
                     </a>
                   </li>
                   <li
@@ -109,7 +117,15 @@ export default function FooterComponent() {
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
                     <a href="/notif" style={{ color: "#4f5665" }}>
-                      Notification
+                      Privacy Policy
+                    </a>
+                  </li>
+                  <li
+                    className="list-group-item"
+                    style={{ listStyle: "none", marginBottom: 0 }}
+                  >
+                    <a href="/notif" style={{ color: "#4f5665" }}>
+                      Terms of Service
                     </a>
                   </li>
                 </div>
