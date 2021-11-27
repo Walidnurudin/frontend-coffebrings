@@ -14,6 +14,7 @@ export default function UserLogin(props) {
       .then(() => {
         cookie.remove("id");
         cookie.remove("token");
+        // localStorage.clear();
 
         window.location.href = "/";
       })

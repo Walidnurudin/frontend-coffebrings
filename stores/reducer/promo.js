@@ -2,13 +2,13 @@ const initalState = {
   isLoading: false,
   isError: false,
   msg: "",
-  allProduct: [],
+  data: [],
   pageInfo: {},
 };
 
-const product = (state = initalState, action) => {
+const promo = (state = initalState, action) => {
   switch (action.type) {
-    case "GETALLPRODUCT_PENDING": {
+    case "GETALLPROMO_PENDING": {
       return {
         ...state,
         isLoading: true,
@@ -16,27 +16,55 @@ const product = (state = initalState, action) => {
         msg: "",
       };
     }
-    case "GETALLPRODUCT_FULFILLED": {
+    case "GETALLPROMO_FULFILLED": {
       return {
         ...state,
         isLoading: false,
         isError: false,
         msg: action.payload.data.msg,
-        allProduct: action.payload.data.data,
+        data: action.payload.data.data,
         pageInfo: action.payload.data.pagination,
       };
     }
-    case "GETALLPRODUCT_REJECTED": {
+    case "GETALLPROMO_REJECTED": {
       return {
         ...state,
         isLoading: false,
         isError: true,
         msg: action.payload.data.msg,
-        allProduct: [],
+        data: [],
         pageInfo: {},
       };
     }
-    case "POSTPRODUCT_PENDING": {
+    case "GETPROMOBYID_PENDING": {
+      return {
+        ...state,
+        isLoading: true,
+        isError: false,
+        msg: "",
+      };
+    }
+    case "GETPROMOBYID_FULFILLED": {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        msg: action.payload.data.msg,
+        data: action.payload.data.data,
+        pageInfo: action.payload.data.pagination,
+      };
+    }
+    case "GETPROMOBYID_REJECTED": {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        msg: action.payload.data.msg,
+        data: [],
+        pageInfo: {},
+      };
+    }
+    case "POSTPROMO_PENDING": {
       return {
         ...state,
         isLoading: false,
@@ -44,7 +72,7 @@ const product = (state = initalState, action) => {
         msg: "",
       };
     }
-    case "POSTPRODUCT_FULFILLED": {
+    case "POSTPROMO_FULFILLED": {
       return {
         ...state,
         isLoading: false,
@@ -52,7 +80,7 @@ const product = (state = initalState, action) => {
         msg: action.payload.data.msg,
       };
     }
-    case "POSTPRODUCT_REJECTED": {
+    case "POSTPROMO_REJECTED": {
       return {
         ...state,
         isLoading: false,
@@ -60,7 +88,7 @@ const product = (state = initalState, action) => {
         msg: action.payload.response.data.msg,
       };
     }
-    case "UPDATEPRODUCT_PENDING": {
+    case "UPDATEPROMO_PENDING": {
       return {
         ...state,
         isLoading: true,
@@ -68,7 +96,7 @@ const product = (state = initalState, action) => {
         msg: "",
       };
     }
-    case "UPDATEPRODUCT_FULFILLED": {
+    case "UPDATEPROMO_FULFILLED": {
       return {
         ...state,
         isLoading: false,
@@ -76,7 +104,7 @@ const product = (state = initalState, action) => {
         msg: action.payload.data.msg,
       };
     }
-    case "UPDATEPRODUCT_REJECTED": {
+    case "UPDATEPROMO_REJECTED": {
       return {
         ...state,
         isLoading: false,
@@ -90,4 +118,4 @@ const product = (state = initalState, action) => {
   }
 };
 
-export default product;
+export default promo;

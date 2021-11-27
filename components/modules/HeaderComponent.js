@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 import { getDataCookie } from "middleware/authorizationPage";
 import cookies from "js-cookie";
 import UserLogin from "components/molecules/UserLogin";
@@ -22,7 +23,7 @@ import UserLogin from "components/molecules/UserLogin";
 
 function HeaderComponent(props) {
   const token = cookies.get("token");
-
+  const { user } = useSelector((state) => state.dataUserById);
   const router = useRouter();
 
   const activeClass = (path) => {
@@ -68,16 +69,40 @@ function HeaderComponent(props) {
                   Product
                 </a>
               </li>
-              <li className="nav-item">
-                <a className={`nav-link${activeClass("/cart")}`}>Your Cart</a>
-              </li>
-              <li className="nav-item pe-0">
-                <a
-                  className={`nav-link${activeClass("/main/profile/history")}`}
-                >
-                  History
-                </a>
-              </li>
+
+              {user.role === "admin" ? (
+                <>
+                  <li className="nav-item">
+                    <a className={`nav-link${activeClass("/cart")}`}>Orders</a>
+                  </li>
+                  <li className="nav-item pe-0">
+                    <a
+                      className={`nav-link${activeClass(
+                        "/main/profile/history"
+                      )}`}
+                    >
+                      Dashboard
+                    </a>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="nav-item">
+                    <a className={`nav-link${activeClass("/cart")}`}>
+                      Your Cart
+                    </a>
+                  </li>
+                  <li className="nav-item pe-0">
+                    <a
+                      className={`nav-link${activeClass(
+                        "/main/profile/history"
+                      )}`}
+                    >
+                      History
+                    </a>
+                  </li>
+                </>
+              )}
             </ul>
 
             {token ? (

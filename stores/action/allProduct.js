@@ -9,6 +9,20 @@ export const getAllProduct = (page, limit, category, search, sort, order) => {
   };
 };
 
+export const postProduct = (data) => {
+  return {
+    type: "POSTPRODUCT",
+    payload: axios.post("/product", data),
+  };
+};
+
+export const updateProduct = (id, data) => {
+  return {
+    type: "UPDATEPRODUCT",
+    payload: axios.patch(`/product/${id}`, data),
+  };
+};
+
 export const deleteProduct = (id) => {
   return {
     type: "DELETEPRODUCT",

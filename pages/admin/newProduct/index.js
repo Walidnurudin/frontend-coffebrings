@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { useDispatch } from "react-redux";
 import { HeaderComponent, FooterComponent } from "components/modules";
 import { useRouter } from "next/router";
 import { getDataCookie } from "middleware/authorizationPage";
+import { postProduct, getAllProduct } from "stores/action/allProduct";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -20,9 +22,97 @@ export async function getServerSideProps(context) {
   };
 }
 
+const initialState = {
+  name: "",
+  price: "",
+  category: "",
+  description: "",
+  size: "",
+  image: null,
+};
+
+const stateParams = {
+  page: 1,
+  limit: 6,
+  category: "",
+  search: "",
+  sort: "",
+  order: "ASC",
+};
+
 function NewProduct() {
-  const router = useRouter();
-  const [dataProduct, setDataProduct] = useState(router.query);
+  const [form, setForm] = useState(initialState);
+  const [params, setParams] = useState(stateParams);
+  const [image, setImage] = useState("");
+
+  const inputSize = ["R", "L", "XL"];
+  const inputGram = ["250", "300", "500"];
+
+  const dispatch = useDispatch();
+  const target = useRef(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const handleFile = (e) => {
+    setForm({ ...form, image: e.target.files[0] });
+    if (e.target.files[0]) {
+      setImage(URL.createObjectURL(e.target.files[0]));
+    }
+  };
+
+  const handleSize = () => {
+    setForm({
+      ...form,
+      size: inputSize.toString(),
+    });
+  };
+
+  const handleGram = () => {
+    setForm({
+      ...form,
+      size: inputGram.toString(),
+    });
+  };
+
+  const resetForm = () => {
+    setForm(initialState);
+    setImage("");
+    setIsUpdate(false);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    for (const data in form) {
+      formData.append(data, form[data]);
+    }
+
+    dispatch(postProduct(formData))
+      .then((res) => {
+        alert(res.value.data.msg);
+
+        dispatch(
+          getAllProduct(
+            params.page,
+            params.limit,
+            params.category,
+            params.search,
+            params.sort,
+            params.order
+          )
+        );
+      })
+      .catch((err) => {
+        err.response.data.msg && alert(err.response.data.msg);
+      });
+
+    resetForm();
+  };
 
   return (
     <>
@@ -43,19 +133,55 @@ function NewProduct() {
               <div className="new__product--left">
                 <div className="new__product--left--content">
                   <div className="wrapper__image">
-                    <figure>
-                      <img src="/assets/images/icons/icon-camera.svg" alt="c" />
-                    </figure>
-                    <input type="file" style={{ display: "none" }} />
+                    {image ? (
+                      <>
+                        <figure className="product">
+                          <img
+                            src={
+                              image
+                                ? image
+                                : form.image
+                                ? `${process.env.URL_BACKEND}/uploads/product/${form.image}`
+                                : "/assets/images/default.png"
+                            }
+                            alt="product"
+                            className="rounded-circle"
+                          />
+                        </figure>
+                      </>
+                    ) : (
+                      <figure>
+                        <img
+                          src="/assets/images/icons/icon-camera.svg"
+                          alt="c"
+                        />
+                      </figure>
+                    )}
+
+                    <input
+                      type="file"
+                      style={{ display: "none" }}
+                      name="image"
+                      ref={target}
+                      onChange={handleFile}
+                    />
                   </div>
 
-                  <button className="btn__choose--file d-block mb-3">
+                  <button
+                    className="btn__choose--file d-block mb-3"
+                    onClick={() => target.current.click()}
+                  >
                     Choose from Gallery
                   </button>
-                  <button className="btn__save d-block mb-3">
-                    Add to Cart
+                  <button
+                    className="btn__save d-block mb-3"
+                    onClick={handleSubmit}
+                  >
+                    Save Product
                   </button>
-                  <button className="btn__cancel d-block">Cancel</button>
+                  <button className="btn__cancel d-block" onClick={resetForm}>
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>
@@ -70,6 +196,8 @@ function NewProduct() {
                       placeholder="Type product name min. 50 characters"
                       className="form__input--add"
                       name="name"
+                      onChange={handleChange}
+                      value={form.name}
                     />
                   </div>
 
@@ -82,6 +210,8 @@ function NewProduct() {
                           placeholder="Type the price"
                           className="form__input--add"
                           name="price"
+                          onChange={handleChange}
+                          value={form.price}
                         />
                       </div>
                     </div>
@@ -92,11 +222,14 @@ function NewProduct() {
                           className="form-select form__input--add"
                           aria-label="Default select example"
                           name="category"
+                          onChange={handleChange}
+                          value={form.category}
                         >
-                          <option selected>Select category</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          <option>Select category</option>
+                          <option value="Coffe">Coffe</option>
+                          <option value="Non Coffe">Non Coffe</option>
+                          <option value="Foods">Foods</option>
+                          <option value="Add-on">Add-on</option>
                         </select>
                       </div>
                     </div>
@@ -109,6 +242,8 @@ function NewProduct() {
                       className="form__input--add desc"
                       name="description"
                       maxLength="150"
+                      onChange={handleChange}
+                      value={form.description}
                     ></textarea>
                   </div>
 
@@ -117,26 +252,44 @@ function NewProduct() {
                     <p>Click size you want to use for this product</p>
 
                     <div className="size__wrapper--info">
-                      <div className="size__wrapper--info--content rounded-circle">
+                      <div
+                        className="size__wrapper--info--content rounded-circle"
+                        onClick={handleSize}
+                      >
                         <span className="span-size">R</span>
                       </div>
-                      <div className="size__wrapper--info--content rounded-circle">
+                      <div
+                        className="size__wrapper--info--content rounded-circle"
+                        onClick={handleSize}
+                      >
                         <span className="span-size">L</span>
                       </div>
-                      <div className="size__wrapper--info--content rounded-circle">
+                      <div
+                        className="size__wrapper--info--content rounded-circle"
+                        onClick={handleSize}
+                      >
                         <span className="span-size">XL</span>
                       </div>
-                      <div className="size__wrapper--info--content gram rounded-circle">
+                      <div
+                        className="size__wrapper--info--content gram rounded-circle"
+                        onClick={handleGram}
+                      >
                         <span className="span-size">
                           250 <span className="text-center d-block">gr</span>
                         </span>
                       </div>
-                      <div className="size__wrapper--info--content gram rounded-circle">
+                      <div
+                        className="size__wrapper--info--content gram rounded-circle"
+                        onClick={handleGram}
+                      >
                         <span className="span-size">
                           300 <span className="text-center d-block">gr</span>
                         </span>
                       </div>
-                      <div className="size__wrapper--info--content gram rounded-circle">
+                      <div
+                        className="size__wrapper--info--content gram rounded-circle"
+                        onClick={handleGram}
+                      >
                         <span className="span-size">
                           500 <span className="text-center d-block">gr</span>
                         </span>

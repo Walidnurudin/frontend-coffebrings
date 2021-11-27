@@ -1,8 +1,93 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+import React, { useState, useRef } from "react";
+import { useDispatch } from "react-redux";
 import { HeaderComponent, FooterComponent } from "components/modules";
+import { getDataCookie } from "middleware/authorizationPage";
+import { postPromo } from "stores/action/promo";
+
+export async function getServerSideProps(context) {
+  const dataCookie = await getDataCookie(context);
+
+  if (!dataCookie.isLogin) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+}
+
+const date = new Date().toISOString().split("T")[0];
+
+const initialState = {
+  name: "",
+  discount: "",
+  minTotalPrice: "",
+  maxDiscount: "",
+  promoCode: "",
+  description: "",
+  dateStart: date,
+  dateEnd: date,
+  image: null,
+};
+
+const stateParams = {
+  page: 1,
+  limit: 6,
+  search: "",
+};
 
 function NewPromo() {
+  const dispatch = useDispatch();
+  const target = useRef(null);
+
+  const [form, setForm] = useState(initialState);
+  const [params, setParams] = useState(stateParams);
+  const [image, setImage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const handleFile = (e) => {
+    setForm({ ...form, image: e.target.files[0] });
+    if (e.target.files[0]) {
+      setImage(URL.createObjectURL(e.target.files[0]));
+    }
+  };
+
+  const resetForm = () => {
+    setForm(initialState);
+    setImage("");
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    for (const data in form) {
+      formData.append(data, form[data]);
+    }
+
+    dispatch(postPromo(formData))
+      .then((res) => {
+        alert(res.value.data.msg);
+
+        // dispatch(getAllProduct(params.page, params.limit, params.search));
+      })
+      .catch((err) => {
+        err.response.data.msg && alert(err.response.data.msg);
+      });
+
+    resetForm();
+  };
+
   return (
     <>
       <HeaderComponent />
@@ -22,13 +107,44 @@ function NewPromo() {
               <div className="new__promo--left">
                 <div className="new__promo--left--content">
                   <div className="wrapper__image--promo">
-                    <figure>
-                      <img src="/assets/images/icons/icon-camera.svg" alt="c" />
-                    </figure>
-                    <input type="file" style={{ display: "none" }} />
+                    {image ? (
+                      <>
+                        <figure className="promo">
+                          <img
+                            src={
+                              image
+                                ? image
+                                : form.image
+                                ? `${process.env.URL_BACKEND}/uploads/promo/${form.image}`
+                                : "/assets/images/default.png"
+                            }
+                            alt="promo"
+                            className="rounded-circle"
+                          />
+                        </figure>
+                      </>
+                    ) : (
+                      <figure>
+                        <img
+                          src="/assets/images/icons/icon-camera.svg"
+                          alt="camera"
+                        />
+                      </figure>
+                    )}
+
+                    <input
+                      type="file"
+                      style={{ display: "none" }}
+                      name="image"
+                      ref={target}
+                      onChange={handleFile}
+                    />
                   </div>
 
-                  <button className="btn__choose--file d-block mb-3">
+                  <button
+                    className="btn__choose--file d-block mb-3"
+                    onClick={() => target.current.click()}
+                  >
                     Choose from Gallery
                   </button>
 
@@ -38,33 +154,32 @@ function NewPromo() {
                       <select
                         className="form-select left"
                         aria-label="Default select example"
+                        name="discount"
+                        onChange={handleChange}
+                        value={form.discount}
                       >
-                        <option selected>20%</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option>Select Promo</option>
+                        <option value="10">10%</option>
+                        <option value="20">20%</option>
+                        <option value="30">30%</option>
                       </select>
                     </div>
                     <div className="form-group position-relative">
-                      <label htmlFor="discount">Expire date:</label>
-                      <select
-                        className="form-select left mb-3"
-                        aria-label="Default select example"
-                      >
-                        <option selected>October 7th 2020</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </select>
-                      <select
-                        className="form-select left"
-                        aria-label="Default select example"
-                      >
-                        <option selected>October 7th 2020</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </select>
+                      <label htmlFor="expired-date">Expire date:</label>
+                      <input
+                        type="date"
+                        className="form__input--date mb-3"
+                        onChange={handleChange}
+                        value={form.dateStart}
+                        name="dateStart"
+                      />
+                      <input
+                        type="date"
+                        className="form__input--date"
+                        onChange={handleChange}
+                        value={form.dateEnd}
+                        name="dateEnd"
+                      />
                     </div>
                   </div>
                 </div>
@@ -81,42 +196,50 @@ function NewPromo() {
                       placeholder="Type promo name min. 50 characters"
                       className="form__input--add"
                       name="name"
+                      onChange={handleChange}
+                      value={form.name}
                     />
                   </div>
 
                   <div className="row">
                     <div className="col-12 col-lg-6">
                       <div className="form-group position-relative">
-                        <label htmlFor="minPrice">Min Total Price:</label>
+                        <label htmlFor="minTotalPrice">Min Total Price:</label>
                         <input
                           type="number"
                           placeholder="Type the min total price"
                           className="form__input--add"
-                          name="minPrice"
+                          name="minTotalPrice"
+                          onChange={handleChange}
+                          value={form.minTotalPrice}
                         />
                       </div>
                     </div>
 
                     <div className="col-12 col-lg-6">
                       <div className="form-group position-relative">
-                        <label htmlFor="maxDisc">Max Discount:</label>
+                        <label htmlFor="maxDiscount">Max Discount:</label>
                         <input
                           type="number"
                           placeholder="Type the max discount"
                           className="form__input--add"
-                          name="maxDisc"
+                          name="maxDiscount"
+                          onChange={handleChange}
+                          value={form.maxDiscount}
                         />
                       </div>
                     </div>
                   </div>
 
                   <div className="form-group position-relative">
-                    <label htmlFor="promo">Input promo code:</label>
+                    <label htmlFor="promoCode">Input promo code:</label>
                     <input
-                      type="number"
+                      type="text"
                       placeholder="Type the promo code"
                       className="form__input--add"
-                      name="promo"
+                      name="promoCode"
+                      onChange={handleChange}
+                      value={form.promoCode}
                     />
                   </div>
 
@@ -126,11 +249,16 @@ function NewPromo() {
                       placeholder="Describe your promo min. 150 characters"
                       className="form__input--add desc"
                       name="description"
+                      onChange={handleChange}
+                      value={form.description}
                       maxLength="150"
                     ></textarea>
                   </div>
 
-                  <button className="btn__save--promo d-block mb-3">
+                  <button
+                    className="btn__save--promo d-block mb-3"
+                    onClick={handleSubmit}
+                  >
                     Save Promo
                   </button>
                   <button className="btn__cancel--promo d-block">Cancel</button>
