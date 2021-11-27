@@ -26,22 +26,23 @@ export async function getServerSideProps(context) {
   };
 }
 
+const date = new Date().toISOString().split("T")[0];
+
 function Profile() {
   const inputFile = useRef(null);
   const user = useSelector((state) => state.dataUserById);
   const dispatch = useDispatch();
 
-  // const [dataUser, setDataUser] = useState({
-  //   firstName: user.user.firstName,
-  //   lastName: user.user.lastName,
-  //   displayName: user.user.displayName,
-  //   email: user.user.email,
-  //   deliveryAddress: user.user.deliveryAddress,
-  //   gender: user.user.gender,
-  //   phoneNumber: user.user.phoneNumber,
-  // });
-
-  const [dataUser, setDataUser] = useState({});
+  const [dataUser, setDataUser] = useState({
+    firstName: user.user.firstName,
+    lastName: user.user.lastName,
+    displayName: user.user.displayName,
+    email: user.user.email,
+    deliveryAddress: user.user.deliveryAddress,
+    gender: user.user.gender,
+    phoneNumber: user.user.phoneNumber,
+    birthDay: date,
+  });
 
   const [image, setImage] = useState({ image: "" });
   const [isSuccess, setIsSuccess] = useState({
@@ -119,7 +120,7 @@ function Profile() {
 
   const handleDelete = () => {
     axios
-      .delete(`/user/image/${props.data.dataCookie.id}`)
+      .delete(`/user/image/${user.user.id}`)
       .then((res) => {
         setIsSuccess({
           status: true,
@@ -132,12 +133,9 @@ function Profile() {
             msg: "",
           });
         }, 3000);
-        axios
-          .get(`/user/profile/${props.data.dataCookie.id}`)
+        dispatch(getUserById(user.user.id))
           .then((res) => {
             console.log(res);
-            setDataUser(res.data.data);
-            console.log(dataUser);
           })
           .catch((err) => {
             console.log(err);
@@ -158,9 +156,54 @@ function Profile() {
       });
   };
 
-  useEffect(() => {
-    // getDataUserById();
-  }, []);
+  const changeText = (e) => {
+    const { name, value } = e.target;
+
+    setDataUser({
+      ...dataUser,
+      [name]: value,
+    });
+  };
+
+  const saveChanges = () => {
+    axios
+      .patch(`/user/${user.user.id}`, dataUser)
+      .then((res) => {
+        console.log(res);
+        setIsSuccess({
+          status: true,
+          msg: res.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsSuccess({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
+        dispatch(getUserById(user.user.id))
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsError({
+          status: true,
+          msg: err.response.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsError({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
+      });
+  };
 
   useEffect(() => {
     handleUpdateImage();
@@ -176,8 +219,8 @@ function Profile() {
             <div className="col-12 col-sm-4 text-center">
               <img
                 src={
-                  dataUser.image
-                    ? `${process.env.URL_BACKEND}/uploads/user/${dataUser.image}`
+                  user.user.image
+                    ? `${process.env.URL_BACKEND}/uploads/user/${user.user.image}`
                     : "/assets/images/default.png"
                 }
                 alt="profile"
@@ -185,8 +228,8 @@ function Profile() {
                 width="175px"
               />
               <div className="font">
-                <h2>{dataUser.displayName || "-"}</h2>
-                <p>{dataUser.email}</p>
+                <h2>{user.user.displayName || "-"}</h2>
+                <p>{user.user.email}</p>
                 <button
                   type="button"
                   className="btn btn__photo"
@@ -209,7 +252,11 @@ function Profile() {
                   style={{ display: "none" }}
                 />
 
-                <button type="button" className="btn btn__photo-remove">
+                <button
+                  type="button"
+                  className="btn btn__photo-remove"
+                  onClick={handleDelete}
+                >
                   <h6>Remove Photo</h6>
                 </button>
                 <button type="button" className="btn btn__edit-password">
@@ -232,7 +279,11 @@ function Profile() {
                     />
                   )}
 
-                  <button type="button" className="btn btn__edit-save">
+                  <button
+                    type="button"
+                    className="btn btn__edit-save"
+                    onClick={saveChanges}
+                  >
                     <h6>Save Change</h6>
                   </button>
                   <button type="button" className="btn btn__edit-cancel">
@@ -270,6 +321,9 @@ function Profile() {
                                 type="email"
                                 className="form-control"
                                 name="email"
+                                value={dataUser.email}
+                                placeholder="Input your email ..."
+                                onChange={changeText}
                               />
                             </div>
                           </div>
@@ -279,9 +333,12 @@ function Profile() {
                                 <h4>Mobile Number :</h4>{" "}
                               </label>
                               <input
-                                type="email"
+                                type="number"
                                 className="form-control"
-                                name="email"
+                                name="phoneNumber"
+                                value={dataUser.phoneNumber}
+                                placeholder="Input your number phone ..."
+                                onChange={changeText}
                               />
                             </div>
                           </div>
@@ -289,12 +346,15 @@ function Profile() {
                         <div className="form-row">
                           <div className="textbox">
                             <label htmlFor="">
-                              <h4>Delivery Adress :</h4>{" "}
+                              <h4>Delivery Address :</h4>{" "}
                             </label>
                             <input
-                              type="email"
+                              type="text"
                               className="form-control"
-                              name="email"
+                              name="deliveryAddress"
+                              value={dataUser.deliveryAddress}
+                              placeholder="Input your delivery address ..."
+                              onChange={changeText}
                             />
                           </div>
                         </div>
@@ -314,23 +374,29 @@ function Profile() {
                                 <h4>Display name :</h4>{" "}
                               </label>
                               <input
-                                type="email"
+                                type="text"
                                 className="form-control"
-                                name="email"
+                                name="displayName"
+                                value={dataUser.displayName}
+                                placeholder="Input your dsiplay name ..."
+                                onChange={changeText}
                               />
                             </div>
                           </div>
                           <div className="col-sm-5">
-                            <div className="textbox">
-                              <label htmlFor="">
-                                <h4>DD/MM/YY :</h4>{" "}
-                              </label>
-                              <input
-                                type="date"
-                                className="form-control"
-                                name="email"
-                              />
-                            </div>
+                            {/* <div className="textbox"> */}
+                            <label htmlFor="">
+                              <h4>DD/MM/YY :</h4>{" "}
+                            </label>
+                            <input
+                              type="date"
+                              className="form-control"
+                              name="birthDay"
+                              value={dataUser.birthDay}
+                              placeholder="Input your birthday ..."
+                              onChange={changeText}
+                            />
+                            {/* </div> */}
                           </div>
                         </div>
                         <div className="form-row">
@@ -339,9 +405,12 @@ function Profile() {
                               <h4>First name :</h4>{" "}
                             </label>
                             <input
-                              type="email"
+                              type="text"
                               className="form-control"
-                              name="email"
+                              name="firstName"
+                              value={dataUser.firstName}
+                              placeholder="Input your first name ..."
+                              onChange={changeText}
                             />
                           </div>
                         </div>
@@ -353,7 +422,10 @@ function Profile() {
                             <input
                               type="email"
                               className="form-control"
-                              name="email"
+                              name="lastName"
+                              value={dataUser.lastName}
+                              placeholder="Input your last name ..."
+                              onChange={changeText}
                             />
                           </div>
                         </div>
@@ -363,9 +435,11 @@ function Profile() {
                             <input
                               className="form-check-input"
                               type="radio"
-                              name="inlineRadioOptions"
+                              name="gender"
                               id="inlineRadio1"
-                              value="option1"
+                              checked={dataUser.gender === "male"}
+                              value="male"
+                              onChange={changeText}
                             />
                             <label
                               className="form-check-label"
@@ -378,9 +452,11 @@ function Profile() {
                             <input
                               className="form-check-input"
                               type="radio"
-                              name="inlineRadioOptions"
+                              name="gender"
                               id="inlineRadio2"
-                              value="option2"
+                              checked={dataUser.gender === "female"}
+                              value="female"
+                              onChange={changeText}
                             />
                             <label
                               className="form-check-label"
