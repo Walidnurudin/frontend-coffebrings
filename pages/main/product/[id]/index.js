@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { FooterComponent, HeaderComponent } from "components/modules";
 import { useRouter } from "next/router";
@@ -9,17 +9,13 @@ import { getProductById } from "stores/action/allProduct";
 export default function DetailProduct() {
   const router = useRouter();
 
-  const [dataProduct, setDataProduct] = useState([]);
-
-  const dispatch = useDispatch();
+  const [dataProduct, setDataProduct] = useState({});
 
   useEffect(() => {
     dispatch(getProductById(router.query.id)).then((res) => {
       setDataProduct(res.value.data.data[0]);
     });
-  }, [dispatch, router.query.id]);
-
-  console.log(dataProduct.size.length);
+  }, []);
 
   return (
     <>
@@ -34,7 +30,7 @@ export default function DetailProduct() {
                   <li className="breadcrumb-item">
                     <Link href="/main/home">Product</Link>
                   </li>
-                  <li className="breadcrumb-item active">{dataProduct.name}</li>
+                  <li className="breadcrumb-item active">{product.name}</li>
                 </ol>
               </nav>
               <div className="detail__product--left">
@@ -42,8 +38,8 @@ export default function DetailProduct() {
                   <figure className="rounded-circle">
                     <img
                       src={
-                        dataProduct.image
-                          ? `${process.env.URL_BACKEND}/uploads/product/${dataProduct.image}`
+                        product.image
+                          ? `${process.env.URL_BACKEND}/uploads/product/${product.image}`
                           : `/assets/images/default.png`
                       }
                       alt="c"
@@ -51,8 +47,8 @@ export default function DetailProduct() {
                     />
                   </figure>
 
-                  <h1>{dataProduct.name}</h1>
-                  <p>{`IDR. ${dataProduct.price}`}</p>
+                  <h1>{product.name}</h1>
+                  <p>{`IDR. ${product.price}`}</p>
 
                   <button className="btn__add">Add to Cart</button>
                 </div>
@@ -62,21 +58,19 @@ export default function DetailProduct() {
             <div className="col-12 col-lg-8">
               <div className="detail__product--right">
                 <div className="detail__product--right--desc mx-md-auto">
-                  <p>{dataProduct.description}</p>
+                  <p>{product.description}</p>
 
                   <div className="choose__size">
                     <h5>Choose a size</h5>
 
                     <div className="size__wrapper--info">
-                      {dataProduct?.size.map((item, index) => {
-                        return (
-                          <div
-                            className="size__wrapper--info--content rounded-circle"
-                            key={index}
-                          >
-                            {item}
-                          </div>
-                        );
+                      {product.size.map((item, index) => {
+                        <div
+                          className="size__wrapper--info--content rounded-circle"
+                          key={index}
+                        >
+                          <span>{item}</span>
+                        </div>;
                       })}
                     </div>
                   </div>
@@ -88,8 +82,8 @@ export default function DetailProduct() {
                       <figure>
                         <img
                           src={
-                            dataProduct.image
-                              ? `${process.env.URL_BACKEND}/uploads/product/${dataProduct.image}`
+                            product.image
+                              ? `${process.env.URL_BACKEND}/uploads/product/${product.image}`
                               : `/assets/images/default.png`
                           }
                           alt="b"
@@ -98,7 +92,7 @@ export default function DetailProduct() {
                       </figure>
 
                       <div className="qty__wrapper">
-                        <h2>{dataProduct.name}</h2>
+                        <h2>{product.name}</h2>
 
                         <button className="btn__qty min rounded-circle">
                           -

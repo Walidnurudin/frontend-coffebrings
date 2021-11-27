@@ -1,10 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useRef } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { HeaderComponent, FooterComponent } from "components/modules";
 import { getDataCookie } from "middleware/authorizationPage";
+import { useRouter } from "next/router";
+
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { getAllPromo, postPromo, updatePromo } from "stores/action/promo";
 
 export async function getServerSideProps(context) {
@@ -44,6 +46,18 @@ const stateParams = {
 };
 
 function NewPromo() {
+  const router = useRouter();
+  const [idPromo, setIdPromo] = useState(router.query.id);
+  console.log(idPromo, "idpromo");
+
+  //DATA SELECTED PROMO AMBIL DARI SINI+++++++++++++++++
+  const dataPromo = useSelector((state) => state.promo);
+  console.log(dataPromo, "datapromo");
+
+  useEffect(() => {
+    dispatch(getPromoById(idPromo));
+  }, [dispatch]);
+
   const dispatch = useDispatch();
   const target = useRef(null);
   const router = useRouter();
@@ -126,7 +140,9 @@ function NewPromo() {
                   <li className="breadcrumb-item">
                     <Link href="/admin/promo">Promo</Link>
                   </li>
-                  <li className="breadcrumb-item active">Add promo</li>
+                  <li className="breadcrumb-item active">
+                    {idPromo ? "Edit promo" : "Add Promo"}
+                  </li>
                 </ol>
               </nav>
               <div className="new__promo--left">

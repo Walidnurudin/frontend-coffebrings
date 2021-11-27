@@ -2,7 +2,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { deleteProduct, getAllProduct } from "stores/action/allProduct";
-import { Modal, Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { ModalDelete } from "components/modules";
 // import { getDataCookie } from "middleware/authorizationPage";
@@ -70,13 +69,13 @@ export default function MenuHomeComponent() {
     router.push({ pathname: `/admin/product`, query: { id } });
   };
 
-  const handleCategory = (category) => {
+  const handleCategory = (ctg) => {
     setDataProduct({
       ...dataProduct,
-      category: category,
+      category: ctg,
     });
-    setActive(category);
-    dispatch(getAllProduct(page, limit, category, search, sort, order));
+    setActive(ctg);
+    dispatch(getAllProduct(page, limit, ctg, search, sort, order));
   };
 
   return (
@@ -133,7 +132,7 @@ export default function MenuHomeComponent() {
               "
       >
         {/* <!-- map menu-item-list dari sini --> */}
-        {product.allProduct.map((item) => (
+        {product.allProduct?.map((item) => (
           <div className="card-list-menu-item p-4 mt-3" key={item.id}>
             {/* <!-- kondisional isAdmin --> */}
             {userRole === "admin" && (

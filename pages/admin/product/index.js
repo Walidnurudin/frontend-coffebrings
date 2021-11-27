@@ -71,8 +71,6 @@ function NewProduct() {
           image: res.value.data.data[0].image,
         };
 
-        console.log(res.value.data.data[0].image);
-
         setForm(newData);
       })
       .catch((err) => new Error(err.response.data.msg));
@@ -141,6 +139,8 @@ function NewProduct() {
 
     resetForm();
   };
+  const [idProduct, setIdProduct] = useState(router.query.id);
+  const [dataProduct, setDataProdcut] = useState({});
 
   const handleUpdate = (e) => {
     e.preventDefault();

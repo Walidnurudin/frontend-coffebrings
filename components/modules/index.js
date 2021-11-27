@@ -4,6 +4,7 @@ import AllButton from "./ButtonComponent";
 
 import ModalDelete from "./ModalDelete";
 import HeaderComponent from "./HeaderComponent";
+import ErrorHandling from "./ErrorHandling";
 
 export {
   FooterComponent,
@@ -11,4 +12,5 @@ export {
   HeaderComponent,
   InputAuthComponent,
   AllButton,
+  ErrorHandling,
 };

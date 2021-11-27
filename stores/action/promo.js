@@ -1,9 +1,9 @@
 import axios from "utils/axios";
 
-export const getAllPromo = (page, limit, search) => {
+export const getAllPromo = () => {
   return {
     type: "GETALLPROMO",
-    payload: axios.get(`/promo?page=${page}&limit=${limit}&search=${search}`),
+    payload: axios.get(`/promo`),
   };
 };
 
@@ -28,9 +28,9 @@ export const updatePromo = (id, data) => {
   };
 };
 
-export const deletePromo = (id, data) => {
+export const deletePromo = (id) => {
   return {
     type: "DELETEPROMO",
-    payload: axios.delete(`/promo/${id}`, data),
+    payload: axios.delete(`/promo/${id}`),
   };
 };
