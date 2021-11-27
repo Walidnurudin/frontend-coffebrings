@@ -38,7 +38,7 @@ const FormLoginComponent = (props) => {
         Cookie.set("token", res.data.data.token);
         Cookie.set("id", res.data.data.id);
         props.getUserById(res.data.data.id);
-        router.push("/main/home");
+        router.push("/");
       })
       .catch((err) => {
         setValid(err.response.data.msg);

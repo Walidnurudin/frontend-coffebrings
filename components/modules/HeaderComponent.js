@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
 import { getDataCookie } from "middleware/authorizationPage";
 import cookies from "js-cookie";
 import UserLogin from "components/molecules/UserLogin";
@@ -22,7 +23,7 @@ import UserLogin from "components/molecules/UserLogin";
 
 function HeaderComponent(props) {
   const token = cookies.get("token");
-
+  const { user } = useSelector((state) => state.dataUserById);
   const router = useRouter();
 
   const activeClass = (path) => {
@@ -55,29 +56,69 @@ function HeaderComponent(props) {
           </button>
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav mx-md-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a className={`nav-link${activeClass("/")}`} onClick={toHome}>
-                  Home
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  className={`nav-link${activeClass("/main/home")}`}
-                  onClick={toHomeProduct}
-                >
-                  Product
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className={`nav-link${activeClass("/cart")}`}>Your Cart</a>
-              </li>
-              <li className="nav-item pe-0">
-                <a
-                  className={`nav-link${activeClass("/main/profile/history")}`}
-                >
-                  History
-                </a>
-              </li>
+              {!token ? null : (
+                <>
+                  <li className="nav-item">
+                    <a
+                      style={{ cursor: "pointer" }}
+                      className={`nav-link${activeClass("/")}`}
+                      onClick={toHome}
+                    >
+                      Home
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      style={{ cursor: "pointer" }}
+                      className={`nav-link${activeClass("/main/home")}`}
+                      onClick={toHomeProduct}
+                    >
+                      Product
+                    </a>
+                  </li>
+
+                  {user.role === "admin" ? (
+                    <>
+                      <li className="nav-item">
+                        <a className={`nav-link${activeClass("/cart")}`}>
+                          Orders
+                        </a>
+                      </li>
+                      <li className="nav-item pe-0">
+                        <a
+                          style={{ cursor: "pointer" }}
+                          className={`nav-link${activeClass(
+                            "/main/profile/history"
+                          )}`}
+                        >
+                          Dashboard
+                        </a>
+                      </li>
+                    </>
+                  ) : (
+                    <>
+                      <li className="nav-item">
+                        <a
+                          style={{ cursor: "pointer" }}
+                          className={`nav-link${activeClass("/cart")}`}
+                        >
+                          Your Cart
+                        </a>
+                      </li>
+                      <li className="nav-item pe-0">
+                        <a
+                          style={{ cursor: "pointer" }}
+                          className={`nav-link${activeClass(
+                            "/main/profile/history"
+                          )}`}
+                        >
+                          History
+                        </a>
+                      </li>{" "}
+                    </>
+                  )}
+                </>
+              )}
             </ul>
 
             {token ? (
