@@ -60,6 +60,7 @@ function HeaderComponent(props) {
                 <>
                   <li className="nav-item">
                     <a
+                      style={{ cursor: "pointer" }}
                       className={`nav-link${activeClass("/")}`}
                       onClick={toHome}
                     >
@@ -68,6 +69,7 @@ function HeaderComponent(props) {
                   </li>
                   <li className="nav-item">
                     <a
+                      style={{ cursor: "pointer" }}
                       className={`nav-link${activeClass("/main/home")}`}
                       onClick={toHomeProduct}
                     >
@@ -84,6 +86,7 @@ function HeaderComponent(props) {
                       </li>
                       <li className="nav-item pe-0">
                         <a
+                          style={{ cursor: "pointer" }}
                           className={`nav-link${activeClass(
                             "/main/profile/history"
                           )}`}
@@ -95,7 +98,10 @@ function HeaderComponent(props) {
                   ) : (
                     <>
                       <li className="nav-item">
-                        <a className={`nav-link${activeClass("/cart")}`}>
+                        <a
+                          style={{ cursor: "pointer" }}
+                          className={`nav-link${activeClass("/cart")}`}
+                        >
                           Your Cart
                         </a>
                       </li>

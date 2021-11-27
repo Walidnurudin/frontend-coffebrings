@@ -2,7 +2,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { deleteProduct, getAllProduct } from "stores/action/allProduct";
-import { Modal, Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { ModalDelete } from "components/modules";
 // import { getDataCookie } from "middleware/authorizationPage";
@@ -73,10 +72,20 @@ export default function MenuHomeComponent() {
     dispatch(getAllProduct(page, limit, category, search, sort, order));
   };
 
+  // const toProductPage = (id) => {
+  //   if (user.user.role === "admin" || user.user.displayName) {
+  //     router.push({ pathname: `/main/product/${id}` });
+  //   } else {
+  //     alert("awok");
+  //     router.push({ pathname: `/main/profile` });
+  //   }
+  // };
+
   const toProductPage = (id) => {
     router.push({ pathname: `/main/product/${id}` });
   };
 
+  console.log(user.role, "roleee");
   return (
     <>
       <div className="menu-header d-flex justify-content-between p-4">

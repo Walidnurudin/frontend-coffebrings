@@ -31,6 +31,23 @@
 .promo-list-card {
   border-radius: 16px;
   transition: 0.2s;
+  position: relative;
+}
+.edit-promo-menu {
+  background-color: #6a4029;
+  right: 0;
+}
+.edit-promo-menu,
+.delete-promo-menu {
+  bottom: -20px;
+  border-radius: 50%;
+  height: 42px;
+  width: 42px;
+  position: absolute;
+}
+.delete-promo-menu {
+  background-color: #0b132a;
+  right: 52px;
 }
 .promo-list-card:hover {
   transform: scale(1.05);

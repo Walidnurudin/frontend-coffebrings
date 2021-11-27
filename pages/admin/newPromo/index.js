@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useRef } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { HeaderComponent, FooterComponent } from "components/modules";
 import { getDataCookie } from "middleware/authorizationPage";
-import { postPromo } from "stores/action/promo";
+import { getPromoById, postPromo } from "stores/action/promo";
+import { useRouter } from "next/router";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -42,6 +43,18 @@ const stateParams = {
 };
 
 function NewPromo() {
+  const router = useRouter();
+  const [idPromo, setIdPromo] = useState(router.query.id);
+  console.log(idPromo, "idpromo");
+
+  //DATA SELECTED PROMO AMBIL DARI SINI+++++++++++++++++
+  const dataPromo = useSelector((state) => state.promo);
+  console.log(dataPromo, "datapromo");
+
+  useEffect(() => {
+    dispatch(getPromoById(idPromo));
+  }, [dispatch]);
+
   const dispatch = useDispatch();
   const target = useRef(null);
 
@@ -101,7 +114,9 @@ function NewPromo() {
                   <li className="breadcrumb-item">
                     <a href="#">Promo</a>
                   </li>
-                  <li className="breadcrumb-item active">Add promo</li>
+                  <li className="breadcrumb-item active">
+                    {idPromo ? "Edit promo" : "Add Promo"}
+                  </li>
                 </ol>
               </nav>
               <div className="new__promo--left">
