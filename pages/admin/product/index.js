@@ -1,18 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
-<<<<<<< HEAD
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { HeaderComponent, FooterComponent } from "components/modules";
+import {
+  postProduct,
+  getAllProduct,
+  getProductById,
+  updateProduct,
+} from "stores/action/allProduct";
 import { useRouter } from "next/router";
 import { getDataCookie } from "middleware/authorizationPage";
-import { postProduct, getAllProduct } from "stores/action/allProduct";
-=======
-import React, { useState, useEffect } from "react";
-import { HeaderComponent, FooterComponent } from "components/modules";
-import { useRouter } from "next/router";
-import { getDataCookie } from "middleware/authorizationPage";
-import axios from "utils/axios";
->>>>>>> 5a843c9839e6703737a697174dfdbea0a0c6b5e3
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -49,7 +47,10 @@ const stateParams = {
 };
 
 function NewProduct() {
-<<<<<<< HEAD
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const target = useRef(null);
+
   const [form, setForm] = useState(initialState);
   const [params, setParams] = useState(stateParams);
   const [image, setImage] = useState("");
@@ -57,8 +58,25 @@ function NewProduct() {
   const inputSize = ["R", "L", "XL"];
   const inputGram = ["250", "300", "500"];
 
-  const dispatch = useDispatch();
-  const target = useRef(null);
+  useEffect(() => {
+    dispatch(getProductById(router.query.id))
+      .then((res) => {
+        const newData = {
+          ...form,
+          name: res.value.data.data[0].name,
+          price: res.value.data.data[0].price,
+          category: res.value.data.data[0].category,
+          description: res.value.data.data[0].description,
+          size: res.value.data.data[0].size,
+          image: res.value.data.data[0].image,
+        };
+
+        console.log(res.value.data.data[0].image);
+
+        setForm(newData);
+      })
+      .catch((err) => new Error(err.response.data.msg));
+  }, [dispatch]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -89,7 +107,6 @@ function NewProduct() {
   const resetForm = () => {
     setForm(initialState);
     setImage("");
-    setIsUpdate(false);
   };
 
   const handleSubmit = (e) => {
@@ -104,6 +121,8 @@ function NewProduct() {
     dispatch(postProduct(formData))
       .then((res) => {
         alert(res.value.data.msg);
+
+        router.push("/main/home");
 
         dispatch(
           getAllProduct(
@@ -122,25 +141,35 @@ function NewProduct() {
 
     resetForm();
   };
-=======
-  const router = useRouter();
-  const [idProduct, setIdProduct] = useState(router.query.id);
-  const [dataProduct, setDataProdcut] = useState({});
 
-  useEffect(() => {
-    axios
-      .get(`/product/${idProduct}`)
-      .then((res) => {
-        console.log(res);
-        setDataProdcut(res.data.data[0]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const handleUpdate = (e) => {
+    e.preventDefault();
 
-  console.log(dataProduct, "data");
->>>>>>> 5a843c9839e6703737a697174dfdbea0a0c6b5e3
+    const formData = new FormData();
+
+    for (const data in form) {
+      formData.append(data, form[data]);
+    }
+
+    dispatch(updateProduct(router.query.id, formData)).then((res) => {
+      alert(res.value.data.msg);
+
+      router.push("/main/home");
+
+      dispatch(
+        getAllProduct(
+          params.page,
+          params.limit,
+          params.category,
+          params.search,
+          params.sort,
+          params.order
+        )
+      );
+    });
+
+    resetForm();
+  };
 
   return (
     <>
@@ -153,15 +182,17 @@ function NewProduct() {
               <nav>
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <a href="#">Product</a>
+                    <Link href="/main/home">Product</Link>
                   </li>
-                  <li className="breadcrumb-item active">Add Product</li>
+                  <li className="breadcrumb-item active">
+                    {router.query.id ? "Update product" : "Add Product"}
+                  </li>
                 </ol>
               </nav>
               <div className="new__product--left">
                 <div className="new__product--left--content">
                   <div className="wrapper__image">
-                    {image ? (
+                    {form.image ? (
                       <>
                         <figure className="product">
                           <img
@@ -203,9 +234,9 @@ function NewProduct() {
                   </button>
                   <button
                     className="btn__save d-block mb-3"
-                    onClick={handleSubmit}
+                    onClick={router.query.id ? handleUpdate : handleSubmit}
                   >
-                    Save Product
+                    {router.query.id ? "Update Product" : "Save Product"}
                   </button>
                   <button className="btn__cancel d-block" onClick={resetForm}>
                     Cancel

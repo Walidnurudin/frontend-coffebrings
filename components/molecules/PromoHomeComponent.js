@@ -11,7 +11,7 @@ export default function PromoHomeComponent() {
   };
 
   const toAddPromo = () => {
-    router.push("/admin/newPromo");
+    router.push("/admin/promo");
   };
 
   return (

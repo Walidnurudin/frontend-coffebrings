@@ -40,6 +40,7 @@ export default function MenuHomeComponent() {
   const [dataProduct, setDataProduct] = useState(initalState);
   const [show, setShow] = useState(false);
   const [idProduct, setIdProduct] = useState("");
+  const [active, setActive] = useState("");
 
   const userRole = user.user.role;
 
@@ -61,8 +62,12 @@ export default function MenuHomeComponent() {
     setIdProduct(id);
   };
 
+  const toProductPage = (id) => {
+    router.push({ pathname: `/main/product/${id}` });
+  };
+
   const toEditPage = (id) => {
-    router.push({ pathname: `/admin/newProduct`, query: { id } });
+    router.push({ pathname: `/admin/product`, query: { id } });
   };
 
   const handleCategory = (category) => {
@@ -70,42 +75,49 @@ export default function MenuHomeComponent() {
       ...dataProduct,
       category: category,
     });
+    setActive(category);
     dispatch(getAllProduct(page, limit, category, search, sort, order));
-  };
-
-  const toProductPage = (id) => {
-    router.push({ pathname: `/main/product/${id}` });
   };
 
   return (
     <>
       <div className="menu-header d-flex justify-content-between p-4">
         <div
-          className="food-category-list selected-category"
+          className={`food-category-list${
+            active === "" ? " selected-category" : ""
+          }`}
           onClick={() => handleCategory("")}
         >
-          Favorite Product
+          All
         </div>
         <div
-          className="food-category-list"
-          onClick={() => handleCategory("coffee")}
+          className={`food-category-list${
+            active === "Coffee" ? " selected-category" : ""
+          }`}
+          onClick={() => handleCategory("Coffee")}
         >
           Coffee
         </div>
         <div
-          className="food-category-list"
+          className={`food-category-list${
+            active === "Non coffee" ? " selected-category" : ""
+          }`}
           onClick={() => handleCategory("Non coffee")}
         >
           Non Coffee
         </div>
         <div
-          className="food-category-list"
+          className={`food-category-list${
+            active === "Foods" ? " selected-category" : ""
+          }`}
           onClick={() => handleCategory("Foods")}
         >
           Foods
         </div>
         <div
-          className="food-category-list"
+          className={`food-category-list${
+            active === "Add-on" ? " selected-category" : ""
+          }`}
           onClick={() => handleCategory("Add-on")}
         >
           Add-on
@@ -171,7 +183,10 @@ export default function MenuHomeComponent() {
         {/* <!-- map menu-item-list sampe sini --> */}
       </div>
       {userRole === "admin" && (
-        <button className="button-add-product w-100 mt-4 border-0">
+        <button
+          className="button-add-product w-100 mt-4 border-0"
+          onClick={() => router.push("/admin/product")}
+        >
           Add new product
         </button>
       )}

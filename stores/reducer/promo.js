@@ -36,34 +36,6 @@ const promo = (state = initalState, action) => {
         pageInfo: {},
       };
     }
-    case "GETPROMOBYID_PENDING": {
-      return {
-        ...state,
-        isLoading: true,
-        isError: false,
-        msg: "",
-      };
-    }
-    case "GETPROMOBYID_FULFILLED": {
-      return {
-        ...state,
-        isLoading: false,
-        isError: false,
-        msg: action.payload.data.msg,
-        data: action.payload.data.data,
-        pageInfo: action.payload.data.pagination,
-      };
-    }
-    case "GETPROMOBYID_REJECTED": {
-      return {
-        ...state,
-        isLoading: false,
-        isError: true,
-        msg: action.payload.data.msg,
-        data: [],
-        pageInfo: {},
-      };
-    }
     case "POSTPROMO_PENDING": {
       return {
         ...state,

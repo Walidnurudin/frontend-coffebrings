@@ -7,10 +7,10 @@ export const getAllPromo = (page, limit, search) => {
   };
 };
 
-export const getPromoById = (id, data) => {
+export const getPromoById = (id) => {
   return {
     type: "GETPROMOBYID",
-    payload: axios.get(`/promo/${id}`, data),
+    payload: axios.get(`/promo/${id}`),
   };
 };
 
