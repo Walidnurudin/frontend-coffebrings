@@ -5,46 +5,86 @@ import {
   FooterComponent,
 } from "components/modules";
 import { useState } from "react";
+import { ErrorHandling } from "components/modules";
 import { useRouter } from "next/router";
-import { getUserById } from "stores/action/dataUser";
 import axios from "utils/axios";
-import { connect } from "react-redux";
-import Cookie from "js-cookie";
+import { getDataCookie } from "middleware/authorizationPage";
+
+export async function getServerSideProps(context) {
+  const dataCookie = await getDataCookie(context);
+
+  if (dataCookie.isLogin) {
+    return {
+      redirect: {
+        destination: "/main/home",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: { data: dataCookie },
+  };
+}
 
 const FormResetPasswordComponent = (props) => {
-  const [valid, setValid] = useState(false);
   const router = useRouter();
-  const [formLogin, setFormLogin] = useState({
+  const [formPassword, setFormPassword] = useState({
+    keysChangePassword: "",
     newPassword: "",
-    ConfirmPassword: "",
+    confirmPassword: "",
+  });
+  const [isSuccess, setIsSuccess] = useState({
+    status: false,
+    msg: "",
   });
 
-  const toResetPass = () => {
-    router.push("/auth/forgotPassword");
+  const [isError, setIsError] = useState({
+    status: false,
+    msg: "",
+  });
+
+  const changePassword = (e) => {
+    setFormPassword({
+      ...formPassword,
+      keysChangePassword: router.query.id,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const toSignup = () => {
-    router.push("/auth/register");
-  };
-
-  const handleChangeText = (e) => {
-    setFormLogin({ ...formLogin, [e.target.name]: e.target.value });
-  };
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log(formPassword);
     axios
-      .post("/auth/login", formLogin)
+      .patch("/auth/reset-password", formPassword)
       .then((res) => {
-        Cookie.set("token", res.data.data.token);
-        Cookie.set("id", res.data.data.id);
-        props.getUserById(res.data.data.id);
-        router.push("/main/home");
+        console.log(res);
+        setIsSuccess({
+          status: true,
+          msg: res.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsSuccess({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
+        router.push("/auth/login");
       })
       .catch((err) => {
-        setValid(err.response.data.msg);
+        console.log(err);
+        setIsError({
+          status: true,
+          msg: err.response.data.msg,
+        });
+
         setTimeout(() => {
-          setValid(false);
-        }, 2000);
+          setIsError({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
       });
   };
 
@@ -76,27 +116,30 @@ const FormResetPasswordComponent = (props) => {
         <div className="form-register">
           <form action="">
             <InputAuthComponent
-              onChange={handleChangeText}
-              name="NewPassword"
+              onChange={changePassword}
+              name="newPassword"
               placeholder="Enter your new password"
               type="password"
               label="New Password"
-              value={formLogin.NewPassword}
             />
             <InputAuthComponent
-              onChange={handleChangeText}
-              name="ConfirmPassword"
+              onChange={changePassword}
+              name="confirmPassword"
               placeholder="Enter your confirm password"
               type="password"
               label="Confirm Password"
-              value={formLogin.confirmPassword}
             />
 
-            {valid ? (
-              <div className="error-msg text-center text-danger d-absolute">
-                {valid}
-              </div>
-            ) : null}
+            {isError.status && (
+              <ErrorHandling msg={isError.msg} bottom="50px" />
+            )}
+            {isSuccess.status && (
+              <ErrorHandling
+                msg={isSuccess.msg}
+                bottom="50px"
+                isSuccess={true}
+              />
+            )}
 
             <AllButton
               className="button-auth w-100 mt-3"
@@ -110,10 +153,5 @@ const FormResetPasswordComponent = (props) => {
     </div>
   );
 };
-const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {
-  getUserById,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(FormResetPasswordComponent);
+export default FormResetPasswordComponent;
