@@ -9,6 +9,13 @@ export const getAllProduct = (page, limit, category, search, sort, order) => {
   };
 };
 
+export const getProductById = (id) => {
+  return {
+    type: "GETPRODUCTBYID",
+    payload: axios.get(`/product/${id}`),
+  };
+};
+
 export const postProduct = (data) => {
   return {
     type: "POSTPRODUCT",

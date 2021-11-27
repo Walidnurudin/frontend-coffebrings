@@ -1,30 +1,45 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import Link from "next/link";
 import { FooterComponent, HeaderComponent } from "components/modules";
 import { useRouter } from "next/router";
-import axios from "utils/axios";
+import { getProductById } from "stores/action/allProduct";
+import { getDataCookie } from "middleware/authorizationPage";
 
-function DetailProduct() {
+export async function getServerSideProps(context) {
+  const dataCookie = await getDataCookie(context);
+
+  if (!dataCookie.isLogin) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+}
+
+export default function DetailProduct() {
   const router = useRouter();
-  const idProduct = router.query.id;
 
   const [dataProduct, setDataProduct] = useState({});
 
-  const sizeOption = dataProduct.size;
-  console.log(sizeOption, "ukuran");
-  useEffect(() => {
-    axios
-      .get(`/product/${idProduct}`)
-      .then((res) => {
-        // console.log(res.data.data[0]);
-        setDataProduct(res.data.data[0]);
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  }, []);
+  const dispatch = useDispatch();
 
-  console.log(typeof sizeOption, "DETAIL ");
+  useEffect(() => {
+    dispatch(getProductById(router.query.id)).then((res) => {
+      setDataProduct({
+        ...res.value.data.data[0],
+        size: res.value.data.data[0].size.split(","),
+      });
+    });
+  }, [dispatch, router.query.id]);
+
+  console.log(dataProduct);
 
   return (
     <>
@@ -37,7 +52,7 @@ function DetailProduct() {
               <nav>
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <a href="#">Favorite & Promo</a>
+                    <Link href="/main/home">Product</Link>
                   </li>
                   <li className="breadcrumb-item active">{dataProduct.name}</li>
                 </ol>
@@ -73,16 +88,20 @@ function DetailProduct() {
                     <h5>Choose a size</h5>
 
                     <div className="size__wrapper--info">
-                      {/* {sizeOption.map((item) => {})} */}
-                      <div className="size__wrapper--info--content rounded-circle">
-                        <span>R</span>
-                      </div>
-                      <div className="size__wrapper--info--content rounded-circle">
-                        <span>R</span>
-                      </div>
-                      <div className="size__wrapper--info--content rounded-circle">
-                        <span>R</span>
-                      </div>
+                      {dataProduct.size?.length > 0 ? (
+                        <>
+                          {dataProduct.size?.map((item, index) => (
+                            <div
+                              className="size__wrapper--info--content rounded-circle"
+                              key={index}
+                            >
+                              {item}
+                            </div>
+                          ))}
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -138,5 +157,3 @@ function DetailProduct() {
     </>
   );
 }
-
-export default DetailProduct;

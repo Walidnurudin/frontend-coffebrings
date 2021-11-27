@@ -1,10 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { HeaderComponent, FooterComponent } from "components/modules";
 import { getDataCookie } from "middleware/authorizationPage";
-import { getPromoById, postPromo } from "stores/action/promo";
 import { useRouter } from "next/router";
+
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { getAllPromo, postPromo, updatePromo } from "stores/action/promo";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -57,6 +60,7 @@ function NewPromo() {
 
   const dispatch = useDispatch();
   const target = useRef(null);
+  const router = useRouter();
 
   const [form, setForm] = useState(initialState);
   const [params, setParams] = useState(stateParams);
@@ -92,7 +96,29 @@ function NewPromo() {
       .then((res) => {
         alert(res.value.data.msg);
 
-        // dispatch(getAllProduct(params.page, params.limit, params.search));
+        dispatch(getAllPromo(params.page, params.limit, params.search));
+      })
+      .catch((err) => {
+        err.response.data.msg && alert(err.response.data.msg);
+      });
+
+    resetForm();
+  };
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    for (const data in form) {
+      formData.append(data, form[data]);
+    }
+
+    dispatch(updatePromo(formData))
+      .then((res) => {
+        alert(res.value.data.msg);
+
+        dispatch(getAllPromo(params.page, params.limit, params.search));
       })
       .catch((err) => {
         err.response.data.msg && alert(err.response.data.msg);
@@ -112,7 +138,7 @@ function NewPromo() {
               <nav>
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <a href="#">Promo</a>
+                    <Link href="/admin/promo">Promo</Link>
                   </li>
                   <li className="breadcrumb-item active">
                     {idPromo ? "Edit promo" : "Add Promo"}
@@ -272,11 +298,16 @@ function NewPromo() {
 
                   <button
                     className="btn__save--promo d-block mb-3"
-                    onClick={handleSubmit}
+                    onClick={router.query.id ? handleUpdate : handleSubmit}
                   >
-                    Save Promo
+                    {router.query.id ? "Update Promo" : "Save Promo"}
                   </button>
-                  <button className="btn__cancel--promo d-block">Cancel</button>
+                  <button
+                    className="btn__cancel--promo d-block"
+                    onClick={resetForm}
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>

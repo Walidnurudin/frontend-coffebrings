@@ -58,7 +58,7 @@ export default function PromoHomeComponent() {
 
   // console.log(idSelectedPromo, "dipilih");
   return (
-    <>
+    <div>
       <div className="promo-header px-5">
         <div className="promo-title text-center">Promo Today</div>
         <div className="promo-desc text-center px-4 mt-2">
@@ -67,7 +67,7 @@ export default function PromoHomeComponent() {
       </div>
       <div className="promo-list mt-3 px-3">
         {/* <!-- map list card promo dari sini --> */}
-        {promo.map((item) => (
+        {promo?.map((item) => (
           <div
             onClick={
               userRole === "user" ? () => handleSelectedPromo(item.id) : null
@@ -122,6 +122,6 @@ export default function PromoHomeComponent() {
         handleClose={() => setShow(false)}
         handleSubmit={handleDelete}
       />
-    </>
+    </div>
   );
 }

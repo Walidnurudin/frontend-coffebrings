@@ -27,7 +27,7 @@ function Partner() {
           </figure>
 
           <figure className="partners__content--body--image">
-            <img src="assets/images/discord.png" alt="" />
+            <img src="assets/images/pajri.png" alt="" />
           </figure>
         </div>
       </div>

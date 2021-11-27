@@ -189,8 +189,8 @@
 
 @media (min-width: 992px) {
   .detail__product--left--content > figure {
-    width: 100%;
-    height: auto;
+    width: 300px;
+    height: 300px;
   }
 
   .detail__product--left--content > h1 {
@@ -257,12 +257,6 @@
   .qty__wrapper > h2 {
     font-size: 1.5625rem;
   }
-
-  /* .checkout {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-} */
 
   .checkout > h3 {
     font-size: 1.5625rem;
