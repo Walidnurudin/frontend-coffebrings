@@ -1,5 +1,6 @@
 const initialState = {
   user: {},
+  msg: "",
 };
 
 const getUserById = (state = initialState, action) => {
