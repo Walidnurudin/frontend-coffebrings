@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { FormLoginComponent } from "components/molecules";
+import { FormResetPasswordComponent } from "components/molecules";
 import { getDataCookie } from "middleware/authorizationPage";
 
 // export async function getServerSideProps(context) {
@@ -18,12 +18,12 @@ import { getDataCookie } from "middleware/authorizationPage";
 //   };
 // }
 
-export default function Login() {
+export default function DetailResetPassword() {
   // console.log(props, "login page");
   return (
     <div className="body-login d-flex w-100">
       <div className="jumbotron"></div>
-      <FormLoginComponent />
+      <FormResetPasswordComponent />
     </div>
   );
 }
