@@ -1,10 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
+<<<<<<< HEAD
 import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { HeaderComponent, FooterComponent } from "components/modules";
 import { useRouter } from "next/router";
 import { getDataCookie } from "middleware/authorizationPage";
 import { postProduct, getAllProduct } from "stores/action/allProduct";
+=======
+import React, { useState, useEffect } from "react";
+import { HeaderComponent, FooterComponent } from "components/modules";
+import { useRouter } from "next/router";
+import { getDataCookie } from "middleware/authorizationPage";
+import axios from "utils/axios";
+>>>>>>> 5a843c9839e6703737a697174dfdbea0a0c6b5e3
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -41,6 +49,7 @@ const stateParams = {
 };
 
 function NewProduct() {
+<<<<<<< HEAD
   const [form, setForm] = useState(initialState);
   const [params, setParams] = useState(stateParams);
   const [image, setImage] = useState("");
@@ -113,6 +122,25 @@ function NewProduct() {
 
     resetForm();
   };
+=======
+  const router = useRouter();
+  const [idProduct, setIdProduct] = useState(router.query.id);
+  const [dataProduct, setDataProdcut] = useState({});
+
+  useEffect(() => {
+    axios
+      .get(`/product/${idProduct}`)
+      .then((res) => {
+        console.log(res);
+        setDataProdcut(res.data.data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  console.log(dataProduct, "data");
+>>>>>>> 5a843c9839e6703737a697174dfdbea0a0c6b5e3
 
   return (
     <>

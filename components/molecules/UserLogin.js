@@ -45,7 +45,8 @@ export default function UserLogin(props) {
 
       <figure className="logout mb-0" onClick={handleLogout}>
         <img
-          src="../assets/images/icons/icon-logout.svg"
+          style={{ cursor: "pointer" }}
+          src="/assets/images/icons/icon-logout.svg"
           alt="logout"
           className="mt-0"
         />
