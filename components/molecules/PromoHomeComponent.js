@@ -33,16 +33,19 @@ export default function PromoHomeComponent() {
     // dispatch(getPromoById(idSelectedPromo));
   };
 
+  const toUpdatePromo = (id) => {
+    router.push({ pathname: `/admin/promo`, query: { id } });
+  };
+
   const toAddPromo = () => {
-    router.push({ pathname: `/admin/promo/` });
+    router.push("/admin/promo");
   };
 
   const handleDelete = () => {
     dispatch(deletePromo(idPromo)).then((res) => {
       setShow(false);
-      dispatch(getAllPromo()).then((res) => {
-        console.log(res);
-      });
+      alert(res.value.data.msg);
+      dispatch(getAllPromo());
     });
   };
 
@@ -76,7 +79,11 @@ export default function PromoHomeComponent() {
             key={item.id}
           >
             <img
-              src="/assets/images/promo-card-1.png"
+              src={
+                item.image
+                  ? `${process.env.URL_BACKEND}/uploads/promo/${item.image}`
+                  : `/assets/images/default.png`
+              }
               alt=""
               className="promo-list-card-img"
             />
@@ -87,7 +94,7 @@ export default function PromoHomeComponent() {
             {user.role === "admin" ? (
               <>
                 <div
-                  onClick={() => toAddPromo(item.id)}
+                  onClick={() => toUpdatePromo(item.id)}
                   className="edit-promo-menu  d-flex
                     align-items-center
                     justify-content-center "

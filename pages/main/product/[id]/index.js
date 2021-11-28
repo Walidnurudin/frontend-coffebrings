@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { FooterComponent, HeaderComponent } from "components/modules";
 import { useRouter } from "next/router";
@@ -130,7 +130,7 @@ export default function DetailProduct() {
                         <>
                           {dataProduct.size?.map((item, index) => (
                             <div
-                              className="size__wrapper--info--content rounded-circle"
+                              className="size__wrapper--info--content--detail rounded-circle"
                               key={index}
                               onClick={() => setSize(item)}
                             >
