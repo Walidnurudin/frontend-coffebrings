@@ -139,8 +139,6 @@ function NewProduct() {
 
     resetForm();
   };
-  const [idProduct, setIdProduct] = useState(router.query.id);
-  const [dataProduct, setDataProdcut] = useState({});
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -312,25 +310,25 @@ function NewProduct() {
 
                     <div className="size__wrapper--info">
                       <div
-                        className="size__wrapper--info--content rounded-circle"
+                        className="size__wrapper--info--content--add rounded-circle"
                         onClick={handleSize}
                       >
                         <span className="span-size">R</span>
                       </div>
                       <div
-                        className="size__wrapper--info--content rounded-circle"
+                        className="size__wrapper--info--content--add rounded-circle"
                         onClick={handleSize}
                       >
                         <span className="span-size">L</span>
                       </div>
                       <div
-                        className="size__wrapper--info--content rounded-circle"
+                        className="size__wrapper--info--content--add rounded-circle"
                         onClick={handleSize}
                       >
                         <span className="span-size">XL</span>
                       </div>
                       <div
-                        className="size__wrapper--info--content gram rounded-circle"
+                        className="size__wrapper--info--content--add gram rounded-circle"
                         onClick={handleGram}
                       >
                         <span className="span-size">
@@ -338,7 +336,7 @@ function NewProduct() {
                         </span>
                       </div>
                       <div
-                        className="size__wrapper--info--content gram rounded-circle"
+                        className="size__wrapper--info--content--add gram rounded-circle"
                         onClick={handleGram}
                       >
                         <span className="span-size">
@@ -346,7 +344,7 @@ function NewProduct() {
                         </span>
                       </div>
                       <div
-                        className="size__wrapper--info--content gram rounded-circle"
+                        className="size__wrapper--info--content--add gram rounded-circle me-0"
                         onClick={handleGram}
                       >
                         <span className="span-size">

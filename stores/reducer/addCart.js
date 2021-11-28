@@ -43,3 +43,26 @@
 //     },
 //   ],
 // };
+
+const initialState = {
+  cart: [],
+};
+
+const addCart = (state = initialState, action) => {
+  switch (action.type) {
+    case "ADD_TO_CART": {
+      return {
+        ...state,
+        // cart: cart.push(action.payload.item),
+        cart: [...state.cart, action.payload],
+      };
+    }
+    default: {
+      return state;
+    }
+  }
+};
+
+console.log(initialState.cart);
+
+export default addCart;

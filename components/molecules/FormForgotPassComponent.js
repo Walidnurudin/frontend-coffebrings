@@ -6,15 +6,80 @@ import {
 } from "components/modules";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { ErrorHandling } from "components/modules";
+import axios from "utils/axios";
+import { getDataCookie } from "middleware/authorizationPage";
+
+export async function getServerSideProps(context) {
+  const dataCookie = await getDataCookie(context);
+
+  if (dataCookie.isLogin) {
+    return {
+      redirect: {
+        destination: "/main/home",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: { data: dataCookie },
+  };
+}
 
 export default function FormForgotPassComponent() {
   const router = useRouter();
-  const [form, setForm] = useState({ email: "" });
+  const [form, setForm] = useState({
+    email: "",
+    linkRedirect: process.env.URL_FRONTEND,
+  });
+
+  const [isSuccess, setIsSuccess] = useState({
+    status: false,
+    msg: "",
+  });
+
+  const [isError, setIsError] = useState({
+    status: false,
+    msg: "",
+  });
 
   const handleChangeText = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-  const handleSubmit = () => {};
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("/auth/forgot-password", form)
+      .then((res) => {
+        console.log(res);
+        setIsSuccess({
+          status: true,
+          msg: res.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsSuccess({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
+      })
+      .catch((err) => {
+        setIsError({
+          status: true,
+          msg: err.response.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsError({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
+      });
+  };
+
   const handleResendLink = () => {
     router.push("/auth/login");
   };
@@ -57,6 +122,10 @@ export default function FormForgotPassComponent() {
               type="email"
               onChange={handleChangeText}
             />
+            {isError.status && <ErrorHandling msg={isError.msg} top="50px" />}
+            {isSuccess.status && (
+              <ErrorHandling msg={isSuccess.msg} top="50px" isSuccess={true} />
+            )}
             <AllButton
               className="button-auth w-100 mt-4"
               text="Send"
