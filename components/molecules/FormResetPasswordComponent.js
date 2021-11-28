@@ -54,11 +54,9 @@ const FormResetPasswordComponent = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(formPassword);
     axios
       .patch("/auth/reset-password", formPassword)
       .then((res) => {
-        console.log(res);
         setIsSuccess({
           status: true,
           msg: res.data.msg,
@@ -73,7 +71,6 @@ const FormResetPasswordComponent = (props) => {
         router.push("/auth/login");
       })
       .catch((err) => {
-        console.log(err);
         setIsError({
           status: true,
           msg: err.response.data.msg,

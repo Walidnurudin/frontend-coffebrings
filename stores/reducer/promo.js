@@ -31,7 +31,7 @@ const promo = (state = initalState, action) => {
         ...state,
         isLoading: false,
         isError: true,
-        msg: action.payload.data.msg,
+        msg: action.payload.response.data.msg,
         data: [],
         pageInfo: {},
       };

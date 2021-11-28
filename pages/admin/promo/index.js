@@ -54,7 +54,6 @@ function Promo() {
 
   //DATA SELECTED PROMO AMBIL DARI SINI+++++++++++++++++
   const dataPromo = useSelector((state) => state.promo);
-  // console.log(dataPromo, "datapromo");
 
   useEffect(() => {
     dispatch(getPromoById(idPromo))
@@ -98,7 +97,6 @@ function Promo() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form, "DATASAASASJF");
 
     const formData = new FormData();
 
@@ -152,7 +150,6 @@ function Promo() {
         <div className="container">
           <div className="row">
             <div className="col-12 col-lg-4">
-              {/* <nav style="--bs-breadcrumb-divider: '>'"> */}
               <nav>
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">

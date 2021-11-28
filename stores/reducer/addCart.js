@@ -63,6 +63,4 @@ const addCart = (state = initialState, action) => {
   }
 };
 
-console.log(initialState.cart);
-
 export default addCart;

@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
+import axios from "utils/axios";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { FooterComponent, HeaderComponent } from "components/modules";
@@ -19,6 +20,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
+
   return {
     props: {},
   };
@@ -64,7 +66,6 @@ export default function DetailProduct() {
 
   const distpatchCart = () => {
     dispatch(addToCart(cart));
-    console.log(cart);
     // router.push("/main/home");
   };
 
@@ -75,7 +76,7 @@ export default function DetailProduct() {
         size: res.value.data.data[0].size.split(","),
       });
     });
-  }, []);
+  }, [router.query.id]);
 
   return (
     <>
@@ -84,7 +85,6 @@ export default function DetailProduct() {
         <div className="container">
           <div className="row">
             <div className="col-12 col-lg-4">
-              {/* <nav style="--bs-breadcrumb-divider: '>'"> */}
               <nav>
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">

@@ -2,7 +2,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getAllPromo, getPromoById } from "stores/action/promo";
+import { getAllPromo } from "stores/action/promo";
 import { ModalDelete } from "components/modules";
 import { deletePromo } from "stores/action/promo";
 
@@ -29,8 +29,6 @@ export default function PromoHomeComponent() {
           )
         : null;
     }
-
-    // dispatch(getPromoById(idSelectedPromo));
   };
 
   const toUpdatePromo = (id) => {
@@ -55,11 +53,9 @@ export default function PromoHomeComponent() {
   };
 
   const handleSelectedPromo = (id) => {
-    // alert(`${id}`);
     setIdSelectedPromo(id);
   };
 
-  // console.log(idSelectedPromo, "dipilih");
   return (
     <div>
       <div className="promo-header px-2">
@@ -69,7 +65,6 @@ export default function PromoHomeComponent() {
         </div>
       </div>
       <div className="promo-list mt-3 px-3">
-        {/* <!-- map list card promo dari sini --> */}
         {promo?.map((item) => (
           <div
             onClick={
@@ -110,7 +105,9 @@ export default function PromoHomeComponent() {
                   <img src="/assets/images/trash 1.png" alt="edit" />
                 </div>
               </>
-            ) : null}
+            ) : (
+              "Coupon not available for now"
+            )}
           </div>
         ))}
       </div>

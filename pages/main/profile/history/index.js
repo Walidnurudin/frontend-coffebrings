@@ -28,8 +28,6 @@ export async function getServerSideProps(context) {
 function History() {
   const user = useSelector((state) => state.dataUserById);
 
-  console.log(user);
-
   const [data, setData] = useState([]);
 
   const [show, setShow] = useState(false);
