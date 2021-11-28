@@ -3,11 +3,15 @@ import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { HeaderComponent, FooterComponent } from "components/modules";
 import { getDataCookie } from "middleware/authorizationPage";
-import { useRouter } from "next/router";
-import { getPromoById } from "stores/action/promo";
 
 import Link from "next/link";
-import { getAllPromo, postPromo, updatePromo } from "stores/action/promo";
+import { useRouter } from "next/router";
+import {
+  getAllPromo,
+  postPromo,
+  updatePromo,
+  getPromoById,
+} from "stores/action/promo";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -29,9 +33,9 @@ const date = new Date().toISOString().split("T")[0];
 
 const initialState = {
   name: "",
-  discount: "",
-  minTotalPrice: "",
-  maxDiscount: "",
+  discount: 0,
+  minTotalPrice: 0,
+  maxDiscount: 0,
   promoCode: "",
   description: "",
   dateStart: date,
@@ -39,31 +43,41 @@ const initialState = {
   image: null,
 };
 
-const stateParams = {
-  page: 1,
-  limit: 6,
-  search: "",
-};
-
 function Promo() {
-  const dispatch = useDispatch();
   const router = useRouter();
   const [idPromo, setIdPromo] = useState(router.query.id);
-  console.log(idPromo, "idpromo");
+  const [form, setForm] = useState(initialState);
+  const [image, setImage] = useState("");
+
+  const dispatch = useDispatch();
+  const target = useRef(null);
 
   //DATA SELECTED PROMO AMBIL DARI SINI+++++++++++++++++
   const dataPromo = useSelector((state) => state.promo);
-  console.log(dataPromo, "datapromo");
+  // console.log(dataPromo, "datapromo");
 
   useEffect(() => {
-    dispatch(getPromoById(idPromo));
+    dispatch(getPromoById(idPromo))
+      .then((res) => {
+        const newData = {
+          ...form,
+          name: res.value.data.data[0].name,
+          discount: res.value.data.data[0].discount,
+          minTotalPrice: res.value.data.data[0].minTotalPrice,
+          maxDiscount: res.value.data.data[0].maxDiscount,
+          promoCode: res.value.data.data[0].promoCode,
+          description: res.value.data.data[0].description,
+          dateStart: res.value.data.data[0].dateStart.split("T")[0],
+          dateEnd: res.value.data.data[0].dateEnd.split("T")[0],
+          image: res.value.data.data[0].image,
+        };
+
+        setForm(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [dispatch]);
-
-  const target = useRef(null);
-
-  const [form, setForm] = useState(initialState);
-  const [params, setParams] = useState(stateParams);
-  const [image, setImage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -84,6 +98,7 @@ function Promo() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(form, "DATASAASASJF");
 
     const formData = new FormData();
 
@@ -95,7 +110,9 @@ function Promo() {
       .then((res) => {
         alert(res.value.data.msg);
 
-        dispatch(getAllPromo(params.page, params.limit, params.search));
+        router.push("/main/home");
+
+        dispatch(getAllPromo());
       })
       .catch((err) => {
         err.response.data.msg && alert(err.response.data.msg);
@@ -113,11 +130,13 @@ function Promo() {
       formData.append(data, form[data]);
     }
 
-    dispatch(updatePromo(formData))
+    dispatch(updatePromo(idPromo, formData))
       .then((res) => {
         alert(res.value.data.msg);
 
-        dispatch(getAllPromo(params.page, params.limit, params.search));
+        router.push("/main/home");
+
+        dispatch(getAllPromo());
       })
       .catch((err) => {
         err.response.data.msg && alert(err.response.data.msg);
@@ -140,14 +159,14 @@ function Promo() {
                     <Link href="/admin/promo">Promo</Link>
                   </li>
                   <li className="breadcrumb-item active">
-                    {idPromo ? "Edit promo" : "Add Promo"}
+                    {idPromo ? "Update promo" : "Add Promo"}
                   </li>
                 </ol>
               </nav>
               <div className="new__promo--left">
                 <div className="new__promo--left--content">
                   <div className="wrapper__image--promo">
-                    {image ? (
+                    {form.image ? (
                       <>
                         <figure className="promo">
                           <img

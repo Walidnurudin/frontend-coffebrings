@@ -33,16 +33,19 @@ export default function PromoHomeComponent() {
     // dispatch(getPromoById(idSelectedPromo));
   };
 
-  const toAddPromo = (id) => {
-    router.push({ pathname: `/admin/promo/`, query: { id } });
+  const toUpdatePromo = (id) => {
+    router.push({ pathname: `/admin/promo`, query: { id } });
+  };
+
+  const toAddPromo = () => {
+    router.push("/admin/promo");
   };
 
   const handleDelete = () => {
     dispatch(deletePromo(idPromo)).then((res) => {
       setShow(false);
-      dispatch(getAllPromo()).then((res) => {
-        console.log(res);
-      });
+      alert(res.value.data.msg);
+      dispatch(getAllPromo());
     });
   };
 
@@ -67,49 +70,49 @@ export default function PromoHomeComponent() {
       </div>
       <div className="promo-list mt-3 px-3">
         {/* <!-- map list card promo dari sini --> */}
-        {promo.map ? (
-          (item) => (
-            <div
-              onClick={
-                userRole === "user" ? () => handleSelectedPromo(item.id) : null
+        {promo?.map((item) => (
+          <div
+            onClick={
+              userRole === "user" ? () => handleSelectedPromo(item.id) : null
+            }
+            className="promo-list-card bg-green d-flex p-1 py-1 px-2 mt-4 "
+            key={item.id}
+          >
+            <img
+              src={
+                item.image
+                  ? `${process.env.URL_BACKEND}/uploads/promo/${item.image}`
+                  : `/assets/images/default.png`
               }
-              className="promo-list-card bg-green d-flex p-1 py-1 px-2 mt-4 "
-              key={item.id}
-            >
-              <img
-                src="/assets/images/promo-card-1.png"
-                alt=""
-                className="promo-list-card-img"
-              />
-              <div className="promo-list-card-content ps-2 pt-2 px-4">
-                <div className="promo-card-header">{item.name}</div>
-                <div className="promo-card-desc">{item.description}</div>
-              </div>
-              {user.role === "admin" ? (
-                <>
-                  <div
-                    onClick={() => toAddPromo(item.id)}
-                    className="edit-promo-menu  d-flex
-                    align-items-center
-                    justify-content-center "
-                  >
-                    <img src="/assets/images/pencil.png" alt="edit" />
-                  </div>
-                  <div
-                    onClick={() => showDelete(item.id)}
-                    className="delete-promo-menu  d-flex
-                    align-items-center
-                    justify-content-center "
-                  >
-                    <img src="/assets/images/trash 1.png" alt="edit" />
-                  </div>
-                </>
-              ) : null}
+              alt=""
+              className="promo-list-card-img"
+            />
+            <div className="promo-list-card-content ps-2 pt-2 px-4">
+              <div className="promo-card-header">{item.name}</div>
+              <div className="promo-card-desc">{item.description}</div>
             </div>
-          )
-        ) : (
-          <h1>No promo found</h1>
-        )}
+            {user.role === "admin" ? (
+              <>
+                <div
+                  onClick={() => toUpdatePromo(item.id)}
+                  className="edit-promo-menu  d-flex
+                    align-items-center
+                    justify-content-center "
+                >
+                  <img src="/assets/images/pencil.png" alt="edit" />
+                </div>
+                <div
+                  onClick={() => showDelete(item.id)}
+                  className="delete-promo-menu  d-flex
+                    align-items-center
+                    justify-content-center "
+                >
+                  <img src="/assets/images/trash 1.png" alt="edit" />
+                </div>
+              </>
+            ) : null}
+          </div>
+        ))}
       </div>
       <div className="promo-btn-select px-3">
         <button
