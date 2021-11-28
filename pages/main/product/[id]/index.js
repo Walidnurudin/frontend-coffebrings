@@ -6,6 +6,7 @@ import { FooterComponent, HeaderComponent } from "components/modules";
 import { useRouter } from "next/router";
 import { getProductById } from "stores/action/allProduct";
 import { getDataCookie } from "middleware/authorizationPage";
+import { addToCart } from "stores/action/addCart";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -25,10 +26,47 @@ export async function getServerSideProps(context) {
 
 export default function DetailProduct() {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [dataProduct, setDataProduct] = useState({});
 
-  const dispatch = useDispatch();
+  // const [selectSize, setSelectSize] = useState(dataProduct.size[0]);
+
+  const [size, setSize] = useState("");
+  const [qty, setQty] = useState(1);
+  const [cart, setCart] = useState({
+    id: router.query.id,
+    qty: qty,
+    total: 0,
+  });
+
+  const toCart = () => {
+    let t = 0;
+
+    if (size.includes("R") || size.includes("250")) {
+      t = dataProduct.price;
+    } else if (size.includes("L") || size.includes("300")) {
+      t = dataProduct.price + 5000;
+    } else if (size.includes("XL") || size.includes("500")) {
+      t = dataProduct.price + 10000;
+    } else {
+      t = dataProduct.price;
+    }
+
+    setCart({
+      id: router.query.id,
+      qty: qty,
+      total: t * qty,
+    });
+
+    distpatchCart();
+  };
+
+  const distpatchCart = () => {
+    dispatch(addToCart(cart));
+    console.log(cart);
+    // router.push("/main/home");
+  };
 
   useEffect(() => {
     dispatch(getProductById(router.query.id)).then((res) => {
@@ -37,9 +75,7 @@ export default function DetailProduct() {
         size: res.value.data.data[0].size.split(","),
       });
     });
-  }, [dispatch, router.query.id]);
-
-  console.log(dataProduct);
+  }, []);
 
   return (
     <>
@@ -74,7 +110,9 @@ export default function DetailProduct() {
                   <h1>{dataProduct.name}</h1>
                   <p>{`IDR. ${dataProduct.price}`}</p>
 
-                  <button className="btn__add">Add to Cart</button>
+                  <button className="btn__add" onClick={toCart}>
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             </div>
@@ -94,6 +132,7 @@ export default function DetailProduct() {
                             <div
                               className="size__wrapper--info--content rounded-circle"
                               key={index}
+                              onClick={() => setSize(item)}
                             >
                               {item}
                             </div>
@@ -124,20 +163,30 @@ export default function DetailProduct() {
                       <div className="qty__wrapper">
                         <h2>{dataProduct.name}</h2>
 
-                        <button className="btn__qty min rounded-circle">
+                        <button
+                          className="btn__qty min rounded-circle"
+                          onClick={() => {
+                            qty <= 1 ? setQty(1) : setQty(qty - 1);
+                          }}
+                        >
                           -
                         </button>
 
-                        <span className="qty">3</span>
+                        <span className="qty">{qty}</span>
 
-                        <button className="btn__qty plu rounded-circle">
+                        <button
+                          className="btn__qty plu rounded-circle"
+                          onClick={() => setQty(qty + 1)}
+                        >
                           +
                         </button>
                       </div>
                     </div>
 
                     <div className="checkout">
-                      <h3>Checkout</h3>
+                      <h3 onClick={() => router.push("/main/payment")}>
+                        Checkout
+                      </h3>
 
                       <figure className="arr rounded-circle">
                         <img
