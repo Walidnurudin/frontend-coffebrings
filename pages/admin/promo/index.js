@@ -1,13 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { HeaderComponent, FooterComponent } from "components/modules";
 import { getDataCookie } from "middleware/authorizationPage";
-import { useRouter } from "next/router";
 
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { getAllPromo, postPromo, updatePromo } from "stores/action/promo";
+import {
+  getAllPromo,
+  postPromo,
+  updatePromo,
+  getPromoById,
+} from "stores/action/promo";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -60,7 +64,6 @@ function NewPromo() {
 
   const dispatch = useDispatch();
   const target = useRef(null);
-  const router = useRouter();
 
   const [form, setForm] = useState(initialState);
   const [params, setParams] = useState(stateParams);

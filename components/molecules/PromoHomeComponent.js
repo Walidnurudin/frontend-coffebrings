@@ -33,8 +33,8 @@ export default function PromoHomeComponent() {
     // dispatch(getPromoById(idSelectedPromo));
   };
 
-  const toAddPromo = (id) => {
-    router.push({ pathname: `/admin/newPromo/`, query: { id } });
+  const toAddPromo = () => {
+    router.push({ pathname: `/admin/promo/` });
   };
 
   const handleDelete = () => {
