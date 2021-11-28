@@ -183,7 +183,7 @@ export default function MenuHomeComponent() {
       </div>
       {userRole === "admin" && (
         <button
-          className="button-add-product w-100 mt-4 border-0"
+          className="button-add-product w-100 mt-5 border-0"
           onClick={() => router.push("/admin/product")}
         >
           Add new product

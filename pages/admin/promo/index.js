@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { HeaderComponent, FooterComponent } from "components/modules";
 import { getDataCookie } from "middleware/authorizationPage";
 import { useRouter } from "next/router";
+import { getPromoById } from "stores/action/promo";
 
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { getAllPromo, postPromo, updatePromo } from "stores/action/promo";
 
 export async function getServerSideProps(context) {
@@ -45,7 +45,8 @@ const stateParams = {
   search: "",
 };
 
-function NewPromo() {
+function Promo() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [idPromo, setIdPromo] = useState(router.query.id);
   console.log(idPromo, "idpromo");
@@ -58,9 +59,7 @@ function NewPromo() {
     dispatch(getPromoById(idPromo));
   }, [dispatch]);
 
-  const dispatch = useDispatch();
   const target = useRef(null);
-  const router = useRouter();
 
   const [form, setForm] = useState(initialState);
   const [params, setParams] = useState(stateParams);
@@ -319,4 +318,4 @@ function NewPromo() {
   );
 }
 
-export default NewPromo;
+export default Promo;
