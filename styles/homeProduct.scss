@@ -146,3 +146,70 @@
   font-weight: 700;
   font-size: 16px;
 }
+
+@media (max-width: 768px) {
+  .menu-item-name {
+    font-size: 16px;
+  }
+  .menu-item-price {
+    font-size: 15px;
+  }
+  .menu-list {
+    justify-content: start !important;
+  }
+  .card-list-menu-item {
+    width: 33%;
+  }
+}
+
+@media (max-width: 576px) {
+  .promo-list-card-img {
+    width: 70px;
+    height: 80px;
+  }
+  .menu-item-name {
+    font-size: 14px;
+  }
+  .menu- .promo-header {
+    padding: 0 20px !important;
+  }
+  .promo-desc {
+    padding: 0 !important;
+  }
+  .menu-item-img {
+    width: 80px;
+    height: 80px;
+  }
+  .edit-menu,
+  .delete-menu,
+  .edit-promo-menu,
+  .delete-promo-menu {
+    width: 32px;
+    height: 32px;
+  }
+}
+@media (max-width: 462px) {
+  .food-category-list {
+    font-size: 14px;
+  }
+  .menu-item-img {
+    width: 86px;
+    height: 86px;
+  }
+  .card-list-menu-item {
+    width: 50%;
+  }
+  .menu-item-name {
+    font-size: 17px;
+  }
+  .menu-item-price {
+    font-size: 16px;
+  }
+  .edit-menu,
+  .delete-menu,
+  .edit-promo-menu,
+  .delete-promo-menu {
+    width: 42px;
+    height: 42px;
+  }
+}

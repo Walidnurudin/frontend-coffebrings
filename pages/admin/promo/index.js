@@ -337,4 +337,4 @@ function NewPromo() {
   );
 }
 
-export default NewPromo;
+export default Promo;

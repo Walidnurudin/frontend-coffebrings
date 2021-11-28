@@ -62,7 +62,7 @@ export default function PromoHomeComponent() {
   // console.log(idSelectedPromo, "dipilih");
   return (
     <div>
-      <div className="promo-header px-5">
+      <div className="promo-header px-2">
         <div className="promo-title text-center">Promo Today</div>
         <div className="promo-desc text-center px-4 mt-2">
           Coupons will be updated every weeks. Check them out!
