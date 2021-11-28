@@ -19,7 +19,6 @@ export async function getServerSideProps(context) {
 }
 
 export default function Login() {
-  // console.log(props, "login page");
   return (
     <div className="body-login d-flex w-100">
       <div className="jumbotron"></div>

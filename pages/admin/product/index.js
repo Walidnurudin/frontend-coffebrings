@@ -73,7 +73,7 @@ function NewProduct() {
 
         setForm(newData);
       })
-      .catch((err) => new Error(err.response.data.msg));
+      .catch((err) => err.response.data.msg && alert(err.response.data.msg));
   }, [dispatch]);
 
   const handleChange = (e) => {

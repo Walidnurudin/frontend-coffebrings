@@ -52,7 +52,6 @@ export default function FormForgotPassComponent() {
     axios
       .post("/auth/forgot-password", form)
       .then((res) => {
-        console.log(res);
         setIsSuccess({
           status: true,
           msg: res.data.msg,
@@ -83,8 +82,6 @@ export default function FormForgotPassComponent() {
   const handleResendLink = () => {
     router.push("/auth/login");
   };
-
-  console.log(form);
 
   return (
     <div className="register-content">

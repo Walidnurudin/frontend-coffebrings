@@ -4,23 +4,7 @@ import { useEffect, useState } from "react";
 import { deleteProduct, getAllProduct } from "stores/action/allProduct";
 import { useRouter } from "next/router";
 import { ModalDelete } from "components/modules";
-// import { getDataCookie } from "middleware/authorizationPage";
-
-// export async function getServerSideProps(context) {
-//   const dataCookie = await getDataCookie(context);
-
-//   if (!dataCookie.isLogin) {
-//     return {
-//       redirect: {
-//         destination: "/auth/login",
-//         permanent: false,
-//       },
-//     };
-//   }
-//   return {
-//     props: {},
-//   };
-// }
+import { formatRp } from "utils/formatRp";
 
 const initalState = {
   page: 1,
@@ -174,7 +158,7 @@ export default function MenuHomeComponent() {
                 alt="pecel"
               />
               <div className="menu-item-name mt-2">{item.name}</div>
-              <div className="menu-item-price">{item.price}</div>
+              <div className="menu-item-price">{formatRp(item.price)}</div>
             </div>
           </div>
         ))}

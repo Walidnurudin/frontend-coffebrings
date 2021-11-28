@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteToCart, clearCart } from "stores/action/addCart";
 import { getDataCookie } from "middleware/authorizationPage";
 import axios from "utils/axios";
+import { formatRp } from "utils/formatRp";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -136,7 +137,7 @@ function Payment() {
                                 </div>
                               </div>
 
-                              <p className="price">IDR {item.total}</p>
+                              <p className="price">{formatRp(item.total)}</p>
 
                               <div
                                 className="history__card--trash"
@@ -182,19 +183,19 @@ function Payment() {
                       <div className="display__discount">
                         <p className="display__discount--text mb-0">DISCOUNT</p>
                         <p className="display__discount--number mb-0">
-                          IDR {0}
+                          {formatRp(0)}
                         </p>
                       </div>
                       <div className="display__subtotal">
                         <p className="display__subtotal--text mb-0">SUBTOTAL</p>
                         <p className="display__subtotal--number mb-0">
-                          IDR {dataOrder.subTotal || 0}
+                          {formatRp(dataOrder.subTotal)}
                         </p>
                       </div>
                       <div className="display__tax">
                         <p className="display__tax--text mb-0">TAX & FEES</p>
                         <p className="display__tax--number mb-0">
-                          IDR {dataOrder.tax || 0}
+                          {formatRp(dataOrder.tax)}
                         </p>
                       </div>
                     </div>
@@ -202,7 +203,7 @@ function Payment() {
                     <div className="display__total">
                       <p className="display__total--text mb-0">TOTAL</p>
                       <p className="display__total--number mb-0">
-                        IDR. {dataOrder.total || 0}
+                        {formatRp(dataOrder.total)}
                       </p>
                     </div>
                   </div>

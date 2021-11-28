@@ -57,17 +57,6 @@ function Profile() {
     msg: "",
   });
 
-  // const getDataUserById = () => {
-  //   axios
-  //     .patch(`/user/update-image/${user.user.id}`)
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
   const onButtonClick = () => {
     inputFile.current.click();
   };
@@ -83,7 +72,6 @@ function Profile() {
       axios
         .patch(`/user/update-image/${user.user.id}`, formData)
         .then((res) => {
-          console.log(res);
           setIsSuccess({
             status: true,
             msg: res.data.msg,
@@ -95,16 +83,9 @@ function Profile() {
               msg: "",
             });
           }, 3000);
-          dispatch(getUserById(user.user.id))
-            .then((res) => {
-              console.log(res);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          dispatch(getUserById(user.user.id));
         })
         .catch((err) => {
-          console.log(err);
           setIsError({
             status: true,
             msg: err.response.data.msg,
@@ -135,13 +116,7 @@ function Profile() {
             msg: "",
           });
         }, 3000);
-        dispatch(getUserById(user.user.id))
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        dispatch(getUserById(user.user.id));
       })
       .catch((err) => {
         setIsError({
@@ -171,7 +146,6 @@ function Profile() {
     axios
       .patch(`/user/${user.user.id}`, dataUser)
       .then((res) => {
-        console.log(res);
         setIsSuccess({
           status: true,
           msg: res.data.msg,
@@ -183,16 +157,9 @@ function Profile() {
             msg: "",
           });
         }, 3000);
-        dispatch(getUserById(user.user.id))
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        dispatch(getUserById(user.user.id));
       })
       .catch((err) => {
-        console.log(err);
         setIsError({
           status: true,
           msg: err.response.data.msg,
@@ -233,7 +200,6 @@ function Profile() {
     axios
       .patch(`/user/update-password/${user.user.id}`, password)
       .then((res) => {
-        console.log(res);
         handleClose();
         setIsSuccess({
           status: true,
@@ -248,7 +214,6 @@ function Profile() {
         }, 3000);
       })
       .catch((err) => {
-        console.log(err);
         setIsError({
           status: true,
           msg: err.response.data.msg,
@@ -442,7 +407,6 @@ function Profile() {
                             </div>
                           </div>
                           <div className="col-sm-5">
-                            {/* <div className="textbox"> */}
                             <label htmlFor="">
                               <h4>DD/MM/YY :</h4>{" "}
                             </label>
@@ -454,7 +418,6 @@ function Profile() {
                               placeholder="Input your birthday ..."
                               onChange={changeText}
                             />
-                            {/* </div> */}
                           </div>
                         </div>
                         <div className="form-row">

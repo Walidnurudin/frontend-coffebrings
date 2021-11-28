@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
+import { formatRp } from "utils/formatRp";
 
 function Favorite() {
   return (
@@ -74,7 +75,9 @@ function Favorite() {
               flex-column
             "
               >
-                <h5 className="list__info--content--price">IDR 25.000</h5>
+                <h5 className="list__info--content--price">
+                  {formatRp(25000)}
+                </h5>
                 <button className="btn__order">Order Now</button>
               </div>
             </div>
@@ -137,7 +140,9 @@ function Favorite() {
               flex-column
             "
               >
-                <h5 className="list__info--content--price">IDR 25.000</h5>
+                <h5 className="list__info--content--price">
+                  {formatRp(25000)}
+                </h5>
                 <button className="btn__order">Order Now</button>
               </div>
             </div>
@@ -200,7 +205,9 @@ function Favorite() {
               flex-column
             "
               >
-                <h5 className="list__info--content--price">IDR 25.000</h5>
+                <h5 className="list__info--content--price">
+                  {formatRp(25000)}
+                </h5>
                 <button className="btn__order">Order Now</button>
               </div>
             </div>

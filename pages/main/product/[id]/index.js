@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
+import axios from "utils/axios";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { FooterComponent, HeaderComponent } from "components/modules";
@@ -7,6 +8,7 @@ import { useRouter } from "next/router";
 import { getProductById } from "stores/action/allProduct";
 import { getDataCookie } from "middleware/authorizationPage";
 import { addToCart } from "stores/action/addCart";
+import { formatRp } from "utils/formatRp";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -19,6 +21,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
+
   return {
     props: {},
   };
@@ -89,7 +92,7 @@ export default function DetailProduct() {
         size: res.value.data.data[0].size.split(","),
       });
     });
-  }, []);
+  }, [router.query.id]);
 
   const yourCart = () => {
     // VALIDATE CART
@@ -109,7 +112,6 @@ export default function DetailProduct() {
         <div className="container">
           <div className="row">
             <div className="col-12 col-lg-4">
-              {/* <nav style="--bs-breadcrumb-divider: '>'"> */}
               <nav>
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
@@ -133,7 +135,7 @@ export default function DetailProduct() {
                   </figure>
 
                   <h1>{dataProduct.name}</h1>
-                  <p>{`IDR. ${dataProduct.price}`}</p>
+                  <p>{formatRp(dataProduct.price)}</p>
 
                   <button className="btn__add" onClick={distpatchCart}>
                     Add to Cart

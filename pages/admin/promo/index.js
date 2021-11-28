@@ -43,7 +43,7 @@ const initialState = {
   image: null,
 };
 
-function NewPromo() {
+function Promo() {
   const router = useRouter();
   const [idPromo, setIdPromo] = useState(router.query.id);
   const [form, setForm] = useState(initialState);
@@ -54,7 +54,6 @@ function NewPromo() {
 
   //DATA SELECTED PROMO AMBIL DARI SINI+++++++++++++++++
   const dataPromo = useSelector((state) => state.promo);
-  // console.log(dataPromo, "datapromo");
 
   useEffect(() => {
     dispatch(getPromoById(idPromo))
@@ -151,7 +150,6 @@ function NewPromo() {
         <div className="container">
           <div className="row">
             <div className="col-12 col-lg-4">
-              {/* <nav style="--bs-breadcrumb-divider: '>'"> */}
               <nav>
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
