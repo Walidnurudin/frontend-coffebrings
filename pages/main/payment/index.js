@@ -1,8 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { FooterComponent, HeaderComponent } from "components/modules";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteToCart } from "stores/action/addCart";
 
 function Payment() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.addCart);
+
+  console.log(cart.cart);
   return (
     <>
       <HeaderComponent />
@@ -19,44 +27,48 @@ function Payment() {
                   <div className="payment__deliv--left--content--card">
                     <h1>Order Summary</h1>
 
-                    <div className="payment__deliv--left--content--card--order">
-                      <div
-                        className="
+                    <div style={{ height: "250px", overflowY: "auto" }}>
+                      {cart.cart.length > 0 ? (
+                        <>
+                          {cart.cart?.map((item, index) => (
+                            <div className="payment__deliv--left--content--card--order">
+                              <div
+                                className="
                         payment__deliv--left--content--card--order--content
                       "
-                      >
-                        <figure>
-                          <img src="/assets/images/Hazelnutt.png" alt="z" />
-                        </figure>
+                              >
+                                <figure>
+                                  <img
+                                    src={
+                                      item.image
+                                        ? `${process.env.URL_BACKEND}/uploads/product/${item.image}`
+                                        : `/assets/images/default.png`
+                                    }
+                                    alt="z"
+                                  />
+                                </figure>
 
-                        <div className="detail__order">
-                          <p>Hazelnut Latte</p>
-                          <p>x1</p>
-                          <p className="mb-0">Regular</p>
-                        </div>
-                      </div>
+                                <div className="detail__order">
+                                  <p>{item.name}</p>
+                                  <p>QTY: {item.qty}</p>
+                                  <p className="mb-0">size: {item.size}</p>
+                                </div>
+                              </div>
 
-                      <p className="price">IDR 24.0</p>
+                              <p
+                                className="price"
+                                onClick={() => dispatch(deleteToCart(index))}
+                              >
+                                IDR {item.total}
+                              </p>
+                            </div>
+                          ))}
+                        </>
+                      ) : (
+                        <p>no cart your order this, please order first</p>
+                      )}
                     </div>
-                    <div className="payment__deliv--left--content--card--order">
-                      <div
-                        className="
-                        payment__deliv--left--content--card--order--content
-                      "
-                      >
-                        <figure>
-                          <img src="/assets/images/Hazelnutt.png" alt="z" />
-                        </figure>
 
-                        <div className="detail__order">
-                          <p>Hazelnut Latte</p>
-                          <p>x1</p>
-                          <p className="mb-0">Regular</p>
-                        </div>
-                      </div>
-
-                      <p className="price">IDR 24.0</p>
-                    </div>
                     <hr className="w-100" style={{ color: "#000000" }} />
 
                     <select className="form-select">

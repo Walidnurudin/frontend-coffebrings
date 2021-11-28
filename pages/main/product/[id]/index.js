@@ -30,46 +30,59 @@ export default function DetailProduct() {
 
   const [dataProduct, setDataProduct] = useState({});
 
-  // const [selectSize, setSelectSize] = useState(dataProduct.size[0]);
-
-  const [size, setSize] = useState("");
-  const [qty, setQty] = useState(1);
+  const [pricePcs, setPricePcs] = useState({
+    price: 0,
+    size: "R",
+  });
   const [cart, setCart] = useState({
     id: router.query.id,
-    qty: qty,
-    total: 0,
+    qty: 1,
   });
 
-  const toCart = () => {
-    let t = 0;
-
+  const sum = (size) => {
     if (size.includes("R") || size.includes("250")) {
-      t = dataProduct.price;
     } else if (size.includes("L") || size.includes("300")) {
-      t = dataProduct.price + 5000;
+      setPricePcs({
+        price: dataProduct.price + 5000,
+        size: "L",
+      });
     } else if (size.includes("XL") || size.includes("500")) {
-      t = dataProduct.price + 10000;
+      setPricePcs({
+        price: dataProduct.price + 10000,
+        size: "XL",
+      });
     } else {
-      t = dataProduct.price;
     }
-
-    setCart({
-      id: router.query.id,
-      qty: qty,
-      total: t * qty,
-    });
-
-    distpatchCart();
   };
 
   const distpatchCart = () => {
-    dispatch(addToCart(cart));
-    console.log(cart);
-    // router.push("/main/home");
+    dispatch(
+      addToCart({
+        ...cart,
+        name: dataProduct.name,
+        image: dataProduct.image,
+        price: pricePcs.price,
+        total: pricePcs.price * cart.qty,
+        size: pricePcs.size,
+      })
+    );
+    console.log({
+      ...cart,
+      name: dataProduct.name,
+      image: dataProduct.image,
+      price: pricePcs.price,
+      total: pricePcs.price * cart.qty,
+      size: pricePcs.size,
+    });
+    router.push("/main/home");
   };
 
   useEffect(() => {
     dispatch(getProductById(router.query.id)).then((res) => {
+      setPricePcs({
+        ...pricePcs,
+        price: res.value.data.data[0].price,
+      });
       setDataProduct({
         ...res.value.data.data[0],
         size: res.value.data.data[0].size.split(","),
@@ -110,7 +123,7 @@ export default function DetailProduct() {
                   <h1>{dataProduct.name}</h1>
                   <p>{`IDR. ${dataProduct.price}`}</p>
 
-                  <button className="btn__add" onClick={toCart}>
+                  <button className="btn__add" onClick={distpatchCart}>
                     Add to Cart
                   </button>
                 </div>
@@ -132,7 +145,7 @@ export default function DetailProduct() {
                             <div
                               className="size__wrapper--info--content--detail rounded-circle"
                               key={index}
-                              onClick={() => setSize(item)}
+                              onClick={() => sum(item)}
                             >
                               {item}
                             </div>
@@ -166,17 +179,21 @@ export default function DetailProduct() {
                         <button
                           className="btn__qty min rounded-circle"
                           onClick={() => {
-                            qty <= 1 ? setQty(1) : setQty(qty - 1);
+                            cart.qty <= 1
+                              ? setCart({ ...cart, qty: 1 })
+                              : setCart({ ...cart, qty: cart.qty - 1 });
                           }}
                         >
                           -
                         </button>
 
-                        <span className="qty">{qty}</span>
+                        <span className="qty">{cart.qty}</span>
 
                         <button
                           className="btn__qty plu rounded-circle"
-                          onClick={() => setQty(qty + 1)}
+                          onClick={() =>
+                            setCart({ ...cart, qty: cart.qty + 1 })
+                          }
                         >
                           +
                         </button>

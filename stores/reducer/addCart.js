@@ -57,6 +57,14 @@ const addCart = (state = initialState, action) => {
         cart: [...state.cart, action.payload],
       };
     }
+    case "DELETE_TO_CART": {
+      let temp = state.cart.splice(action.payload, 1);
+      return {
+        ...state,
+        // cart: cart.push(action.payload.item),
+        cart: state.cart,
+      };
+    }
     default: {
       return state;
     }
