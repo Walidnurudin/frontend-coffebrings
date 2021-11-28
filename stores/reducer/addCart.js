@@ -65,6 +65,12 @@ const addCart = (state = initialState, action) => {
         cart: state.cart,
       };
     }
+
+    case "CLEAR_CART": {
+      return {
+        cart: [],
+      };
+    }
     default: {
       return state;
     }

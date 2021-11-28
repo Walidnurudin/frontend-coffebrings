@@ -11,3 +11,9 @@ export const deleteToCart = (index) => {
     payload: index,
   };
 };
+
+export const clearCart = () => {
+  return {
+    type: "CLEAR_CART",
+  };
+};

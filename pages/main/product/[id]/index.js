@@ -27,6 +27,7 @@ export async function getServerSideProps(context) {
 export default function DetailProduct() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const cartRedux = useSelector((state) => state.addCart);
 
   const [dataProduct, setDataProduct] = useState({});
 
@@ -35,7 +36,7 @@ export default function DetailProduct() {
     size: "R",
   });
   const [cart, setCart] = useState({
-    id: router.query.id,
+    productId: router.query.id,
     qty: 1,
   });
 
@@ -89,6 +90,17 @@ export default function DetailProduct() {
       });
     });
   }, []);
+
+  const yourCart = () => {
+    // VALIDATE CART
+    if (!cartRedux.cart.length) {
+      alert("Order first your favorit coffee or foods!");
+
+      return;
+    }
+
+    router.push("/main/payment");
+  };
 
   return (
     <>
@@ -201,9 +213,7 @@ export default function DetailProduct() {
                     </div>
 
                     <div className="checkout">
-                      <h3 onClick={() => router.push("/main/payment")}>
-                        Checkout
-                      </h3>
+                      <h3 onClick={yourCart}>Checkout</h3>
 
                       <figure className="arr rounded-circle">
                         <img
