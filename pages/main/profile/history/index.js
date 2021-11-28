@@ -8,6 +8,7 @@ import {
 import { getDataCookie } from "middleware/authorizationPage";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "utils/axios";
+import { formatRp } from "utils/formatRp";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -110,7 +111,7 @@ function History() {
 
                         <div>
                           <h5>{item.invoice}</h5>
-                          <p className="m-0">IDR {item.total}</p>
+                          <p className="m-0">{formatRp(item.total)}</p>
                           <p className="m-0">{item.paymentStatus}</p>
                         </div>
 

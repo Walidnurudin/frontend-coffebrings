@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { deleteProduct, getAllProduct } from "stores/action/allProduct";
 import { useRouter } from "next/router";
 import { ModalDelete } from "components/modules";
+import { formatRp } from "utils/formatRp";
 // import { getDataCookie } from "middleware/authorizationPage";
 
 // export async function getServerSideProps(context) {
@@ -174,7 +175,7 @@ export default function MenuHomeComponent() {
                 alt="pecel"
               />
               <div className="menu-item-name mt-2">{item.name}</div>
-              <div className="menu-item-price">{item.price}</div>
+              <div className="menu-item-price">{formatRp(item.price)}</div>
             </div>
           </div>
         ))}

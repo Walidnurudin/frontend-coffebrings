@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { getProductById } from "stores/action/allProduct";
 import { getDataCookie } from "middleware/authorizationPage";
 import { addToCart } from "stores/action/addCart";
+import { formatRp } from "utils/formatRp";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -31,8 +32,6 @@ export default function DetailProduct() {
   const dispatch = useDispatch();
 
   const [dataProduct, setDataProduct] = useState({});
-
-  // const [selectSize, setSelectSize] = useState(dataProduct.size[0]);
 
   const [size, setSize] = useState("");
   const [qty, setQty] = useState(1);
@@ -66,7 +65,6 @@ export default function DetailProduct() {
 
   const distpatchCart = () => {
     dispatch(addToCart(cart));
-    // router.push("/main/home");
   };
 
   useEffect(() => {
@@ -108,7 +106,7 @@ export default function DetailProduct() {
                   </figure>
 
                   <h1>{dataProduct.name}</h1>
-                  <p>{`IDR. ${dataProduct.price}`}</p>
+                  <p>{formatRp(dataProduct.price)}</p>
 
                   <button className="btn__add" onClick={toCart}>
                     Add to Cart

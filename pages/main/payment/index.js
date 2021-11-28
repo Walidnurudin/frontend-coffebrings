@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { FooterComponent, HeaderComponent } from "components/modules";
+import { formatRp } from "utils/formatRp";
 
 function Payment() {
   return (
@@ -36,7 +37,7 @@ function Payment() {
                         </div>
                       </div>
 
-                      <p className="price">IDR 24.0</p>
+                      <p className="price">{formatRp(25000)}</p>
                     </div>
                     <div className="payment__deliv--left--content--card--order">
                       <div
@@ -55,7 +56,7 @@ function Payment() {
                         </div>
                       </div>
 
-                      <p className="price">IDR 24.0</p>
+                      <p className="price">{formatRp(25000)}</p>
                     </div>
                     <hr className="w-100" style={{ color: "#000000" }} />
 
@@ -72,24 +73,28 @@ function Payment() {
                       <div className="display__discount">
                         <p className="display__discount--text mb-0">DISCOUNT</p>
                         <p className="display__discount--number mb-0">
-                          IDR 10.000
+                          {formatRp(25000)}
                         </p>
                       </div>
                       <div className="display__subtotal">
                         <p className="display__subtotal--text mb-0">SUBTOTAL</p>
                         <p className="display__subtotal--number mb-0">
-                          IDR 10.000
+                          {formatRp(25000)}
                         </p>
                       </div>
                       <div className="display__tax">
                         <p className="display__tax--text mb-0">TAX & FEES</p>
-                        <p className="display__tax--number mb-0">IDR 10.000</p>
+                        <p className="display__tax--number mb-0">
+                          {formatRp(25000)}
+                        </p>
                       </div>
                     </div>
 
                     <div className="display__total">
                       <p className="display__total--text mb-0">TOTAL</p>
-                      <p className="display__total--number mb-0">IDR. 20.000</p>
+                      <p className="display__total--number mb-0">
+                        {formatRp(25000)}
+                      </p>
                     </div>
                   </div>
                 </div>
