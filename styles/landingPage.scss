@@ -437,7 +437,7 @@ a {
   margin-bottom: 0;
 }
 
-.testimony__content--body--card--middle > p {
+.testimony__content--body--card--middle > p.desc {
   margin-bottom: 0;
   color: #0b132a;
 }
@@ -605,7 +605,7 @@ li.list-group-item {
   }
 
   .testimony__content--body--card {
-    width: 400px;
+    width: 350px;
     padding: 1.875rem;
     margin-bottom: 0;
   }

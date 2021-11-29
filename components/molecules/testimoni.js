@@ -53,8 +53,8 @@ function Testimoni() {
                 </figure>
 
                 <div className="wrapper__data--content">
-                  <h6>Viezh Robert</h6>
-                  <p>Warsaw, Poland</p>
+                  <h6>Yessica Christy</h6>
+                  <p>Shanxi, China</p>
                 </div>
               </div>
               <div className="start__wrapper">
@@ -68,9 +68,8 @@ function Testimoni() {
 
             <div className="testimony__content--body--card--middle">
               <p className="desc">
-                “Wow... I am very happy to spend my whole day here. the Wi-fi is
-                good, and the coffee and meals tho. I like it here!! Very
-                recommended!
+                “I like it because I like to travel far and still can make my
+                day better just by drinking their Hazelnut Latte
               </p>
             </div>
           </div>
@@ -82,8 +81,8 @@ function Testimoni() {
                 </figure>
 
                 <div className="wrapper__data--content">
-                  <h6>Viezh Robert</h6>
-                  <p>Warsaw, Poland</p>
+                  <h6>Kim Young Jou</h6>
+                  <p>Seoul, South Korea</p>
                 </div>
               </div>
               <div className="start__wrapper">
@@ -97,9 +96,9 @@ function Testimoni() {
 
             <div className="testimony__content--body--card--middle">
               <p className="desc">
-                “Wow... I am very happy to spend my whole day here. the Wi-fi is
-                good, and the coffee and meals tho. I like it here!! Very
-                recommended!
+                “This is very unusual for my taste, I haven’t liked coffee
+                before but their coffee is the best! and yup, you have to order
+                the chicken wings, the best in town!
               </p>
             </div>
           </div>
