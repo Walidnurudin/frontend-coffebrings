@@ -93,7 +93,7 @@ function HeaderComponent(props) {
                           className={`nav-link${activeClass(
                             "/admin/dashboard"
                           )}`}
-                          onClick={isAdminPage()}
+                          onClick={() => router.push("/admin/dashboard")}
                         >
                           Dashboard
                         </a>
