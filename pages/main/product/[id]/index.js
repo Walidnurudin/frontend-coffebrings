@@ -30,51 +30,80 @@ export async function getServerSideProps(context) {
 export default function DetailProduct() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const cartRedux = useSelector((state) => state.addCart);
 
   const [dataProduct, setDataProduct] = useState({});
 
-  const [size, setSize] = useState("");
-  const [qty, setQty] = useState(1);
+  const [pricePcs, setPricePcs] = useState({
+    price: 0,
+    size: "R",
+  });
   const [cart, setCart] = useState({
-    id: router.query.id,
-    qty: qty,
-    total: 0,
+    productId: router.query.id,
+    qty: 1,
   });
 
-  const toCart = () => {
-    let t = 0;
-
+  const sum = (size) => {
     if (size.includes("R") || size.includes("250")) {
-      t = dataProduct.price;
     } else if (size.includes("L") || size.includes("300")) {
-      t = dataProduct.price + 5000;
+      setPricePcs({
+        price: dataProduct.price + 5000,
+        size: "L",
+      });
     } else if (size.includes("XL") || size.includes("500")) {
-      t = dataProduct.price + 10000;
+      setPricePcs({
+        price: dataProduct.price + 10000,
+        size: "XL",
+      });
     } else {
-      t = dataProduct.price;
     }
-
-    setCart({
-      id: router.query.id,
-      qty: qty,
-      total: t * qty,
-    });
-
-    distpatchCart();
   };
 
   const distpatchCart = () => {
-    dispatch(addToCart(cart));
+    dispatch(
+      addToCart({
+        ...cart,
+        name: dataProduct.name,
+        image: dataProduct.image,
+        price: pricePcs.price,
+        total: pricePcs.price * cart.qty,
+        size: pricePcs.size,
+      })
+    );
+    console.log({
+      ...cart,
+      name: dataProduct.name,
+      image: dataProduct.image,
+      price: pricePcs.price,
+      total: pricePcs.price * cart.qty,
+      size: pricePcs.size,
+    });
+    router.push("/main/home");
   };
 
   useEffect(() => {
     dispatch(getProductById(router.query.id)).then((res) => {
+      setPricePcs({
+        ...pricePcs,
+        price: res.value.data.data[0].price,
+      });
       setDataProduct({
         ...res.value.data.data[0],
         size: res.value.data.data[0].size.split(","),
       });
     });
   }, [router.query.id]);
+
+  const yourCart = () => {
+    // VALIDATE CART
+    if (!cartRedux.cart.length) {
+      alert("Order first your favorit coffee or foods!");
+
+      return;
+    }
+
+    router.push("/main/payment");
+  };
 
   return (
     <>
@@ -108,7 +137,7 @@ export default function DetailProduct() {
                   <h1>{dataProduct.name}</h1>
                   <p>{formatRp(dataProduct.price)}</p>
 
-                  <button className="btn__add" onClick={toCart}>
+                  <button className="btn__add" onClick={distpatchCart}>
                     Add to Cart
                   </button>
                 </div>
@@ -130,7 +159,7 @@ export default function DetailProduct() {
                             <div
                               className="size__wrapper--info--content--detail rounded-circle"
                               key={index}
-                              onClick={() => setSize(item)}
+                              onClick={() => sum(item)}
                             >
                               {item}
                             </div>
@@ -164,17 +193,21 @@ export default function DetailProduct() {
                         <button
                           className="btn__qty min rounded-circle"
                           onClick={() => {
-                            qty <= 1 ? setQty(1) : setQty(qty - 1);
+                            cart.qty <= 1
+                              ? setCart({ ...cart, qty: 1 })
+                              : setCart({ ...cart, qty: cart.qty - 1 });
                           }}
                         >
                           -
                         </button>
 
-                        <span className="qty">{qty}</span>
+                        <span className="qty">{cart.qty}</span>
 
                         <button
                           className="btn__qty plu rounded-circle"
-                          onClick={() => setQty(qty + 1)}
+                          onClick={() =>
+                            setCart({ ...cart, qty: cart.qty + 1 })
+                          }
                         >
                           +
                         </button>
@@ -182,9 +215,7 @@ export default function DetailProduct() {
                     </div>
 
                     <div className="checkout">
-                      <h3 onClick={() => router.push("/main/payment")}>
-                        Checkout
-                      </h3>
+                      <h3 onClick={yourCart}>Checkout</h3>
 
                       <figure className="arr rounded-circle">
                         <img

@@ -10,6 +10,7 @@ function HeaderComponent(props) {
 
   const token = cookies.get("token");
   const { user } = useSelector((state) => state.dataUserById);
+  const cart = useSelector((state) => state.addCart);
   const router = useRouter();
 
   const handleCollapse = () => setCollapse(!collapse);
@@ -32,6 +33,17 @@ function HeaderComponent(props) {
 
   const toHomeProduct = () => {
     router.push("/main/home");
+  };
+
+  const yourCart = () => {
+    // VALIDATE CART
+    if (!cart.cart.length) {
+      alert("Order first your favorit coffee or foods!");
+
+      return;
+    }
+
+    router.push("/main/payment");
   };
 
   return (
@@ -93,7 +105,7 @@ function HeaderComponent(props) {
                         <a
                           style={{ cursor: "pointer" }}
                           className={`nav-link${activeClass("/main/payment")}`}
-                          onClick={() => router.push("/main/payment")}
+                          onClick={yourCart}
                         >
                           Your Cart
                         </a>

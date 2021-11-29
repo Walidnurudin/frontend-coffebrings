@@ -5,23 +5,6 @@ import { deleteProduct, getAllProduct } from "stores/action/allProduct";
 import { useRouter } from "next/router";
 import { ModalDelete } from "components/modules";
 import { formatRp } from "utils/formatRp";
-// import { getDataCookie } from "middleware/authorizationPage";
-
-// export async function getServerSideProps(context) {
-//   const dataCookie = await getDataCookie(context);
-
-//   if (!dataCookie.isLogin) {
-//     return {
-//       redirect: {
-//         destination: "/auth/login",
-//         permanent: false,
-//       },
-//     };
-//   }
-//   return {
-//     props: {},
-//   };
-// }
 
 const initalState = {
   page: 1,
