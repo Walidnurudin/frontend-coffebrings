@@ -15,8 +15,8 @@ function Favorite() {
             </p>
           </div>
 
-          <div className="d-flex justify-content-center justify-content-md-around">
-            <div className="favorite__content--card">
+          <div className="favorite__content--wrapper">
+            <div className="favorite__content--wrapper--card">
               <div
                 className="
               d-flex
@@ -81,7 +81,7 @@ function Favorite() {
                 <button className="btn__order">Order Now</button>
               </div>
             </div>
-            <div className="favorite__content--card">
+            <div className="favorite__content--wrapper--card">
               <div
                 className="
               d-flex
@@ -146,7 +146,7 @@ function Favorite() {
                 <button className="btn__order">Order Now</button>
               </div>
             </div>
-            <div className="favorite__content--card mb-0">
+            <div className="favorite__content--wrapper--card mb-0">
               <div
                 className="
               d-flex

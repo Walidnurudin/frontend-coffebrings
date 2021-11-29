@@ -229,7 +229,14 @@ a {
   font-size: 4vw;
 }
 
-.favorite__content--card {
+.favorite__content--wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+}
+
+.favorite__content--wrapper--card {
   border: 2px solid #dddddd;
   border-radius: 0.625rem;
   background-color: #fff;
@@ -531,7 +538,12 @@ li.list-group-item {
     font-size: 1rem;
   }
 
-  .favorite__content--card {
+  .favorite__content--wrapper {
+    justify-content: space-around;
+    flex-flow: row;
+  }
+
+  .favorite__content--wrapper--card {
     width: 300px;
     margin-bottom: 0;
   }
