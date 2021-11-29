@@ -437,6 +437,11 @@ a {
   margin-bottom: 0;
 }
 
+.testimony__content--body--card--middle {
+  height: 100px;
+  overflow-y: scroll;
+}
+
 .testimony__content--body--card--middle > p.desc {
   margin-bottom: 0;
   color: #0b132a;
