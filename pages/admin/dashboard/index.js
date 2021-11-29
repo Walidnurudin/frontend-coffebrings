@@ -50,7 +50,7 @@ function Dashboard() {
 
   const getDashboard = () => {
     axios
-      .get(`${process.env.URL_BACKEND}/dashboard?filter=${filter}`)
+      .get(`/dashboard?filter=${filter}`)
       .then((res) => {
         const result = res.data.data;
         router.push(`/admin/dashboard?filter=${filter}`);

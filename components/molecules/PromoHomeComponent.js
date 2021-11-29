@@ -86,7 +86,7 @@ export default function PromoHomeComponent() {
               <div className="promo-card-header">{item.name}</div>
               <div className="promo-card-desc">{item.description}</div>
             </div>
-            {user.role === "admin" ? (
+            {user.role === "admin" && (
               <>
                 <div
                   onClick={() => toUpdatePromo(item.id)}
@@ -105,8 +105,6 @@ export default function PromoHomeComponent() {
                   <img src="/assets/images/trash 1.png" alt="edit" />
                 </div>
               </>
-            ) : (
-              "Coupon not available for now"
             )}
           </div>
         ))}

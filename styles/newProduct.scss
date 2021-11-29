@@ -153,7 +153,6 @@
   align-items: center;
   background-color: #ffba33;
   cursor: pointer;
-  margin-right: 1.875rem;
 }
 
 .size__wrapper--info--content--add.gram {
@@ -199,6 +198,10 @@
 
   .new__product--right--content {
     width: 450px;
+  }
+
+  .size__wrapper--info > .size__wrapper--info--content--add {
+    margin-right: 1.875rem;
   }
 
   .form-group {

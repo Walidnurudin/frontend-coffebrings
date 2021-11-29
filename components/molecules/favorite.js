@@ -15,7 +15,7 @@ function Favorite() {
             </p>
           </div>
 
-          <div className="row justify-content-center justify-content-md-around">
+          <div className="d-flex justify-content-center justify-content-md-around">
             <div className="favorite__content--card">
               <div
                 className="
