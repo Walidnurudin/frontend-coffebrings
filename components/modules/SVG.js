@@ -10,9 +10,9 @@ export const BarsSVG = (props) => {
       <path
         d="M1.59863 8.33333H13.5001M1.59863 1H23.5986M1.59863 15.6667H23.5986"
         stroke="black"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

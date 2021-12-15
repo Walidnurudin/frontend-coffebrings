@@ -103,17 +103,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ffba33;
+  background-color: rgba(186, 186, 186, 0.35);
+  color: #000000;
   cursor: pointer;
   margin-right: 1.875rem;
 
   &:last-child {
     margin-right: 0;
   }
-}
 
-.size__wrapper--info--content--detail > span {
-  font-weight: 700;
+  &.active {
+    background-color: #ffba33;
+  }
 }
 
 .detail__product--right--product {
@@ -234,10 +235,6 @@
   .size__wrapper--info > .size__wrapper--info--content--detail {
     width: 50px;
     height: 50px;
-  }
-
-  .size__wrapper--info--content--detail > span {
-    font-size: 1.25rem;
   }
 
   .detail__product--right--product {

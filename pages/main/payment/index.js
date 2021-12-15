@@ -164,7 +164,7 @@ function Payment() {
                           ))}
                         </>
                       ) : (
-                        <p>no cart your order this, please order first</p>
+                        <p>Your cart is empty, please order first</p>
                       )}
                     </div>
 

@@ -33,7 +33,7 @@ const initialState = {
   price: "",
   category: "",
   description: "",
-  size: "",
+  size: [],
   image: null,
 };
 
@@ -54,27 +54,35 @@ function NewProduct() {
   const [form, setForm] = useState(initialState);
   const [params, setParams] = useState(stateParams);
   const [image, setImage] = useState("");
+  const [selectSize, setSelectSize] = useState([]);
+  const [unSelected, setUnSelected] = useState([]);
 
   const inputSize = ["R", "L", "XL"];
   const inputGram = ["250", "300", "500"];
 
-  useEffect(() => {
-    dispatch(getProductById(router.query.id))
-      .then((res) => {
-        const newData = {
-          ...form,
-          name: res.value.data.data[0].name,
-          price: res.value.data.data[0].price,
-          category: res.value.data.data[0].category,
-          description: res.value.data.data[0].description,
-          size: res.value.data.data[0].size,
-          image: res.value.data.data[0].image,
-        };
+  console.log(form.size);
 
-        setForm(newData);
-      })
-      .catch((err) => err.response.data.msg && alert(err.response.data.msg));
-  }, [dispatch]);
+  useEffect(() => {
+    if (router.query.id) {
+      dispatch(getProductById(router.query.id))
+        .then((res) => {
+          const newData = {
+            ...form,
+            name: res.value.data.data[0].name,
+            price: res.value.data.data[0].price,
+            category: res.value.data.data[0].category,
+            description: res.value.data.data[0].description,
+            size: res.value.data.data[0].size,
+            image: res.value.data.data[0].image,
+          };
+
+          console.log(newData.size);
+
+          setForm(newData);
+        })
+        .catch((err) => err.response.data.msg && alert(err.response.data.msg));
+    }
+  }, [dispatch, selectSize, unSelected]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -88,32 +96,35 @@ function NewProduct() {
     }
   };
 
-  const handleSize = () => {
-    setForm({
-      ...form,
-      size: inputSize.toString(),
-    });
-  };
-
-  const handleGram = () => {
-    setForm({
-      ...form,
-      size: inputGram.toString(),
-    });
+  const selectedSize = (data) => {
+    if (form.size.includes(data)) {
+      const deleteSize = form.size.filter((val) => {
+        return val !== data;
+      });
+      setForm({ ...form, size: deleteSize });
+    } else {
+      setForm({ ...form, size: [...form.size, data] });
+    }
   };
 
   const resetForm = () => {
     setForm(initialState);
     setImage("");
+    setSelectSize([]);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const newData = {
+      ...form,
+      size: form.size.join(","), // kondisi urutan
+    };
+
     const formData = new FormData();
 
-    for (const data in form) {
-      formData.append(data, form[data]);
+    for (const data in newData) {
+      formData.append(data, newData[data]);
     }
 
     dispatch(postProduct(formData))
@@ -143,10 +154,17 @@ function NewProduct() {
   const handleUpdate = (e) => {
     e.preventDefault();
 
+    const newData = {
+      ...form,
+      size: form.size.join(","), // kondisi urutan
+    };
+
+    // console.log(newData);
+
     const formData = new FormData();
 
-    for (const data in form) {
-      formData.append(data, form[data]);
+    for (const data in newData) {
+      formData.append(data, newData[data]);
     }
 
     dispatch(updateProduct(router.query.id, formData)).then((res) => {
@@ -176,7 +194,6 @@ function NewProduct() {
         <div className="container">
           <div className="row">
             <div className="col-12 col-lg-4">
-              {/* <nav style="--bs-breadcrumb-divider: '>'"> */}
               <nav>
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
@@ -201,7 +218,7 @@ function NewProduct() {
                                 ? `${process.env.URL_BACKEND}/uploads/product/${form.image}`
                                 : "/assets/images/default.png"
                             }
-                            alt="product"
+                            alt="produc=== form.sizet"
                             className="rounded-circle"
                           />
                         </figure>
@@ -309,48 +326,44 @@ function NewProduct() {
                     <p>Click size you want to use for this product</p>
 
                     <div className="size__wrapper--info">
-                      <div
-                        className="size__wrapper--info--content--add rounded-circle"
-                        onClick={handleSize}
-                      >
-                        <span className="span-size">R</span>
-                      </div>
-                      <div
-                        className="size__wrapper--info--content--add rounded-circle"
-                        onClick={handleSize}
-                      >
-                        <span className="span-size">L</span>
-                      </div>
-                      <div
-                        className="size__wrapper--info--content--add rounded-circle"
-                        onClick={handleSize}
-                      >
-                        <span className="span-size">XL</span>
-                      </div>
-                      <div
-                        className="size__wrapper--info--content--add gram rounded-circle"
-                        onClick={handleGram}
-                      >
-                        <span className="span-size">
-                          250 <span className="text-center d-block">gr</span>
-                        </span>
-                      </div>
-                      <div
-                        className="size__wrapper--info--content--add gram rounded-circle"
-                        onClick={handleGram}
-                      >
-                        <span className="span-size">
-                          300 <span className="text-center d-block">gr</span>
-                        </span>
-                      </div>
-                      <div
-                        className="size__wrapper--info--content--add gram rounded-circle me-0"
-                        onClick={handleGram}
-                      >
-                        <span className="span-size">
-                          500 <span className="text-center d-block">gr</span>
-                        </span>
-                      </div>
+                      {inputSize?.map((item, index) => {
+                        return (
+                          <div
+                            className={`size__wrapper--info--content--add ${
+                              form.size.includes(item) ? "active" : ""
+                            } rounded-circle`}
+                            onClick={() => {
+                              unSelected.includes(item)
+                                ? null
+                                : selectedSize(item);
+                            }}
+                            key={index}
+                          >
+                            <span className="span-size">{item}</span>
+                          </div>
+                        );
+                      })}
+
+                      {inputGram?.map((item, index) => {
+                        return (
+                          <div
+                            className={`size__wrapper--info--content--add ${
+                              form.size.includes(item) ? "active" : ""
+                            } rounded-circle`}
+                            onClick={() => {
+                              unSelected.includes(item)
+                                ? null
+                                : selectedSize(item);
+                            }}
+                            key={index}
+                          >
+                            <span className="span-size">
+                              {item}
+                              <span className="text-center d-block">gr</span>
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
