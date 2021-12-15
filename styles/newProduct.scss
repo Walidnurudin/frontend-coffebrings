@@ -151,12 +151,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ffba33;
-  cursor: pointer;
-}
-
-.size__wrapper--info--content--add.gram {
   background-color: rgba(186, 186, 186, 0.35);
+  cursor: pointer;
+  color: #000000;
+
+  &.active {
+    background-color: #ffba33;
+  }
 }
 
 .size__wrapper--info--content--add > span.span-size {

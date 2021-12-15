@@ -27,7 +27,13 @@
   border-radius: 16px;
   transition: 0.2s;
   position: relative;
+
+  &.active {
+    background-color: #429142;
+    color: #fff;
+  }
 }
+
 .edit-promo-menu {
   background-color: #6a4029;
   right: 0;

@@ -47,7 +47,7 @@ export default function FooterComponent() {
                     className="list-group-item"
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
-                    <a href="/cinema" style={{ color: "#4f5665" }}>
+                    <a href="/" style={{ color: "#4f5665" }}>
                       Download
                     </a>
                   </li>
@@ -55,7 +55,7 @@ export default function FooterComponent() {
                     className="list-group-item"
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
-                    <a href="/all-movies" style={{ color: "#4f5665" }}>
+                    <a href="/" style={{ color: "#4f5665" }}>
                       Pricing
                     </a>
                   </li>
@@ -63,7 +63,7 @@ export default function FooterComponent() {
                     className="list-group-item"
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
-                    <a href="/ticket" style={{ color: "#4f5665" }}>
+                    <a href="/" style={{ color: "#4f5665" }}>
                       Locations
                     </a>
                   </li>
@@ -71,7 +71,7 @@ export default function FooterComponent() {
                     className="list-group-item"
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
-                    <a href="/notif" style={{ color: "#4f5665" }}>
+                    <a href="/" style={{ color: "#4f5665" }}>
                       Countries
                     </a>
                   </li>
@@ -79,7 +79,7 @@ export default function FooterComponent() {
                     className="list-group-item"
                     style={{ listStyle: "none", marginBottom: 0 }}
                   >
-                    <a href="/notif" style={{ color: "#4f5665" }}>
+                    <a href="/" style={{ color: "#4f5665" }}>
                       Blog
                     </a>
                   </li>
@@ -92,7 +92,7 @@ export default function FooterComponent() {
                     className="list-group-item"
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
-                    <a href="/cinema" style={{ color: "#4f5665" }}>
+                    <a href="/" style={{ color: "#4f5665" }}>
                       Coffe Shop ?
                     </a>
                   </li>
@@ -100,7 +100,7 @@ export default function FooterComponent() {
                     className="list-group-item"
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
-                    <a href="/all-movies" style={{ color: "#4f5665" }}>
+                    <a href="/" style={{ color: "#4f5665" }}>
                       FAQ
                     </a>
                   </li>
@@ -108,7 +108,7 @@ export default function FooterComponent() {
                     className="list-group-item"
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
-                    <a href="/ticket" style={{ color: "#4f5665" }}>
+                    <a href="/" style={{ color: "#4f5665" }}>
                       Abous Us
                     </a>
                   </li>
@@ -116,7 +116,7 @@ export default function FooterComponent() {
                     className="list-group-item"
                     style={{ listStyle: "none", marginBottom: "1.25rem" }}
                   >
-                    <a href="/notif" style={{ color: "#4f5665" }}>
+                    <a href="/" style={{ color: "#4f5665" }}>
                       Privacy Policy
                     </a>
                   </li>
@@ -124,7 +124,7 @@ export default function FooterComponent() {
                     className="list-group-item"
                     style={{ listStyle: "none", marginBottom: 0 }}
                   >
-                    <a href="/notif" style={{ color: "#4f5665" }}>
+                    <a href="/" style={{ color: "#4f5665" }}>
                       Terms of Service
                     </a>
                   </li>

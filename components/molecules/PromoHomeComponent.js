@@ -52,9 +52,7 @@ export default function PromoHomeComponent() {
     setIdPromo(id);
   };
 
-  const handleSelectedPromo = (id) => {
-    setIdSelectedPromo(id);
-  };
+  const handleSelectedPromo = (id) => setIdSelectedPromo(id);
 
   return (
     <div>
@@ -69,12 +67,12 @@ export default function PromoHomeComponent() {
           <>
             {promo?.map((item) => (
               <div
-                onClick={
-                  userRole === "user"
-                    ? () => handleSelectedPromo(item.id)
-                    : null
-                }
-                className="promo-list-card bg-green d-flex p-1 py-1 px-2 mt-4 "
+                onClick={() => {
+                  userRole === "user" && handleSelectedPromo(item.id);
+                }}
+                className={`promo-list-card ${
+                  idSelectedPromo === item.id ? "active" : "bg-green"
+                } d-flex p-1 py-1 px-2 mt-4 `}
                 key={item.id}
               >
                 <img

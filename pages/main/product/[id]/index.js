@@ -33,15 +33,19 @@ export default function DetailProduct() {
   const cartRedux = useSelector((state) => state.addCart);
 
   const [dataProduct, setDataProduct] = useState({});
+  const [active, setActive] = useState(0);
 
   const [pricePcs, setPricePcs] = useState({
     price: 0,
     size: "R",
   });
+
   const [cart, setCart] = useState({
     productId: router.query.id,
     qty: 1,
   });
+
+  const handleActive = (index) => setActive(index);
 
   const sum = (size) => {
     if (size.includes("R") || size.includes("250")) {
@@ -157,11 +161,17 @@ export default function DetailProduct() {
                         <>
                           {dataProduct.size?.map((item, index) => (
                             <div
-                              className="size__wrapper--info--content--detail rounded-circle"
+                              className={`size__wrapper--info--content--detail ${
+                                active === index ? "active" : ""
+                              } rounded-circle`}
                               key={index}
-                              onClick={() => sum(item)}
+                              onClick={() => {
+                                handleActive(index);
+                                sum(item);
+                              }}
                             >
                               {item}
+                              {item.length === 3 && "gr"}
                             </div>
                           ))}
                         </>
