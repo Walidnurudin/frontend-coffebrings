@@ -4,6 +4,7 @@ const initalState = {
   msg: "",
   data: [],
   pageInfo: {},
+  selectPromo: {},
 };
 
 const promo = (state = initalState, action) => {
@@ -82,6 +83,12 @@ const promo = (state = initalState, action) => {
         isLoading: false,
         isError: true,
         msg: action.payload.response.data.msg,
+      };
+    }
+    case "SELECTPROMO": {
+      return {
+        ...state,
+        selectPromo: action.payload,
       };
     }
     default: {

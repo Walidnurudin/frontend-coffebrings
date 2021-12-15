@@ -2,9 +2,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getAllPromo } from "stores/action/promo";
+import { getAllPromo, deletePromo, selectPromo } from "stores/action/promo";
 import { ModalDelete } from "components/modules";
-import { deletePromo } from "stores/action/promo";
 
 export default function PromoHomeComponent() {
   const { user } = useSelector((state) => state.dataUserById);
@@ -52,7 +51,10 @@ export default function PromoHomeComponent() {
     setIdPromo(id);
   };
 
-  const handleSelectedPromo = (id) => setIdSelectedPromo(id);
+  const handleSelectedPromo = (id, name) => {
+    dispatch(selectPromo({ id, name }));
+    setIdSelectedPromo(id);
+  };
 
   return (
     <div>
@@ -68,7 +70,8 @@ export default function PromoHomeComponent() {
             {promo?.map((item) => (
               <div
                 onClick={() => {
-                  userRole === "user" && handleSelectedPromo(item.id);
+                  userRole === "user" &&
+                    handleSelectedPromo(item.id, item.name);
                 }}
                 className={`promo-list-card ${
                   idSelectedPromo === item.id ? "active" : "bg-green"

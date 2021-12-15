@@ -4,6 +4,7 @@ import { FooterComponent, HeaderComponent } from "components/modules";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteToCart, clearCart } from "stores/action/addCart";
+import { getAllPromo } from "stores/action/promo";
 import { getDataCookie } from "middleware/authorizationPage";
 import axios from "utils/axios";
 import { formatRp } from "utils/formatRp";
@@ -29,6 +30,7 @@ function Payment() {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.addCart);
   const user = useSelector((state) => state.dataUserById);
+  const promo = useSelector((state) => state.promo);
 
   const [dataOrder, setDataOrder] = useState({
     idUser: user.user.id,
@@ -40,6 +42,10 @@ function Payment() {
     total: 0,
     orderItem: [...cart.cart],
   });
+
+  const handlePromo = (e) => {
+    console.log(e.target.value);
+  };
 
   const postOrder = () => {
     if (
@@ -89,7 +95,11 @@ function Payment() {
     });
   }, [cart]);
 
-  console.log(cart.cart);
+  useEffect(() => {
+    console.log(promo, "PROMO");
+    dispatch(getAllPromo());
+  }, []);
+
   return (
     <>
       <HeaderComponent />
@@ -170,11 +180,31 @@ function Payment() {
 
                     <hr className="w-100" style={{ color: "#000000" }} />
 
-                    <select className="form-select">
-                      <option selected>Select Promo</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                    <select
+                      className="form-select"
+                      onChange={(e) => handlePromo(e)}
+                    >
+                      <option selected={!promo.selectPromo.id} value="">
+                        Select Promo
+                      </option>
+
+                      {promo.data.length > 0 ? (
+                        <>
+                          {promo.data.map((item) => (
+                            <option
+                              value={item.id}
+                              key={item.id}
+                              selected={item.id === promo.selectPromo.id}
+                            >
+                              {item.name}
+                            </option>
+                          ))}
+                        </>
+                      ) : (
+                        <>
+                          <option value="">not found</option>
+                        </>
+                      )}
                     </select>
 
                     <hr className="w-100" style={{ color: "#000000" }} />

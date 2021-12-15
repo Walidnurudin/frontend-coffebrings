@@ -34,3 +34,10 @@ export const deletePromo = (id) => {
     payload: axios.delete(`/promo/${id}`),
   };
 };
+
+export const selectPromo = (data) => {
+  return {
+    type: "SELECTPROMO",
+    payload: data,
+  };
+};
