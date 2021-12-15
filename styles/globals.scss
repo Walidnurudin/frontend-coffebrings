@@ -1,6 +1,7 @@
+@import "bootstrap/dist/css/bootstrap.css";
+
 // FONT
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap%22");
-@import "bootstrap/dist/css/bootstrap.css";
 
 @import "footer";
 @import "auth";
@@ -17,8 +18,7 @@
 @import "user-login";
 
 a {
-  color: inherit;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 * {

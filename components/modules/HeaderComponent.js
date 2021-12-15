@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import cookies from "js-cookie";
 import UserLogin from "components/molecules/UserLogin";
+import { BarsSVG, CloseSVG } from "./SVG";
 
 function HeaderComponent(props) {
   const [collapse, setCollapse] = useState(false);
@@ -55,9 +56,13 @@ function HeaderComponent(props) {
             type="button"
             onClick={handleCollapse}
           >
-            <span className="navbar-toggler-icon"></span>
+            {!collapse ? (
+              <BarsSVG width="20" height="20" />
+            ) : (
+              <CloseSVG width="20" height="20" />
+            )}
           </button>
-          <div className={`${collapse ? "collapse" : ""} navbar-collapse`}>
+          <div className={`${!collapse ? "collapse" : ""} navbar-collapse`}>
             <ul className="navbar-nav mx-md-auto mb-2 mb-lg-0">
               {!token ? null : (
                 <>

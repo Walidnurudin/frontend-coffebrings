@@ -229,7 +229,14 @@ a {
   font-size: 4vw;
 }
 
-.favorite__content--card {
+.favorite__content--wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+}
+
+.favorite__content--wrapper--card {
   border: 2px solid #dddddd;
   border-radius: 0.625rem;
   background-color: #fff;
@@ -430,7 +437,12 @@ a {
   margin-bottom: 0;
 }
 
-.testimony__content--body--card--middle > p {
+.testimony__content--body--card--middle {
+  height: 100px;
+  overflow-y: scroll;
+}
+
+.testimony__content--body--card--middle > p.desc {
   margin-bottom: 0;
   color: #0b132a;
 }
@@ -531,7 +543,12 @@ li.list-group-item {
     font-size: 1rem;
   }
 
-  .favorite__content--card {
+  .favorite__content--wrapper {
+    justify-content: space-around;
+    flex-flow: row;
+  }
+
+  .favorite__content--wrapper--card {
     width: 300px;
     margin-bottom: 0;
   }
@@ -593,7 +610,7 @@ li.list-group-item {
   }
 
   .testimony__content--body--card {
-    width: 400px;
+    width: 350px;
     padding: 1.875rem;
     margin-bottom: 0;
   }
