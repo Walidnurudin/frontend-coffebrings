@@ -25,7 +25,7 @@ export default function MenuHomeComponent() {
   const [show, setShow] = useState(false);
   const [idProduct, setIdProduct] = useState("");
   const [active, setActive] = useState("");
-  const [buatnampungdata, setbuatnampungdata] = useState({
+  const [allProduct, setallProduct] = useState({
     data: [],
     pagination: {},
   });
@@ -38,7 +38,7 @@ export default function MenuHomeComponent() {
   useEffect(() => {
     dispatch(getAllProduct(page, limit, category, search, sort, order)).then(
       (res) => {
-        setbuatnampungdata({
+        setallProduct({
           data: res.value.data.data,
           pagination: res.value.data.pagination,
         });
@@ -51,7 +51,7 @@ export default function MenuHomeComponent() {
       setShow(false);
       dispatch(getAllProduct(page, limit, category, search, sort, order)).then(
         (res) => {
-          setbuatnampungdata({
+          setallProduct({
             data: res.value.data.data,
             pagination: res.value.data.pagination,
           });
@@ -81,7 +81,7 @@ export default function MenuHomeComponent() {
     setActive(ctg);
     dispatch(getAllProduct(page, limit, ctg, search, sort, order)).then(
       (res) => {
-        setbuatnampungdata({
+        setallProduct({
           data: res.value.data.data,
           pagination: res.value.data.pagination,
         });
@@ -149,7 +149,7 @@ export default function MenuHomeComponent() {
               "
       >
         {/* <!-- map menu-item-list dari sini --> */}
-        {buatnampungdata.data?.map((item) => (
+        {allProduct.data?.map((item) => (
           <div className="card-list-menu-item p-4 mt-3" key={item.id}>
             {/* <!-- kondisional isAdmin --> */}
             {userRole === "admin" && (
@@ -208,7 +208,7 @@ export default function MenuHomeComponent() {
           previousLabel={false}
           nextLabel={false}
           breakLabel={"..."}
-          pageCount={buatnampungdata.pagination?.totalPage}
+          pageCount={allProduct.pagination?.totalPage}
           onPageChange={handlePagination}
           containerClassName={"pagination"}
           pageClassName={"page-item"}
