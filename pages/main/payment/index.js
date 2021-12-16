@@ -32,6 +32,7 @@ function Payment() {
   const user = useSelector((state) => state.dataUserById);
   const promo = useSelector((state) => state.promo);
 
+  const [valid, setValid] = useState(false);
   const [dataOrder, setDataOrder] = useState({
     idUser: user.user.id,
     paymentMethod: "",
@@ -92,7 +93,10 @@ function Payment() {
             idPromo: null,
             total: tempDataOrder.total,
           });
-          alert("HARGA TIDAK SESUAI MINIMAL DISCOUNT");
+          setValid("Total price less than minimum discount requirement");
+          setTimeout(() => {
+            setValid(false);
+          }, 3000);
         }
       } else {
         setDiscount({ discount: 0 });
@@ -102,7 +106,11 @@ function Payment() {
           total: tempDataOrder.total,
         });
         e.target.value = "";
-        alert("TANGGAL PROMO TIDAK SESUAI");
+
+        setValid("Promo date doesn't valid");
+        setTimeout(() => {
+          setValid(false);
+        }, 3000);
       }
     } else {
       setDiscount({ discount: 0 });
@@ -111,7 +119,6 @@ function Payment() {
         idPromo: null,
         total: tempDataOrder.total,
       });
-      alert("TIDAK MEMILIH DISCOUNT");
     }
   };
 
@@ -168,7 +175,6 @@ function Payment() {
   }, [cart]);
 
   useEffect(() => {
-    console.log(promo, "PROMO");
     dispatch(getAllPromo());
   }, []);
 
@@ -256,18 +262,14 @@ function Payment() {
                       className="form-select"
                       onChange={(e) => handlePromo(e)}
                     >
-                      <option selected={!promo.selectPromo.id} value="">
+                      <option selected value="">
                         Select Promo
                       </option>
 
                       {promo.data.length > 0 ? (
                         <>
                           {promo.data.map((item) => (
-                            <option
-                              value={item.id}
-                              key={item.id}
-                              selected={item.id === promo.selectPromo.id}
-                            >
+                            <option value={item.id} key={item.id}>
                               {item.name}
                             </option>
                           ))}
@@ -301,6 +303,12 @@ function Payment() {
                         </p>
                       </div>
                     </div>
+
+                    {valid ? (
+                      <div className="error-msg text-center text-danger d-absolute mb-3">
+                        {valid}
+                      </div>
+                    ) : null}
 
                     <div className="display__total">
                       <p className="display__total--text mb-0">TOTAL</p>

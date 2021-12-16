@@ -120,14 +120,17 @@ export default function PromoHomeComponent() {
           </>
         )}
       </div>
-      <div className="promo-btn-select px-3">
-        <button
-          className="btn-apply-coupon w-100 mt-3 border-0 py-3"
-          onClick={user.role === "admin" ? toAddPromo : applyCoupon}
-        >
-          {user.role === "admin" ? "Add new promo" : "Apply coupon"}
-        </button>
-      </div>
+
+      {user.role === "admin" ? (
+        <div className="promo-btn-select px-3">
+          <button
+            className="btn-apply-coupon w-100 mt-3 border-0 py-3"
+            onClick={toAddPromo}
+          >
+            Add new promo
+          </button>
+        </div>
+      ) : null}
 
       <ModalDelete
         show={show}
