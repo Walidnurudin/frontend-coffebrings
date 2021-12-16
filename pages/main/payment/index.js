@@ -43,8 +43,76 @@ function Payment() {
     orderItem: [...cart.cart],
   });
 
+  const [tempDataOrder, setTempDataOrder] = useState({
+    total: 0,
+  });
+
+  const [discount, setDiscount] = useState({
+    discount: 0,
+  });
+
   const handlePromo = (e) => {
-    console.log(e.target.value);
+    if (e.target.value !== "") {
+      const newPromo = promo.data.filter((item) => {
+        return item.id === e.target.value;
+      });
+
+      console.log(newPromo[0].maxDiscount, "MAX DISKON");
+
+      const dateNow = new Date().toISOString().split("T")[0];
+      const dateStart = newPromo[0].dateStart.split("T")[0];
+      const dateEnd = newPromo[0].dateEnd.split("T")[0];
+
+      // CHECK EXPIRED
+      if (dateEnd >= dateNow && dateStart <= dateNow) {
+        // CHECK MIN TOTAL PRICE
+        if (dataOrder.subTotal >= newPromo[0].minTotalPrice) {
+          let newDiscount = dataOrder.subTotal * (newPromo[0].discount / 100);
+
+          if (newDiscount > newPromo[0].maxDiscount) {
+            newDiscount = newPromo[0].maxDiscount;
+            setDiscount({ discount: newDiscount });
+            setDataOrder({
+              ...dataOrder,
+              idPromo: e.target.value,
+              total: tempDataOrder.total - newDiscount,
+            });
+          } else {
+            setDiscount({ discount: newDiscount });
+            setDataOrder({
+              ...dataOrder,
+              idPromo: e.target.value,
+              total: tempDataOrder.total - newDiscount,
+            });
+          }
+        } else {
+          setDiscount({ discount: 0 });
+          setDataOrder({
+            ...dataOrder,
+            idPromo: null,
+            total: tempDataOrder.total,
+          });
+          alert("HARGA TIDAK SESUAI MINIMAL DISCOUNT");
+        }
+      } else {
+        setDiscount({ discount: 0 });
+        setDataOrder({
+          ...dataOrder,
+          idPromo: null,
+          total: tempDataOrder.total,
+        });
+        e.target.value = "";
+        alert("TANGGAL PROMO TIDAK SESUAI");
+      }
+    } else {
+      setDiscount({ discount: 0 });
+      setDataOrder({
+        ...dataOrder,
+        idPromo: null,
+        total: tempDataOrder.total,
+      });
+      alert("TIDAK MEMILIH DISCOUNT");
+    }
   };
 
   const postOrder = () => {
@@ -91,6 +159,10 @@ function Payment() {
       ...dataOrder,
       subTotal: newSubTotal,
       tax: newTax,
+      total: newSubTotal + newTax,
+    });
+
+    setTempDataOrder({
       total: newSubTotal + newTax,
     });
   }, [cart]);
@@ -213,7 +285,7 @@ function Payment() {
                       <div className="display__discount">
                         <p className="display__discount--text mb-0">DISCOUNT</p>
                         <p className="display__discount--number mb-0">
-                          {formatRp(0)}
+                          {formatRp(discount.discount)}
                         </p>
                       </div>
                       <div className="display__subtotal">

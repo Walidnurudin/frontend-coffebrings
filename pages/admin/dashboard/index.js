@@ -117,7 +117,7 @@ function Dashboard() {
               </label>
             </div>
 
-            <div className="form-check">
+            {/* <div className="form-check">
               <input
                 className="form-check-input"
                 type="radio"
@@ -128,7 +128,7 @@ function Dashboard() {
               <label className="form-check-label" htmlFor="flexRadioDefault2">
                 Weekly
               </label>
-            </div>
+            </div> */}
 
             <div className="form-check">
               <input
@@ -145,7 +145,7 @@ function Dashboard() {
           </div>
 
           <div className="dashboard__page--chart mt-4">
-            <h5 className="rubik-700">Monthly Report</h5>
+            <h5 className="rubik-700">{filter} report</h5>
             {/* <span className="text-secondary rubik-400">Last 9 months</span> */}
 
             <div>
@@ -153,11 +153,11 @@ function Dashboard() {
             </div>
           </div>
 
-          <div className="text-center">
+          {/* <div className="text-center">
             <button className="dashboard__button nunito-700">
               Download Report
             </button>
-          </div>
+          </div> */}
         </div>
       </section>
       <FooterComponent />

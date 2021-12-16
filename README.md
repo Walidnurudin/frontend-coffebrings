@@ -8,6 +8,12 @@
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
+    <li><a href="#demo">Demo</a>
+          <ul>
+        <li><a href="#link">Link</a></li>
+        <li><a href="#screenshot">Screenshot</a></li>
+      </ul>
+    </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
@@ -33,11 +39,31 @@ some technology used in this project.
 - [ChartJs](https://www.npmjs.com/package/react-chartjs-2)
 - [Redux](https://redux.js.org/)
 
+## Demo
+
+### Link
+
+Web app [https://frontend-coffebrings.vercel.app/](https://frontend-coffebrings.vercel.app/)
+
+### Screenshot
+
+- Login page
+  ![Login](https://user-images.githubusercontent.com/59267364/146228835-02e78835-ef1e-45ed-8863-8a9bfff65b6e.png)
+
+- Landing page
+  ![Landing](https://user-images.githubusercontent.com/59267364/146228875-43125bc0-4634-4e68-839d-fb477340834e.png)
+
+- Product page
+  ![Product](https://user-images.githubusercontent.com/59267364/146228911-eb5dcd07-ff9d-42bd-b0ca-cb661f52e2ed.png)
+
+- Payment page
+  ![Payment](https://user-images.githubusercontent.com/59267364/146228932-383ba732-3b45-49a4-8e10-8316a627b1f3.png)
+
 <!-- GETTING STARTED -->
 
 ## Getting Started
 
-Get started with this project, intructions on setting up your project locally.
+Get started with this project, intructions on setting up your project locally.<br />
 To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
@@ -77,8 +103,12 @@ npm run dev
 
 ## Contributors
 
-- Fikri Nadzif [https://github.com/LepakBoy](https://github.com/LepakBoy)
-- Walid Nurudin [https://github.com/Walidnurudin](https://github.com/Walidnurudin)
-- Fajri Putra [https://github.com/fajriputra](https://github.com/fajriputra)
+- (Fullstack) Walid Nurudin [https://github.com/Walidnurudin](https://github.com/Walidnurudin)
+- (Frontend) Fajri Putra [https://github.com/fajriputra](https://github.com/fajriputra)
+- (Frontend) Fikri Nadzif [https://github.com/LepakBoy](https://github.com/LepakBoy)
+- (Backend) Fachri Maulana [https://github.com/mrfachri19](https://github.com/mrfachri19)
+- (Backend) Ahmad Zaky [https://github.com/AhmadZaky19](https://github.com/AhmadZaky19)
+- (Backend) Noviana [https://github.com/Novianaa](https://github.com/Novianaa)
 
-Project Link: [https://github.com/LepakBoy/frontend-coffebrings](https://github.com/LepakBoy/frontend-coffebrings)
+Project Link: [https://github.com/LepakBoy/frontend-coffebrings](https://github.com/LepakBoy/frontend-coffebrings) <br />
+API repository: [https://github.com/AhmadZaky19/backend-coffebrings](https://github.com/AhmadZaky19/backend-coffebrings)
