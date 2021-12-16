@@ -45,17 +45,19 @@ const initialState = {
 
 function Promo() {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const target = useRef(null);
+
   const [idPromo, setIdPromo] = useState(router.query.id);
   const [form, setForm] = useState(initialState);
   const [image, setImage] = useState("");
 
-  const dispatch = useDispatch();
-  const target = useRef(null);
-
+  const { user } = useSelector((state) => state.dataUserById);
   //DATA SELECTED PROMO AMBIL DARI SINI+++++++++++++++++
   const dataPromo = useSelector((state) => state.promo);
 
   useEffect(() => {
+    handleAuthorization();
     dispatch(getPromoById(idPromo))
       .then((res) => {
         const newData = {
@@ -77,6 +79,12 @@ function Promo() {
         console.log(err);
       });
   }, [dispatch]);
+
+  const handleAuthorization = () => {
+    if (user.role !== "admin") {
+      router.back();
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;

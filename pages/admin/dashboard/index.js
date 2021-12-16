@@ -5,6 +5,7 @@ import { getDataCookie } from "middleware/authorizationPage";
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import axios from "utils/axios";
+import { useSelector } from "react-redux";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -17,6 +18,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
+
   return {
     props: {},
   };
@@ -47,6 +49,7 @@ function Dashboard() {
   };
 
   const [filter, setFilter] = useState("monthly");
+  const { user } = useSelector((state) => state.dataUserById);
 
   const getDashboard = () => {
     axios
@@ -86,13 +89,20 @@ function Dashboard() {
       });
   };
 
-  useEffect(() => {
-    getDashboard();
-  }, []);
+  const handleAuthorization = () => {
+    if (user.role !== "admin") {
+      router.back();
+    }
+  };
 
   useEffect(() => {
+    handleAuthorization();
     getDashboard();
   }, [filter]);
+
+  // useEffect(() => {
+  //   getDashboard();
+  // }, [filter]);
 
   return (
     <>

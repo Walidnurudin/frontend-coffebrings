@@ -12,6 +12,7 @@ import {
 } from "stores/action/allProduct";
 import { useRouter } from "next/router";
 import { getDataCookie } from "middleware/authorizationPage";
+import { useSelector } from "react-redux";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -53,12 +54,15 @@ function NewProduct() {
   const dispatch = useDispatch();
   const target = useRef(null);
 
+  const { user } = useSelector((state) => state.dataUserById);
+
   const [form, setForm] = useState(initialState);
   const [params, setParams] = useState(stateParams);
   const [image, setImage] = useState("");
   const [selectSize, setSelectSize] = useState([]);
   const [unSelected, setUnSelected] = useState([]);
   const [show, setShow] = useState(false);
+
   const handleClose = () => {
     setShow(false);
     router.push("/main/home");
@@ -67,9 +71,14 @@ function NewProduct() {
   const inputSize = ["R", "L", "XL"];
   const inputGram = ["250", "300", "500"];
 
-  console.log(form.size);
+  const handleAuthorization = () => {
+    if (user.role !== "admin") {
+      router.back();
+    }
+  };
 
   useEffect(() => {
+    handleAuthorization();
     if (router.query.id) {
       dispatch(getProductById(router.query.id))
         .then((res) => {
@@ -79,11 +88,9 @@ function NewProduct() {
             price: res.value.data.data[0].price,
             category: res.value.data.data[0].category,
             description: res.value.data.data[0].description,
-            size: res.value.data.data[0].size,
+            size: res.value.data.data[0].size.split(","),
             image: res.value.data.data[0].image,
           };
-
-          console.log(newData.size);
 
           setForm(newData);
         })
@@ -125,7 +132,9 @@ function NewProduct() {
 
     const newData = {
       ...form,
-      size: form.size.join(","), // kondisi urutan
+      size: [...inputSize, ...inputGram]
+        .filter((item) => form.size.indexOf(item) >= 0)
+        .join(","),
     };
 
     const formData = new FormData();
@@ -163,10 +172,10 @@ function NewProduct() {
 
     const newData = {
       ...form,
-      size: form.size, // kondisi urutan
+      size: [...inputSize, ...inputGram]
+        .filter((item) => form.size.indexOf(item) >= 0)
+        .join(","),
     };
-
-    // console.log(newData);
 
     const formData = new FormData();
 
@@ -176,7 +185,6 @@ function NewProduct() {
 
     dispatch(updateProduct(router.query.id, formData)).then((res) => {
       setShow(true);
-      // alert(res.value.data.msg);
 
       dispatch(
         getAllProduct(
