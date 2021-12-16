@@ -53,7 +53,7 @@ function NewProduct() {
   const router = useRouter();
   const dispatch = useDispatch();
   const target = useRef(null);
-
+  const [notif, setNotif] = useState({ err: "", success: "" });
   const { user } = useSelector((state) => state.dataUserById);
 
   const [form, setForm] = useState(initialState);
@@ -65,7 +65,7 @@ function NewProduct() {
 
   const handleClose = () => {
     setShow(false);
-    router.push("/main/home");
+    notif.success ? router.push("/main/home") : null;
   };
 
   const inputSize = ["R", "L", "XL"];
@@ -129,7 +129,7 @@ function NewProduct() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setShow(true);
     const newData = {
       ...form,
       size: [...inputSize, ...inputGram]
@@ -145,9 +145,8 @@ function NewProduct() {
 
     dispatch(postProduct(formData))
       .then((res) => {
-        alert(res.value.data.msg);
-
-        router.push("/main/home");
+        setShow(true);
+        setNotif({ ...notif, success: res.value.data.msg });
 
         dispatch(
           getAllProduct(
@@ -161,7 +160,8 @@ function NewProduct() {
         );
       })
       .catch((err) => {
-        err.response.data.msg && alert(err.response.data.msg);
+        err.response.data.msg &&
+          setNotif({ ...notif, err: err.response.data.msg });
       });
 
     resetForm();
@@ -169,7 +169,7 @@ function NewProduct() {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-
+    setShow(true);
     const newData = {
       ...form,
       size: [...inputSize, ...inputGram]
@@ -183,20 +183,25 @@ function NewProduct() {
       formData.append(data, newData[data]);
     }
 
-    dispatch(updateProduct(router.query.id, formData)).then((res) => {
-      setShow(true);
+    dispatch(updateProduct(router.query.id, formData))
+      .then((res) => {
+        setShow(true);
+        setNotif({ ...notif, success: res.value.data.msg });
 
-      dispatch(
-        getAllProduct(
-          params.page,
-          params.limit,
-          params.category,
-          params.search,
-          params.sort,
-          params.order
-        )
-      );
-    });
+        dispatch(
+          getAllProduct(
+            params.page,
+            params.limit,
+            params.category,
+            params.search,
+            params.sort,
+            params.order
+          )
+        );
+      })
+      .catch((err) => {
+        setNotif({ ...notif, err: err.response.data.msg });
+      });
 
     resetForm();
   };
@@ -213,9 +218,9 @@ function NewProduct() {
             keyboard={false}
           >
             <Modal.Header closeButton>
-              <Modal.Title>Success Upadate date</Modal.Title>
+              <Modal.Title>{notif.success ? "Success" : "Failed"}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Data has been updated</Modal.Body>
+            <Modal.Body>{notif.success ? notif.success : notif.err}</Modal.Body>
             <Modal.Footer>
               <Button variant="primary" onClick={handleClose}>
                 Ok
@@ -248,7 +253,7 @@ function NewProduct() {
                                 ? `${process.env.URL_BACKEND}/uploads/product/${form.image}`
                                 : "/assets/images/default.png"
                             }
-                            alt="produc=== form.sizet"
+                            alt="product image"
                             className="rounded-circle"
                           />
                         </figure>
@@ -257,7 +262,7 @@ function NewProduct() {
                       <figure>
                         <img
                           src="/assets/images/icons/icon-camera.svg"
-                          alt="c"
+                          alt="update image"
                         />
                       </figure>
                     )}
