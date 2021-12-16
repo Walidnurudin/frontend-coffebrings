@@ -235,7 +235,7 @@ function Profile() {
         <h1 className="profile__title">User Profile</h1>
         <div className="border_box">
           <div className="row">
-            <div className="col-12 col-sm-4 text-center">
+            <div className="col-12 col-sm-4 text-center image__profile">
               <img
                 src={
                   user.user.image
@@ -318,11 +318,11 @@ function Profile() {
                 </div>
               </div>
             </div>
-            <div className="col-12 col-sm-8">
+            <div className="col-12 col-sm-8 detail__contact">
               <div className="border__contact">
                 <div className="container">
                   <div className="row">
-                    <div className="col-sm-10">
+                    <div className="col-sm-10 contact">
                       <h5>Contacts</h5>
                     </div>
                     <div className="col-sm-2">
@@ -406,13 +406,13 @@ function Profile() {
                               />
                             </div>
                           </div>
-                          <div className="col-sm-5">
+                          <div className="col-sm-5 date">
                             <label htmlFor="">
                               <h4>DD/MM/YY :</h4>{" "}
                             </label>
                             <input
                               type="date"
-                              className="form-control"
+                              className="form-control date"
                               name="birthDay"
                               value={dataUser.birthDay}
                               placeholder="Input your birthday ..."
