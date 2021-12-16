@@ -31,6 +31,7 @@ export default function DetailProduct() {
   const router = useRouter();
   const dispatch = useDispatch();
   const cartRedux = useSelector((state) => state.addCart);
+  const { user } = useSelector((state) => state.dataUserById);
 
   const [dataProduct, setDataProduct] = useState({});
   const [active, setActive] = useState(0);
@@ -46,6 +47,12 @@ export default function DetailProduct() {
   });
 
   const handleActive = (index) => setActive(index);
+
+  const handleAuthorization = () => {
+    if (user.role !== "user") {
+      router.back();
+    }
+  };
 
   const sum = (size) => {
     if (size.includes("R") || size.includes("250")) {
@@ -86,6 +93,7 @@ export default function DetailProduct() {
   };
 
   useEffect(() => {
+    handleAuthorization();
     dispatch(getProductById(router.query.id)).then((res) => {
       setPricePcs({
         ...pricePcs,

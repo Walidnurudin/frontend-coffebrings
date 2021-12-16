@@ -42,7 +42,11 @@ export default function UserLogin(props) {
   };
 
   const toDetail = (id) => {
-    router.push({ pathname: `/main/product/${id}` });
+    if (user.role !== "user") {
+      router.push({ pathname: `/admin/product`, query: { id } });
+    } else {
+      router.push({ pathname: `/main/product/${id}` });
+    }
   };
 
   useEffect(() => {
