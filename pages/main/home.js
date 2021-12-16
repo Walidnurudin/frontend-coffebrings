@@ -29,7 +29,7 @@ export default function Home(props) {
             <div className="promo-section col-lg-4 p-4">
               <PromoHomeComponent />
             </div>
-            <div className="menu-section col-lg-8 p-4 pt-0">
+            <div className="menu-section col-lg-8 p-3 pt-0">
               <MenuHomeComponent />
             </div>
           </div>

@@ -20,7 +20,7 @@ const FormLoginComponent = (props) => {
   });
 
   const toResetPass = () => {
-    router.push("/auth/forgotPassword");
+    router.push("/auth/forgot-password");
   };
 
   const toSignup = () => {

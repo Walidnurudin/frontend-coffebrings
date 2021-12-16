@@ -1,10 +1,12 @@
+// import { useMemo } from "react";
+// import { composeWithDevTools } from "redux-devtools-extension";
 import { createStore, applyMiddleware } from "redux";
-import logger from "redux-logger";
-import promiseMiddleware from "redux-promise-middleware";
-import rootReducer from "./reducer";
-
 import { persistStore, persistReducer } from "redux-persist";
+import logger from "redux-logger";
 import storage from "redux-persist/lib/storage";
+import promiseMiddleware from "redux-promise-middleware";
+
+import rootReducer from "./reducer";
 
 const persistConfig = {
   key: "root",
@@ -12,9 +14,11 @@ const persistConfig = {
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
-let store = createStore(
+const store = createStore(
   persistedReducer,
   applyMiddleware(promiseMiddleware, logger)
 );
-let persistor = persistStore(store);
-export { persistor, store };
+
+const persistor = persistStore(store);
+
+export { store, persistor };

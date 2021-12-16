@@ -130,9 +130,9 @@ export default function FormForgotPassComponent() {
             />
           </form>
           <p className="timer-forgot-pass text-center mt-5">
-            Click here if you didn’t receive any link in 2 minutes
+            Click here if you didn’t receive any link
           </p>
-          <p className="timer-forgot-pass text-center">01:56</p>
+          {/* <p className="timer-forgot-pass text-center">01:56</p> */}
           <AllButton
             className="button-auth btn-forgot w-100 mt-4"
             text="Resend Link"

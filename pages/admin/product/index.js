@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { HeaderComponent, FooterComponent } from "components/modules";
+import { Modal, Button } from "react-bootstrap";
 import {
   postProduct,
   getAllProduct,
@@ -11,10 +12,12 @@ import {
 } from "stores/action/allProduct";
 import { useRouter } from "next/router";
 import { getDataCookie } from "middleware/authorizationPage";
+import { useSelector } from "react-redux";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
 
+  console.log(dataCookie, "cokie");
   if (!dataCookie.isLogin) {
     return {
       redirect: {
@@ -50,19 +53,32 @@ function NewProduct() {
   const router = useRouter();
   const dispatch = useDispatch();
   const target = useRef(null);
+  const [notif, setNotif] = useState({ err: "", success: "" });
+  const { user } = useSelector((state) => state.dataUserById);
 
   const [form, setForm] = useState(initialState);
   const [params, setParams] = useState(stateParams);
   const [image, setImage] = useState("");
   const [selectSize, setSelectSize] = useState([]);
   const [unSelected, setUnSelected] = useState([]);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => {
+    setShow(false);
+    notif.success ? router.push("/main/home") : null;
+  };
 
   const inputSize = ["R", "L", "XL"];
   const inputGram = ["250", "300", "500"];
 
-  console.log(form.size);
+  const handleAuthorization = () => {
+    if (user.role !== "admin") {
+      router.back();
+    }
+  };
 
   useEffect(() => {
+    handleAuthorization();
     if (router.query.id) {
       dispatch(getProductById(router.query.id))
         .then((res) => {
@@ -72,11 +88,9 @@ function NewProduct() {
             price: res.value.data.data[0].price,
             category: res.value.data.data[0].category,
             description: res.value.data.data[0].description,
-            size: res.value.data.data[0].size,
+            size: res.value.data.data[0].size.split(","),
             image: res.value.data.data[0].image,
           };
-
-          console.log(newData.size);
 
           setForm(newData);
         })
@@ -115,10 +129,12 @@ function NewProduct() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setShow(true);
     const newData = {
       ...form,
-      size: form.size.join(","), // kondisi urutan
+      size: [...inputSize, ...inputGram]
+        .filter((item) => form.size.indexOf(item) >= 0)
+        .join(","),
     };
 
     const formData = new FormData();
@@ -129,9 +145,8 @@ function NewProduct() {
 
     dispatch(postProduct(formData))
       .then((res) => {
-        alert(res.value.data.msg);
-
-        router.push("/main/home");
+        setShow(true);
+        setNotif({ ...notif, success: res.value.data.msg });
 
         dispatch(
           getAllProduct(
@@ -145,7 +160,8 @@ function NewProduct() {
         );
       })
       .catch((err) => {
-        err.response.data.msg && alert(err.response.data.msg);
+        err.response.data.msg &&
+          setNotif({ ...notif, err: err.response.data.msg });
       });
 
     resetForm();
@@ -153,13 +169,13 @@ function NewProduct() {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-
+    setShow(true);
     const newData = {
       ...form,
-      size: form.size.join(","), // kondisi urutan
+      size: [...inputSize, ...inputGram]
+        .filter((item) => form.size.indexOf(item) >= 0)
+        .join(","),
     };
-
-    // console.log(newData);
 
     const formData = new FormData();
 
@@ -167,22 +183,25 @@ function NewProduct() {
       formData.append(data, newData[data]);
     }
 
-    dispatch(updateProduct(router.query.id, formData)).then((res) => {
-      alert(res.value.data.msg);
+    dispatch(updateProduct(router.query.id, formData))
+      .then((res) => {
+        setShow(true);
+        setNotif({ ...notif, success: res.value.data.msg });
 
-      router.push("/main/home");
-
-      dispatch(
-        getAllProduct(
-          params.page,
-          params.limit,
-          params.category,
-          params.search,
-          params.sort,
-          params.order
-        )
-      );
-    });
+        dispatch(
+          getAllProduct(
+            params.page,
+            params.limit,
+            params.category,
+            params.search,
+            params.sort,
+            params.order
+          )
+        );
+      })
+      .catch((err) => {
+        setNotif({ ...notif, err: err.response.data.msg });
+      });
 
     resetForm();
   };
@@ -192,6 +211,22 @@ function NewProduct() {
       <HeaderComponent />
       <section className="new__product">
         <div className="container">
+          <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>{notif.success ? "Success" : "Failed"}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{notif.success ? notif.success : notif.err}</Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" onClick={handleClose}>
+                Ok
+              </Button>
+            </Modal.Footer>
+          </Modal>
           <div className="row">
             <div className="col-12 col-lg-4">
               <nav>
@@ -218,7 +253,7 @@ function NewProduct() {
                                 ? `${process.env.URL_BACKEND}/uploads/product/${form.image}`
                                 : "/assets/images/default.png"
                             }
-                            alt="produc=== form.sizet"
+                            alt="product image"
                             className="rounded-circle"
                           />
                         </figure>
@@ -227,7 +262,7 @@ function NewProduct() {
                       <figure>
                         <img
                           src="/assets/images/icons/icon-camera.svg"
-                          alt="c"
+                          alt="update image"
                         />
                       </figure>
                     )}

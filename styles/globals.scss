@@ -41,3 +41,36 @@ a {
   font-family: "Rubik", sans-serif;
   font-weight: 700;
 }
+.pagination {
+  margin-bottom: 0;
+  margin-top: 52px;
+
+  .page-item {
+    margin-right: 0.46875rem;
+
+    &.active .page-link {
+      background-color: #6a4029;
+      border: none;
+      outline: none;
+      color: #ffffff;
+    }
+
+    .page-link {
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem !important;
+      color: #6a4029;
+      font-size: 1.125rem;
+      border-color: #6a4029;
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+
+  li.break {
+    margin: auto !important;
+    margin-left: -7.5px !important;
+    padding: 0 0.46875rem !important;
+  }
+}

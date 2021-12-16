@@ -10,6 +10,7 @@ import axios from "utils/axios";
 import { Modal, Button } from "react-bootstrap";
 
 export default function FormRegisterComponent() {
+  const [valid, setValid] = useState(false);
   const router = useRouter();
   const [show, setShow] = useState(false);
   const handleClose = () => {
@@ -34,7 +35,11 @@ export default function FormRegisterComponent() {
         setShow(true);
       })
       .catch((err) => {
-        console.log(err.response.data.msg);
+        setValid(err.response.data.msg);
+        setTimeout(() => {
+          setValid(false);
+        }, 2000);
+        // console.log(err.response.data.msg);
       });
   };
   const handleChangeText = (e) => {
@@ -89,6 +94,11 @@ export default function FormRegisterComponent() {
               type="number"
               label="Phone Number"
             />
+            {valid ? (
+              <div className="error-msg text-center text-danger d-absolute mt-3 mb-0">
+                {valid}
+              </div>
+            ) : null}
             <AllButton
               className="button-auth w-100 mt-5"
               text="Sign Up"

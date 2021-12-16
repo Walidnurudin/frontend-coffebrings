@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import cookies from "js-cookie";
 import UserLogin from "components/molecules/UserLogin";
 import { BarsSVG, CloseSVG } from "./SVG";
+import { Modal, Button } from "react-bootstrap";
 
 function HeaderComponent(props) {
   const [collapse, setCollapse] = useState(false);
@@ -12,6 +13,10 @@ function HeaderComponent(props) {
   const { user } = useSelector((state) => state.dataUserById);
   const cart = useSelector((state) => state.addCart);
   const router = useRouter();
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+  };
 
   const handleCollapse = () => setCollapse(!collapse);
 
@@ -38,7 +43,7 @@ function HeaderComponent(props) {
   const yourCart = () => {
     // VALIDATE CART
     if (!cart.cart.length) {
-      alert("Order first your favorit coffee or foods!");
+      setShow(true);
 
       return;
     }
@@ -48,6 +53,22 @@ function HeaderComponent(props) {
 
   return (
     <header className="header">
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>No order</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Order first your favorit coffee or foods!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleClose}>
+            Ok
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <nav className="navbar navbar-expand-lg">
         <div className="container">
           <a className="navbar-brand">CoffeBrings</a>

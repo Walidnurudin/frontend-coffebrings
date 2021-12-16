@@ -5,10 +5,11 @@ import { deleteProduct, getAllProduct } from "stores/action/allProduct";
 import { useRouter } from "next/router";
 import { ModalDelete } from "components/modules";
 import { formatRp } from "utils/formatRp";
+import Pagination from "react-paginate";
 
 const initalState = {
   page: 1,
-  limit: 100,
+  limit: 8,
   category: "",
   search: "",
   sort: "",
@@ -24,19 +25,38 @@ export default function MenuHomeComponent() {
   const [show, setShow] = useState(false);
   const [idProduct, setIdProduct] = useState("");
   const [active, setActive] = useState("");
+  const [allProduct, setallProduct] = useState({
+    data: [],
+    pagination: {},
+  });
+  console.log(product.pageInfo.totalPage);
 
   const userRole = user.user.role;
 
   const { page, limit, category, search, sort, order } = dataProduct;
 
   useEffect(() => {
-    dispatch(getAllProduct(page, limit, category, search, sort, order));
-  }, [dispatch]);
+    dispatch(getAllProduct(page, limit, category, search, sort, order)).then(
+      (res) => {
+        setallProduct({
+          data: res.value.data.data,
+          pagination: res.value.data.pagination,
+        });
+      }
+    );
+  }, [dispatch, page, limit]);
 
   const handleDelete = () => {
     dispatch(deleteProduct(idProduct)).then((res) => {
       setShow(false);
-      dispatch(getAllProduct(page, limit, category, search, sort, order));
+      dispatch(getAllProduct(page, limit, category, search, sort, order)).then(
+        (res) => {
+          setallProduct({
+            data: res.value.data.data,
+            pagination: res.value.data.pagination,
+          });
+        }
+      );
     });
   };
 
@@ -59,7 +79,20 @@ export default function MenuHomeComponent() {
       category: ctg,
     });
     setActive(ctg);
-    dispatch(getAllProduct(page, limit, ctg, search, sort, order));
+    dispatch(getAllProduct(page, limit, ctg, search, sort, order)).then(
+      (res) => {
+        setallProduct({
+          data: res.value.data.data,
+          pagination: res.value.data.pagination,
+        });
+      }
+    );
+  };
+
+  const handlePagination = (e) => {
+    const selectedPage = e.selected + 1;
+    setDataProduct({ ...dataProduct, page: selectedPage });
+    dispatch(getAllProduct(selectedPage, limit, category, search, sort, order));
   };
 
   return (
@@ -116,7 +149,7 @@ export default function MenuHomeComponent() {
               "
       >
         {/* <!-- map menu-item-list dari sini --> */}
-        {product.allProduct?.map((item) => (
+        {allProduct.data?.map((item) => (
           <div className="card-list-menu-item p-4 mt-3" key={item.id}>
             {/* <!-- kondisional isAdmin --> */}
             {userRole === "admin" && (
@@ -147,7 +180,11 @@ export default function MenuHomeComponent() {
             )}
 
             {/* <!--  ==================== --> */}
-            <div onClick={() => toProductPage(item.id)}>
+            <div
+              onClick={
+                userRole === "user" ? () => toProductPage(item.id) : null
+              }
+            >
               <img
                 src={
                   item.image
@@ -165,9 +202,25 @@ export default function MenuHomeComponent() {
 
         {/* <!-- map menu-item-list sampe sini --> */}
       </div>
+      <div className="pagination-nav d-flex justify-content-center">
+        {" "}
+        <Pagination
+          previousLabel={false}
+          nextLabel={false}
+          breakLabel={"..."}
+          pageCount={allProduct.pagination?.totalPage}
+          onPageChange={handlePagination}
+          containerClassName={"pagination"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          disabledClassName={"disabled"}
+          activeClassName={"active"}
+        />
+      </div>
+
       {userRole === "admin" && (
         <button
-          className="button-add-product w-100 mt-5 border-0"
+          className="button-add-product w-100 mt-4 border-0"
           onClick={() => router.push("/admin/product")}
         >
           Add new product
