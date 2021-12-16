@@ -5,10 +5,11 @@ import { deleteProduct, getAllProduct } from "stores/action/allProduct";
 import { useRouter } from "next/router";
 import { ModalDelete } from "components/modules";
 import { formatRp } from "utils/formatRp";
+import Pagination from "react-paginate";
 
 const initalState = {
-  page: 1,
-  limit: 100,
+  page: 3,
+  limit: 8,
   category: "",
   search: "",
   sort: "",
@@ -24,6 +25,8 @@ export default function MenuHomeComponent() {
   const [show, setShow] = useState(false);
   const [idProduct, setIdProduct] = useState("");
   const [active, setActive] = useState("");
+
+  console.log(product.pageInfo.totalPage);
 
   const userRole = user.user.role;
 
@@ -60,6 +63,12 @@ export default function MenuHomeComponent() {
     });
     setActive(ctg);
     dispatch(getAllProduct(page, limit, ctg, search, sort, order));
+  };
+
+  const handlePagination = (e) => {
+    const selectedPage = e.selected + 1;
+    setDataProduct({ ...dataProduct, page: selectedPage });
+    dispatch(getAllProduct(page, limit, category, search, sort, order));
   };
 
   return (
@@ -165,6 +174,22 @@ export default function MenuHomeComponent() {
 
         {/* <!-- map menu-item-list sampe sini --> */}
       </div>
+      <div className="pagination-nav mt-4 d-flex justify-content-center">
+        {" "}
+        <Pagination
+          previousLabel={false}
+          nextLabel={false}
+          breakLabel={"..."}
+          pageCount={product.pageInfo.totalPage}
+          onPageChange={handlePagination}
+          containerClassName={"pagination"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          disabledClassName={"disabled"}
+          activeClassName={"active"}
+        />
+      </div>
+
       {userRole === "admin" && (
         <button
           className="button-add-product w-100 mt-5 border-0"

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { HeaderComponent, FooterComponent } from "components/modules";
+import { Modal, Button } from "react-bootstrap";
 import {
   postProduct,
   getAllProduct,
@@ -56,6 +57,11 @@ function NewProduct() {
   const [image, setImage] = useState("");
   const [selectSize, setSelectSize] = useState([]);
   const [unSelected, setUnSelected] = useState([]);
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+    router.push("/main/home");
+  };
 
   const inputSize = ["R", "L", "XL"];
   const inputGram = ["250", "300", "500"];
@@ -156,7 +162,7 @@ function NewProduct() {
 
     const newData = {
       ...form,
-      size: form.size.join(","), // kondisi urutan
+      size: form.size, // kondisi urutan
     };
 
     // console.log(newData);
@@ -168,9 +174,8 @@ function NewProduct() {
     }
 
     dispatch(updateProduct(router.query.id, formData)).then((res) => {
-      alert(res.value.data.msg);
-
-      router.push("/main/home");
+      setShow(true);
+      // alert(res.value.data.msg);
 
       dispatch(
         getAllProduct(
@@ -192,6 +197,22 @@ function NewProduct() {
       <HeaderComponent />
       <section className="new__product">
         <div className="container">
+          <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Success Upadate date</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Data has been updated</Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" onClick={handleClose}>
+                Ok
+              </Button>
+            </Modal.Footer>
+          </Modal>
           <div className="row">
             <div className="col-12 col-lg-4">
               <nav>
