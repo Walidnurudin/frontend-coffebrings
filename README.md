@@ -28,6 +28,8 @@
 
 ## About The Project
 
+coffee brings adalah aplikasi FnB berbasis online yang bertujuan untuk mempermudah siapa saja dalam pemesanan makanan atau minuman. Dari sisi Backend, aplikasi ini dibangun dengan menggunakan nodejs dan mysql sebagai database nya, dan framewoek nextjs menjadi komponen pembangun di sisi frontend. pada aplikasi ini user dapat memesan beberapa makanan dalam satu pesanan dengan fitur add to cart dengan menggabungkan seluruh total harga menjadi satu kali transaksi pembayaran
+
 ### Built With
 
 some technology used in this project.
