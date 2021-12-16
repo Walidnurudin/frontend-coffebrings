@@ -156,7 +156,11 @@ export default function MenuHomeComponent() {
             )}
 
             {/* <!--  ==================== --> */}
-            <div onClick={() => toProductPage(item.id)}>
+            <div
+              onClick={
+                userRole === "user" ? () => toProductPage(item.id) : null
+              }
+            >
               <img
                 src={
                   item.image

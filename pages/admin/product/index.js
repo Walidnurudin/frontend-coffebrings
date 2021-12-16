@@ -16,6 +16,7 @@ import { getDataCookie } from "middleware/authorizationPage";
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
 
+  console.log(dataCookie, "cokie");
   if (!dataCookie.isLogin) {
     return {
       redirect: {
